@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="redis.RedisFuserStore" class="com.mosaicatm.fuser.store.matm.MatmFuserStoreCache">
+        <constructor-arg index="0">
+            <bean class="com.mosaicatm.fuser.store.matm.RedisFuserStore">
+                <constructor-arg index="0" value="${fuser.aggregator.thread.count}" />
+                <property name="redisHash" ref="redis.RedisHash" />
+                <property name="matmFlightMarshaller" ref="fuser.marshall.MatmFlight" />
+                <property name="metaDataMarshaller" ref="fuser.marshall.MetaData" />
+                <property name="idLookup" ref="fuser.core.MatmFlightIdLookup" />
+            </bean>            
+        </constructor-arg>
+        <constructor-arg index="1" ref="fuser.core.FuserStore" />
+        <property name="backupFrequency" value="${fuser.redis.backupInterval}" />
+    </bean>    
+    
+    <bean id="redis.RedisHash" class="com.mosaicatm.fuser.store.redis.RedisHashImpl">
+        <property name="db" ref="redis.RedisDB" />
+        <property name="keyGen" ref="redis.KeyGenerator" />
+        <property name="bulkTask" ref="redis.BulkTaskProxy" />
+    </bean>
+    
+    <bean id="redis.RedisDB" class="com.mosaicatm.fuser.store.redis.RedisDB"
+        init-method="init">
+        <property name="host" value="${fuser.redis.host}" />
+        <property name="port" value="${fuser.redis.port}" />
+        <property name="connectionTimeout" value="${fuser.redis.connectionTimeoutMillis}" />
+        <property name="config" ref="redis.JedisPoolConfiguration" />
+        <property name="password" value="${fuser.redis.password:#{null}}" />
+    </bean>
+    
+    <bean id="redis.JedisPoolConfiguration" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxWaitMillis" value="${fuser.redis.maxWaitMillis}" />
+        <property name="maxTotal" value="${fuser.redis.maxTotalConnections}" />
+    </bean>
+    
+    <bean id="redis.KeyGenerator" class="com.mosaicatm.fuser.store.redis.KeyGenerator">
+        <constructor-arg index="0" value="${fuser.redis.namespace}" />
+    </bean>
+    
+    <bean id="redis.BulkTaskProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+     	factory-method="proxyRedisBulkTask">
+    	<constructor-arg index="0" ref="redis.BulkTask" />
+    </bean>
+    
+    <bean id="redis.BulkTask" class="com.mosaicatm.fuser.store.redis.RedisBulkTaskImpl"
+    	init-method="start" destroy-method="stop">
+    	<property name="db" ref="redis.RedisDB" />
+    	<property name="processInterval" value="${fuser.redis.bulkProcessInterval}"/>
+    	<property name="reportInterval" value="${fuser.redis.bulkReportInterval}"/>
+    </bean>
+     
+</beans>

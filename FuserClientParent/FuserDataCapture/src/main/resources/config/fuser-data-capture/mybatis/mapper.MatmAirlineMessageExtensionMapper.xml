@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.MatmAirlineMessageExtensionMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            airline_data_source varchar,
+            available_runways varchar,
+            cancelled boolean,
+            comments varchar,
+            creation_date timestamp,
+            data_source varchar,
+            flight_leg integer,
+            out_time_actual timestamp,
+            out_time_controlled timestamp,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            source_id varchar,
+            timestamp timestamp,
+            type varchar
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

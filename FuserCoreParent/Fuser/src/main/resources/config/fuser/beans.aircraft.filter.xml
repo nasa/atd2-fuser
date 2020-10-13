@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="aircraft.filter.FuserFilterProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+        factory-method="proxyFilter">
+        <constructor-arg index="0" ref="aircraft.filter.FuserFilter" />
+    </bean>
+    
+    <bean id="aircraft.filter.FuserFilter" class="com.mosaicatm.fuser.filter.FuserFilter">
+        <property name="filters">
+            <list>
+                <ref bean="aircraft.filter.AircraftRegistrationFilter" />
+            </list>
+        </property>
+        <property name="active" value="${fuser.aircraft.filter.active}" />
+    </bean>
+
+    <bean id="aircraft.filter.AircraftRegistrationFilter" class="com.mosaicatm.fuser.filter.AircraftRegistrationFilter" >
+        <property name="active" value="${fuser.aircraft.filter.registration.active}" />
+        <property name="filterNullRegistration" value="${fuser.aircraft.filterNullRegistration}" />
+    </bean>
+
+</beans>

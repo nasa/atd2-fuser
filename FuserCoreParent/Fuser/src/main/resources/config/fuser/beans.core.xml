@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"> 
+
+    
+    <bean id="fuser.core.Clock" class="com.mosaicatm.lib.time.SystemClock" />
+    
+    <bean id="fuser.core.FuserStoreTimedRemover" class="com.mosaicatm.fuser.store.matm.MatmFuserStoreTimedRemover"
+        destroy-method="stop">
+        <constructor-arg index="0" ref="fuser.core.FuserStoreProxy" />
+        <property name="active" value="${fuser.store.remove.active}" />
+        <property name="checkIntervalMinutes" value="${fuser.store.remove.check.minutes}" />
+        <property name="removeThresholdHours" value="${fuser.store.remove.threshold.hours}" />
+        <property name="removeArrivedFlightThresholdHours" value="${fuser.store.remove.arrived.threshold.hours}" />
+        <property name="removeActiveFlightThresholdHours" value="${fuser.store.remove.active.threshold.hours}" />
+        <property name="removeNonDepartedFlightThresholdHours" value="${fuser.store.remove.nondeparted.threshold.hours}" />
+        <property name="removeAsdexOnlyFlightThresholdHours" value="${fuser.store.remove.asdex.only.threshold.hours}" />
+        <property name="clock" ref="fuser.core.Clock" />
+    </bean>
+
+        
+    <bean id="fuser.core.FuserStoreLoader" class="com.mosaicatm.fuser.store.matm.MatmFuserStoreLoader">
+        <property name="idLookup" ref="fuser.core.MatmFlightIdLookup" />
+        <property name="numberOfThreads" value="${fuser.aggregator.thread.count}" />
+    </bean>
+    
+    <bean id="fuser.core.FuserStore" factory-bean="fuser.core.FuserStoreLoader" factory-method="loadStore" />
+    
+    
+    <bean id="fuser.core.FuserStoreProxy" class="com.mosaicatm.fuser.store.FuserStoreProxy">
+        <constructor-arg index="0" ref="fuser.core.FuserStore" />
+    </bean>
+    
+    <!-- This is only used to register the store to report size for performance monitor, not currently used for any other purposes -->
+    <bean id="fuser.core.MetricFuserStoreRegister" factory-bean="fuser-metrics.core.MetricProxyFactory" factory-method="registerFuserStore">
+        <constructor-arg index="0" ref="fuser.core.FuserStoreProxy" />
+    </bean>
+    
+    <bean id="fuser.core.FuserReceiveForwardingHandler" class="com.mosaicatm.lib.messaging.ForwardingMessageHandler">
+        <constructor-arg index="0" value="${fuser.endpoint.toFuser.sync}" />
+    </bean>
+                
+    <bean id="fuser.core.Capture" class="com.mosaicatm.fuser.Capture" />
+    
+    <bean id="fuser.core.GufiAssigner" class="com.mosaicatm.fuser.match.MatmGufiAssigner">
+        <constructor-arg>
+            <bean factory-bean="fuser.core.GufiClientFactory" factory-method="create" />
+        </constructor-arg>
+        <property name="active" value="${fuser.core.gufi-service.assignGufi.active}"/>
+    </bean>
+
+    <bean id="fuser.core.GufiClientFactory" class="com.mosaicatm.guficlient.GufiClientFactory">
+        <property name="clientMode"            value="${fuser.core.gufi-service.mode}" />
+        <property name="jmsReplyQueueName"     value="${fuser.core.gufi-service.reply-queue-name}" />
+        <property name="jmsRequestQueueUri"    value="${fuser.core.gufi-service.request-queue-name}" />
+        <property name="jmsUpdateQueueUri"     value="${fuser.core.gufi-service.update-queue-name}" />
+        
+        <property name="producerTemplate">
+            <bean factory-bean="routes.fuser.CamelContext" factory-method="createProducerTemplate" />
+        </property>
+    </bean>
+    
+    <bean id="fuser.core.TimestampSetter" class="com.mosaicatm.fuser.util.TimestampSetter" >
+        <property name="clock" ref="fuser.core.Clock" />    
+    </bean> 
+    
+    <bean id="fuser.core.MatmFlightStoreListener" class="com.mosaicatm.fuser.store.listener.MatmFlightStoreListener"
+        init-method="start" destroy-method="stop" >
+        <property name="active"            value="${fuser.fromFuser.remove.publish.active}" />
+        <property name="removeTopicUrl"    value="${fuser.endpoint.fromFuser.remove.forward}" />
+        <property name="checkInterval"    value="${fuser.fromFuser.remove.publish.interval}" />
+        <property name="clock"            ref="fuser.core.Clock" />
+    </bean>
+    
+    <bean id="fuser.core.PreFusedMessageSender" class="com.mosaicatm.fuser.util.MessageSender">
+        <property name="active" value="${fuser.fromFuser.to.prefused.enable}" />
+        <property name="destination" value="${fuser.endpoint.fromFuser.prefused}" />
+        <property name="marshaller"  ref="fuser.marshall.MatmFlight" />
+    </bean>
+    
+    <bean id="fuser.core.InternalFuserMessageSender" class="com.mosaicatm.fuser.util.MessageSender">
+        <property name="active" value="true" />
+        <property name="destination" value="${fuser.endpoint.internal.toFuser.receive}" />
+    </bean>
+    
+    <bean id="fuser.core.InternalFuserEnvelopeMessageSender" class="com.mosaicatm.fuser.util.EnvelopeMessageSender">
+        <property name="active" value="true" />
+        <property name="destination" value="${fuser.endpoint.internal.toFuser.receive}" />
+    </bean>       
+    
+    <bean id="fuser.core.AggregateFuserMessageSender" class="com.mosaicatm.fuser.util.SignalingMessageSender">
+        <property name="active" value="true" />
+        <property name="destination" value="${fuser.endpoint.toFuser.process.fuse.aggregate}" />
+        <property name="dataSignaler" ref="playback.DataSignaler" />
+    </bean> 
+    
+    <bean id="fuser.core.ProcessFuserMessageMultiSender" class="com.mosaicatm.fuser.util.MessageMultiSender">
+        <property name="active" value="true" />
+        <property name="destinations">
+            <list>
+                <value>${fuser.endpoint.toFuser.process.prefuse}</value>
+                <value>${fuser.endpoint.toFuser.process.gufi}</value>
+            </list>
+        </property>
+    </bean>    
+    
+    <bean id="fuser.core.prefused.clone" class="com.mosaicatm.fuser.common.matm.util.MatmCloner">
+        <property name="active" value="${fuser.fromFuser.to.prefused.enable}" />
+    </bean>      
+    
+    <bean id="fuser.core.FuserInitializer" class="com.mosaicatm.fuser.FuserInitializer">
+        <property name="fuserStore" ref="fuser.core.FuserStoreProxy" />
+        <property name="storeRemover" ref="fuser.core.FuserStoreTimedRemover" />
+        <property name="syncHandler" ref="fuser.core.FuserReceiveForwardingHandler" />
+        <property name="clockSyncPoint" ref="fuser.core.ClockSyncPoint" />
+        <property name="syncPoint" ref="fuser.core.SyncPoint" />
+        <property name="airportList" value="${fuser.core.sync.airports}" />
+        <property name="syncPointDurationSeconds" value="${fuser.core.sync.duration.seconds}" />
+    </bean>
+    
+    <bean id="fuser.core.ClockSyncPoint" class="com.mosaicatm.lib.util.concurrent.SyncPoint">
+        <constructor-arg index="0" value="${fuser.playback.mode}" />
+    </bean>
+    
+    <bean id="fuser.core.SyncPoint" class="com.mosaicatm.lib.util.concurrent.SyncPoint">
+        <constructor-arg index="0" value="${fuser.syncPoint.locked}" />
+    </bean>
+    
+    <bean id="MetricRegistry" class="com.codahale.metrics.MetricRegistry"/>
+        
+    <bean id="fuser-metrics.core.MetricsReporter" class="com.mosaicatm.performancemonitor.common.MetricsReporterFactory"
+        init-method="start" >
+        <constructor-arg index="0" ref="MetricRegistry" />
+        <property name="active" value="${fuser.core.performancemonitor.report.active}"/>
+        <property name="reportType" value="${fuser.core.performancemonitor.report.type}"/>
+        <property name="destination" value="${fuser.fromFuser.performancemonitor.destination}" />
+        <property name="reportSeconds" value="${fuser.core.performancemonitor.report.seconds}" />
+        <property name="applicationName" value="${fuser.core.application.name}" />
+        <property name="fileDirectory" value="{fuser.core.performancemonitor.report.filedirectory}" />
+        <property name="clock" ref="fuser.core.Clock" />
+    </bean>
+    
+    <bean id="fuser-metrics.core.MetricProxyFactory" class="com.mosaicatm.fuser.metrics.MetricProxyFactory">
+        <property name="metricRegistry" ref="MetricRegistry"/>
+        <property name="metricsActive"  value="${fuser.core.performancemonitor.active}"/>
+    </bean>
+    
+    <bean id="core.DataFeederSignaler" class="com.mosaicatm.lib.camel.feeder.client.FeederClientSignaler" >
+        <constructor-arg index="0" value="Fuser" />
+        <constructor-arg index="1" value="${fuser.playback.signalMaxAllowableClientLagMillis}" />
+        <constructor-arg index="2" value="${fuser.playback.signalDestinationUri}" />
+        <property name="active"    value="${fuser.playback.dataFeederSignaler.active}" />
+    </bean>
+    
+    <bean id="fuser.core.AircraftTypeApiConfig" class="com.matm.actypelib.api.AircraftTypeApiConfig">
+        <property name="allowClassPathLoading" value="${fuser.core.aircraftType.allowClassPathLoading}" />
+        <property name="weightClassGroup" value="${fuser.core.aircraftType.weightClassGroup}" />
+    </bean>
+    
+    <bean id="fuser.core.AircraftTypeApi" class="com.matm.actypelib.api.AircraftTypeApiImpl"
+        init-method="initialize">
+        <constructor-arg index="0" ref="fuser.core.AircraftTypeApiConfig" />
+    </bean>
+    
+    <bean id="fuser.core.AircraftTypeManager" factory-bean="fuser.core.AircraftTypeApi" factory-method="getAircraftTypeManager" />
+    
+    <bean id="fuser.core.MatmFlightCarrierUtil" class="com.mosaicatm.fuser.common.matm.util.flight.MatmFlightCarrierUtil" >
+        <property name="generalAviationPrefixesFile" value="${fuser.core.generalAviationFlightTypes.file}" />
+    </bean>
+    
+    <bean id="fuser.core.MatmAircraftIdLookup" class="com.mosaicatm.fuser.common.matm.util.aircraft.MatmAircraftIdLookup" />
+    <bean id="fuser.core.MatmSectorAssignmentIdLookup" class="com.mosaicatm.fuser.common.matm.util.sector.MatmSectorAssignmentIdLookup" />
+    <bean id="fuser.core.MatmFlightIdLookup" class="com.mosaicatm.fuser.common.matm.util.flight.MatmFlightIdLookup" />
+    
+    <bean id="fuser.core.MatmIdLookup" class="com.mosaicatm.fuser.common.matm.util.MatmIdLookupFactory">
+        <property name="lookups">
+            <map>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.aircraft.MatmAircraft</value></key>
+                    <ref bean="fuser.core.MatmAircraftIdLookup" />
+                </entry>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.flight.MatmFlight</value></key>
+                    <ref bean="fuser.core.MatmFlightIdLookup" />
+                </entry>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.sector.MatmSectorAssignment</value></key>
+                    <ref bean="fuser.core.MatmSectorAssignmentIdLookup" />
+                </entry>                
+            </map>
+        </property>
+    </bean>
+    
+</beans>

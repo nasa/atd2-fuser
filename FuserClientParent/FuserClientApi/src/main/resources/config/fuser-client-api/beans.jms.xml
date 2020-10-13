@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+   This is a template for the JMS startup data. It's unlikely
+   that you'll need to modify this for unit testing.
+   -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+   
+   <!--
+      NOTE: the "vm:" below means that you're using Camel's own
+      internal JMS broker. This makes it convenient for unit testing,
+      but you can't trust any performance numbers from this. To get
+      accurate testing, replace the "vm:" with "tcp:" and start
+      ServiceMix externally before running the test.
+      -->
+    <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${fuser-client-api.jms.url}"/>
+        <property name="userName" value="${fuser-client-api.jms.username}"/>
+        <property name="password" value="${fuser-client-api.jms.password}"/>
+        <property name="trustAllPackages" value="true" />
+    </bean>
+
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+       destroy-method="stop">
+        <property name="maxConnections" value="8" />
+        <property name="maximumActiveSessionPerConnection" value="500" />
+        <property name="connectionFactory" ref="jmsConnectionFactory" />
+    </bean>
+
+
+    <bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+        <property name="connectionFactory" ref="pooledConnectionFactory" />
+        <property name="transacted" value="false" />
+        <property name="concurrentConsumers" value="1" />
+        <property name="pubSubNoLocal" value="true" />
+    </bean>
+
+    <bean id="jms" class="org.apache.camel.component.activemq.ActiveMQComponent"
+       destroy-method="stop">
+        <property name="configuration" ref="jmsConfig" />
+    </bean>
+
+</beans>

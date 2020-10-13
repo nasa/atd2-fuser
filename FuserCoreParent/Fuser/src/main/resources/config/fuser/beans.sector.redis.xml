@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="sector.redis.RedisFuserStore" class="com.mosaicatm.fuser.store.matm.MatmSectorAssignmentFuserStoreCache">
+        <constructor-arg index="0">
+            <bean class="com.mosaicatm.fuser.store.matm.RedisSectorAssignmentFuserStore">
+                <constructor-arg index="0" value="${fuser.aggregator.thread.count}" />
+                <property name="redisHash" ref="sector.redis.RedisHash" />
+                <property name="matmSectorAssignmentMarshaller" ref="fuser.marshall.MatmSectorAssignment" />
+                <property name="metaDataMarshaller" ref="fuser.marshall.MetaData" />
+                <property name="idLookup" ref="fuser.core.MatmSectorAssignmentIdLookup" />
+            </bean>            
+        </constructor-arg>
+        <constructor-arg index="1" ref="sector.core.FuserStore" />
+        <property name="backupFrequency" value="${fuser.redis.backupInterval}" />
+    </bean>
+
+    <bean id="sector.redis.RedisHash" class="com.mosaicatm.fuser.store.redis.RedisHashImpl">
+        <property name="db" ref="redis.RedisDB" />
+        <property name="keyGen" ref="sector.redis.KeyGenerator" />
+        <property name="bulkTask" ref="sector.redis.BulkTaskProxy" />
+    </bean>
+
+    <bean id="sector.redis.KeyGenerator" class="com.mosaicatm.fuser.store.redis.KeyGenerator">
+        <constructor-arg index="0" value="${fuser.redis.namespace}" />
+        <property name="keyType" value="${fuser.redis.sector.assignments.keyType}" />
+    </bean>
+    
+    <bean id="sector.redis.BulkTaskProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+        factory-method="proxyRedisBulkTask">
+        <constructor-arg index="0" ref="sector.redis.BulkTask" />
+        <constructor-arg index="1" value="MatmSectorAssignment" />
+    </bean>
+    
+    <bean id="sector.redis.BulkTask" class="com.mosaicatm.fuser.store.redis.RedisBulkTaskImpl"
+        init-method="start" destroy-method="stop">
+        <property name="db" ref="redis.RedisDB" />
+        <property name="processInterval" value="${fuser.redis.bulkProcessInterval}"/>
+        <property name="reportInterval" value="${fuser.redis.bulkReportInterval}"/>
+    </bean>
+
+</beans>

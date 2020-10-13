@@ -1,0 +1,133 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+    <parent>
+        <groupId>com.mosaicatm</groupId>
+        <artifactId>FuserCoreParent</artifactId>
+        <version>5.0.25-NASA-OPENSOURCE-1.0.0-SNAPSHOT</version>
+    </parent>
+    
+	<artifactId>FuserDataSchema</artifactId>
+    <name>FuserDataSchema</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>${maven.jaxb2.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>build-fuser-data-schema</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<extension>true</extension>
+							<schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
+							<bindingDirectory>${basedir}/src/main/resources/xjb</bindingDirectory>
+							<generateDirectory>${project.build.directory}/generated-sources/jaxb</generateDirectory>
+							<episode>false</episode>
+							<args>
+								<arg>-XtoString</arg>
+								<arg>-Xequals</arg>
+								<arg>-Xannotate</arg>
+								<arg>-Xcopyable</arg>
+								<arg>-Xmergeable</arg>
+								<arg>-Xmergeable-mergeStrategyClass=com.mosaicatm.matmdata.util.MatmFlightMergeStrategy</arg>
+								<arg>-Xnamespace-prefix</arg>
+								<arg>-Xsetters</arg>
+								<arg>-Xsetters-mode=direct</arg>
+								<arg>-Xsimplify</arg>
+								<arg>-Xinheritance</arg>
+							</args>
+							<plugins>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-basics</artifactId>
+									<version>${jaxb2-basics.version}</version>
+								</plugin>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-basics-annotate</artifactId>
+									<version>${jaxb2-basics-annotate.version}</version>
+								</plugin>
+								<plugin>
+									<groupId>org.jvnet.jaxb2_commons</groupId>
+									<artifactId>jaxb2-namespace-prefix</artifactId>
+									<version>${jaxb2-namespace-prefix.version}</version>
+								</plugin>
+							</plugins>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<!-- ================ JAXB ======================================== -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>${jaxb-api.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-core</artifactId>
+			<version>${jaxb-core.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+			<version>${jaxb-impl.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-xjc</artifactId>
+			<version>${jaxb-xjc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+
+		<!-- ================ JAXB2 ======================================= -->
+		<dependency>
+			<groupId>org.jvnet.jaxb2_commons</groupId>
+			<artifactId>jaxb2-basics-runtime</artifactId>
+			<version>${jaxb2-basics.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jvnet.jaxb2_commons</groupId>
+			<artifactId>jaxb2-basics-annotate</artifactId>
+			<version>${jaxb2-basics-annotate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jvnet.jaxb2_commons</groupId>
+			<artifactId>jaxb2-namespace-prefix</artifactId>
+			<version>${jaxb2-namespace-prefix.version}</version>
+		</dependency>
+
+		<!-- ================ Logging ===================================== -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-to-slf4j</artifactId>
+			<version>${log4j-to-slf4j.version}</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file defines the Camel routes that connect the applications to 
+    the TIB bus for testing/demo. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- Camel Routes -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="routes.heartbeat.CamelContext" 
+                  autoStartup="true" allowUseOriginalMessage="false">
+        <jmxAgent id="agent" disabled="true"/>
+
+        <endpoint id="endpoint.fuser.fromFuser.heartbeat.process" uri="${fuser.endpoint.fromFuser.heartbeat.process}" />
+        <endpoint id="endpoint.fuser.fromFuser.heartbeat" uri="${fuser.endpoint.fromFuser.heartbeat}" />
+
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <process ref="routes.heartbeat.RouteErrorHandler" />
+        </onException>
+        
+        <!-- Fuser Heartbeat messages -->
+        <route id="route.fuser.fromFuser.heartbeat.process">
+            <from uri="endpoint.fuser.fromFuser.heartbeat.process" />
+            <bean ref="fuser.marshall.Heartbeat" method="marshall" />
+            <to uri="endpoint.fuser.fromFuser.heartbeat" />
+        </route>
+
+    </camelContext>
+
+    <bean id="routes.heartbeat.RouteErrorHandler" class="com.mosaicatm.lib.camel.RouteErrorHandler" />
+
+    <bean id="routes.heartbeat.MessageProducer" class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="routes.heartbeat.CamelContext" />
+    </bean>
+    
+    <bean id="routes.heartbeat.MessageProducerOwnerInitializer" class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="routes.heartbeat.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="fuser.heartbeat.HeartbeatSender" />
+            </list>
+        </property>
+    </bean>
+    
+</beans>

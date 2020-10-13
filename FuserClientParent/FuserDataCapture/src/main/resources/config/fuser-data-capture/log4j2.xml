@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Configuration>
+	<Appenders>
+    	<Console name="STDOUT" target="SYSTEM_OUT">
+    		<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS zzz} | %-5p | %t | %-25c{1} | %m%n"/>
+    	</Console>
+
+		<RollingFile
+			name="RollingFile"
+			fileName="${sys:logfile.name}"
+			filePattern="$${sys:logfile.name}.%d{yyyy-MM-dd}__%i"
+			append="true">
+			
+			<!-- date | level | thread | logger | message  -->
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS zzz} | %-5p | %t | %-25c{1} | %m%n" />
+			
+			<Policies>
+				<OnStartupTriggeringPolicy />
+				<TimeBasedTriggeringPolicy interval="1" />
+			</Policies>
+			
+		</RollingFile>
+    </Appenders> 
+    
+	<Loggers>
+		<RedirectLogger name="com.mosaicatm.fuser" level="info" />
+
+		<Root level="info" >
+			<AppenderRef ref="RollingFile" />
+		</Root>
+	</Loggers>
+
+</Configuration>

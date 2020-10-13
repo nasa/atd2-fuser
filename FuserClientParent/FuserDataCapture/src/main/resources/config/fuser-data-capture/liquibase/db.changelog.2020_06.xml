@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    <changeSet id="fuserDataCapture-2020_06-1" author="msv"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="fuser_flight_state"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="fuser_flight_state" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-2" author="msv"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="fuser_flight_state"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="fuser_flight_state" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-3" author="msv"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="fuser_flight_state"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="fuser_flight_state" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-4" author="msv"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="sfdps_extension" />
+            <not>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_source"/>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_timestamp"/>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_latitude"/>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_longitude"/>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_altitude"/>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_heading"/>
+                <columnExists tableName="sfdps_extension" columnName="last_sfdps_position_speed"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="sfdps_extension">
+            <column name="last_sfdps_position_source" type="varchar" />
+            <column name="last_sfdps_position_timestamp" type="timestamp" />
+            <column name="last_sfdps_position_latitude" type="double precision" />
+            <column name="last_sfdps_position_longitude" type="double precision" />
+            <column name="last_sfdps_position_altitude" type="double precision" />
+            <column name="last_sfdps_position_heading" type="double precision" />
+            <column name="last_sfdps_position_speed" type="double precision" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-5" author="msv"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="sfdps_extension_all" />
+            <not>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_source"/>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_timestamp"/>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_latitude"/>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_longitude"/>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_altitude"/>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_heading"/>
+                <columnExists tableName="sfdps_extension_all" columnName="last_sfdps_position_speed"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="sfdps_extension_all">
+            <column name="last_sfdps_position_source" type="varchar" />
+            <column name="last_sfdps_position_timestamp" type="timestamp" />
+            <column name="last_sfdps_position_latitude" type="double precision" />
+            <column name="last_sfdps_position_longitude" type="double precision" />
+            <column name="last_sfdps_position_altitude" type="double precision" />
+            <column name="last_sfdps_position_heading" type="double precision" />
+            <column name="last_sfdps_position_speed" type="double precision" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-6" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="predeparture_arrival_aerodrome_iata_name"/>
+                <columnExists tableName="matm_flight" columnName="predeparture_arrival_aerodrome_faa_lid"/>
+                <columnExists tableName="matm_flight" columnName="active_diversion"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="predeparture_arrival_aerodrome_iata_name" type="varchar" />
+            <column name="predeparture_arrival_aerodrome_faa_lid" type="varchar" />
+            <column name="active_diversion" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-7" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="predeparture_arrival_aerodrome_iata_name"/>
+                <columnExists tableName="matm_flight_all" columnName="predeparture_arrival_aerodrome_faa_lid"/>
+                <columnExists tableName="matm_flight_all" columnName="active_diversion"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="predeparture_arrival_aerodrome_iata_name" type="varchar" />
+            <column name="predeparture_arrival_aerodrome_faa_lid" type="varchar" />
+            <column name="active_diversion" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-8" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="predeparture_arrival_aerodrome_iata_name"/>
+                <columnExists tableName="matm_flight_summary" columnName="predeparture_arrival_aerodrome_faa_lid"/>
+                <columnExists tableName="matm_flight_summary" columnName="active_diversion"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="predeparture_arrival_aerodrome_iata_name" type="varchar" />
+            <column name="predeparture_arrival_aerodrome_faa_lid" type="varchar" />
+            <column name="active_diversion" type="boolean" />
+        </addColumn>
+    </changeSet>
+       
+    <changeSet id="fuserDataCapture-2020_06-9" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="position_atc_sector"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="position_atc_sector" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-10" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="position_atc_sector"/>            
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="position_atc_sector" type="varchar" />            
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_06-11" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="position_atc_sector"/>            
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="position_atc_sector" type="varchar" />
+        </addColumn>
+    </changeSet>    
+    
+    <changeSet id="fuserDataCapture-2020_06-12" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_position_all"/>
+            <not>
+                <columnExists tableName="matm_position_all" columnName="position_atc_sector"/>            
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_position_all">
+            <column name="position_atc_sector" type="varchar" />
+        </addColumn>
+    </changeSet>      
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-2020_06" author="msv" runAlways="true">
+        <tagDatabase tag="2020_06" />
+    </changeSet>
+
+</databaseChangeLog>

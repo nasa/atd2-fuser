@@ -1,0 +1,12 @@
+{
+  "AttributePropertyList": [
+  {
+    "AirportName": "A",
+    "Location": "src/test/resources/AttributeFilterA.xml"
+  },
+  {
+    "AirportName": "B",
+    "Location": "src/test/resources/AttributeFilterB.xml"
+  }
+]
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+	version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+	xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<import namespace="http://www.mosaicatm.com/matmdata/common"
+		schemaLocation="../MatmCommon.xsd" />
+
+
+  <xs:complexType name="tfmsFlightTraversalExtension">
+    <xs:sequence>
+      <xs:element name="systemId" type="xs:string" minOccurs="0" />
+      <xs:element name="centers" type="mfe:traversalExtensionElement" nillable="true" maxOccurs="unbounded"/>
+      <xs:element name="fixes" type="mfe:traversalExtensionElement" nillable="true" maxOccurs="unbounded"/>
+      <xs:element name="sectors" type="mfe:traversalExtensionElement" nillable="true" maxOccurs="unbounded"/>
+      <xs:element name="waypoints" type="mfe:waypointTraversalExtensionElement" nillable="true" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="traversalExtensionElement">
+    <xs:sequence>
+      <xs:element name="traversalTime" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="elapsedSeconds" type="xs:long"/>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="sequenceNumber" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="waypointTraversalExtensionElement">
+    <xs:complexContent>
+      <xs:extension base="mfe:traversalExtensionElement">
+        <xs:sequence>
+          <xs:element name="position" type="mfe:latLonExtension" minOccurs="0"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="latLonExtension">
+    <xs:sequence>
+      <xs:element name="latDeg" type="xs:double" minOccurs="0"/>
+      <xs:element name="lonDeg" type="xs:double" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

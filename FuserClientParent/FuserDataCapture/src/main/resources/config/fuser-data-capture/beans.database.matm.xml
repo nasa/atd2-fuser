@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="db.dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${fuser-capture.database.driver}" />
+        <property name="url" value="${fuser-capture.database.url}" />
+        <property name="username" value="${fuser-capture.database.username}" />
+        <property name="password" value="${fuser-capture.database.password}" />
+    </bean>
+
+    <bean id="db.ResourceReader" class="com.mosaicatm.lib.database.ibatis.ResourceReader">
+        <property name="resource" value="${fuser-capture.database.mybatis.configuration}" />
+    </bean>
+    
+    <bean id="db.configLocation" factory-bean="db.ResourceReader" factory-method="getResource"/>
+    
+    <bean id="db.SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="db.dataSource" />
+        <property name="configLocation" ref="db.configLocation" />
+    </bean>
+
+    <bean id="db.DatabaseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.mosaicatm.lib.database.ibatis.mapper.PostGresMapper" />
+        <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+    </bean>
+    
+    <!-- MatmFlight -->
+    <bean id="db.MatmFlightMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="matm_flight" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.MatmFlightMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.MatmAircraftMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="matm_aircraft" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.MatmAircraftMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.WriterClientFactory" class="com.mosaicatm.fuser.datacapture.io.batch.WriterClientFactory">
+        <property name="delimitedFactory" ref="database.MatmFlightDelimitedObjectFactory" /> 
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="core.Clock" />
+        <property name="bulkDriver" ref="db.IbatisBulkDriver" />
+    </bean>
+    
+    <bean id="db.MatmFlightWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="MATM_FLIGHT" />
+        <constructor-arg name="parentTable" value="matm_flight" />
+    </bean>
+    
+    <bean id="db.MatmAircraftWriterClient" factory-bean="db.WriterClientFactory" factory-method="getAircraftClientInstance">
+        <constructor-arg name="captureType" value="MATM_AIRCRAFT" />
+        <constructor-arg name="parentTable" value="matm_aircraft" />
+    </bean>
+    
+    <!-- Asdex extension -->
+    <bean id="db.AsdexExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="asdex_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.AsdexExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.AsdexExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_ASDEX" />
+        <constructor-arg name="parentTable" value="asdex_extension" />
+    </bean>    
+    
+    <!-- Tfm extension -->
+    <bean id="db.TfmExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="tfm_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.TfmExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.TfmExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_TFM" />
+        <constructor-arg name="parentTable" value="tfm_extension" />
+    </bean>      
+    
+    <!-- TfmTfdm extension -->
+    <bean id="db.TfmTfdmExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="tfm_tfdm_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.TfmTfdmExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.TfmTfdmExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_TFM_TFDM" />
+        <constructor-arg name="parentTable" value="tfm_tfdm_extension" />
+    </bean>         
+    
+    <!-- Tfm Traversal extension -->
+    <bean id="db.TfmTraversalExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="tfm_traversal_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.TfmTraversalExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.TfmTraversalExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_TFM_TRAVERSAL" />
+        <constructor-arg name="parentTable" value="tfm_traversal_extension" />
+    </bean>         
+        
+    <!-- MatmAirline extension -->
+    <bean id="db.MatmAirlineExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="matm_airline_message_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.MatmAirlineMessageExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.MatmAirlineExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_MATM_AIRLINE_MESSAGE" />
+        <constructor-arg name="parentTable" value="matm_airline_message_extension" />
+    </bean>     
+    
+    <!-- Tbfm extension -->
+    <bean id="db.TbfmExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="tbfm_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.TbfmExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.TbfmExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_TBFM" />
+        <constructor-arg name="parentTable" value="tbfm_extension" />
+    </bean>       
+    
+    <!-- Idac extension -->
+    <bean id="db.IdacExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="idac_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.IdacExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.IdacExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_IDAC" />
+        <constructor-arg name="parentTable" value="idac_extension" />
+    </bean>     
+
+    <!-- Surface model extension -->
+    <bean id="db.SurfaceModelExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="surface_model_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.SurfaceModelExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.SurfaceModelExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_SURFACE_MODEL" />
+        <constructor-arg name="parentTable" value="surface_model_extension" />
+    </bean>
+    
+    <!-- Aefs extension -->
+    <bean id="db.AefsExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="aefs_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.AefsExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.AefsExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_AEFS" />
+        <constructor-arg name="parentTable" value="aefs_extension" />
+    </bean>
+
+    <!-- Smes extension -->
+    <bean id="db.SmesExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="smes_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.SmesExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="db.SmesExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_SMES" />
+        <constructor-arg name="parentTable" value="smes_extension" />
+    </bean>
+
+    <!-- Derived extension -->
+    <bean id="db.DerivedExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="derived_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.DerivedExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="db.DerivedExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_DERIVED" />
+        <constructor-arg name="parentTable" value="derived_extension" />
+    </bean>     
+    
+    <!-- position -->
+    <bean id="db.PositionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="position" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.PositionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>   
+    
+    <!-- Adsb extension -->
+    <bean id="db.AdsbExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="adsb_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"     value="com.mosaicatm.fuser.datacapture.db.dao.AdsbExtensionMapper" />
+                <property name="sqlSessionFactory"     ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.AdsbExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_ADSB" />
+        <constructor-arg name="parentTable"    value="adsb_extension" />
+    </bean>
+    
+    <!-- Cat11 extension -->
+    <bean id="db.Cat11ExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="cat11_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"     value="com.mosaicatm.fuser.datacapture.db.dao.Cat11ExtensionMapper" />
+                <property name="sqlSessionFactory"     ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.Cat11ExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_CAT11" />
+        <constructor-arg name="parentTable"    value="cat11_extension" />
+    </bean>
+    
+    <!-- Cat62 extension -->
+    <bean id="db.Cat62ExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="cat62_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"     value="com.mosaicatm.fuser.datacapture.db.dao.Cat62ExtensionMapper" />
+                <property name="sqlSessionFactory"     ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.Cat62ExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_CAT62" />
+        <constructor-arg name="parentTable"    value="cat62_extension" />
+    </bean>
+    
+    <!-- Sfdps extension -->
+    <bean id="db.SfdpsExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="sfdps_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.SfdpsExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.SfdpsExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_SFDPS" />
+        <constructor-arg name="parentTable" value="sfdps_extension" />
+    </bean>  
+    
+    <!-- Tmi extension -->
+    <bean id="db.TmiExtensionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="tmi_extension" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface" value="com.mosaicatm.fuser.datacapture.db.dao.TmiExtensionMapper" />
+                <property name="sqlSessionFactory" ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.TmiExtensionWriterClient" factory-bean="db.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="EXT_TMI" />
+        <constructor-arg name="parentTable" value="tmi_extension" />
+    </bean> 
+
+    <!-- mapping core -->
+    <bean id="db.mapperFactory" class="com.mosaicatm.lib.database.ibatis.mapper.TableMapperFactoryImpl">
+        <property name="tableMappers" >
+            <list>
+                <ref bean="db.MatmFlightMapperWrapper" />
+                <ref bean="db.AsdexExtensionMapperWrapper" />
+                <ref bean="db.TfmExtensionMapperWrapper" />
+                <ref bean="db.MatmAirlineExtensionMapperWrapper" />
+                <ref bean="db.TbfmExtensionMapperWrapper" />
+                <ref bean="db.IdacExtensionMapperWrapper" />
+                <ref bean="db.TfmTfdmExtensionMapperWrapper" />
+                <ref bean="db.TfmTraversalExtensionMapperWrapper" />
+                <ref bean="db.DerivedExtensionMapperWrapper" />
+                <ref bean="db.SurfaceModelExtensionMapperWrapper" />
+                <ref bean="db.AefsExtensionMapperWrapper" />
+                <ref bean="db.AdsbExtensionMapperWrapper" />
+                <ref bean="db.Cat11ExtensionMapperWrapper" />
+                <ref bean="db.Cat62ExtensionMapperWrapper" />
+                <ref bean="db.MatmAircraftMapperWrapper" />
+                <ref bean="db.SfdpsExtensionMapperWrapper" />
+                <ref bean="db.SmesExtensionMapperWrapper" />
+                <ref bean="db.TmiExtensionMapperWrapper" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="db.IbatisBulkDriver" class="com.mosaicatm.lib.database.ibatis.IBatisBulkDriver" destroy-method="close">
+        <constructor-arg ref="db.dataSource" />
+        <constructor-arg ref="db.DatabaseMapper" />
+        <constructor-arg ref="db.mapperFactory" />
+    </bean>
+    
+    <bean id="db.BulkLoader" class="com.mosaicatm.lib.database.ibatis.IBatisBulkLoader" init-method="start">
+        <property name="active"               value="${fuser-capture.capture.database.enabled}" />
+        <property name="bulkDriver"           ref="db.IbatisBulkDriver" />
+        <property name="batchName"            value="MatmFlightBatch" />
+        <property name="batchReportName"      value="MatmFlightBatch" />
+        <property name="timestampColumnName"  value="${fuser-capture.database.timestampColumnName}"/>
+        <property name="timedBatchPeriod"     value="${fuser-capture.database.batch.interval}" />
+        <property name="timedBatchDelay"      value="${fuser-capture.database.batch.interval}" />
+        <property name="timedReportPeriod"    value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportDelay"     value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportEnabled"   value="${fuser-capture.database.batch.report.enabled}" />
+        <property name="daysToKeep"           value="${fuser-capture.database.daysToKeep}" />
+        <property name="createTable"          value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable"           value="${fuser-capture.database.dropTables}" />
+        <property name="blockingQueueMaxSize" value="${fuser-capture.database.blockingQueueMaxSize}" />
+        <property name="partitionByExtraField"  value="${fuser-capture.database.partitionByExtraField}" />
+        <property name="partitionColumnName"    value="${fuser-capture.database.partitionColumnName}" />
+        
+        <property name="clients">
+            <list>
+                <ref bean="db.MatmFlightWriterClient" />
+                <ref bean="db.AsdexExtensionWriterClient" />
+                <ref bean="db.TfmExtensionWriterClient" />
+                <ref bean="db.MatmAirlineExtensionWriterClient" />
+                <ref bean="db.TbfmExtensionWriterClient" />
+                <ref bean="db.IdacExtensionWriterClient" />
+                <ref bean="db.TfmTfdmExtensionWriterClient" />
+                <ref bean="db.TfmTraversalExtensionWriterClient" />
+                <ref bean="db.DerivedExtensionWriterClient" />
+                <ref bean="db.SurfaceModelExtensionWriterClient" />
+                <ref bean="db.AefsExtensionWriterClient" />
+                <ref bean="db.AdsbExtensionWriterClient" />
+                <ref bean="db.Cat11ExtensionWriterClient" />
+                <ref bean="db.Cat62ExtensionWriterClient" />
+                <ref bean="db.SfdpsExtensionWriterClient" />
+                <ref bean="db.SmesExtensionWriterClient" />
+                <ref bean="db.TmiExtensionWriterClient" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="db.AircraftBulkLoader" class="com.mosaicatm.lib.database.ibatis.IBatisBulkLoader" init-method="start">
+        <property name="active"               value="${fuser-capture.capture.database.enabled}" />
+        <property name="bulkDriver"           ref="db.IbatisBulkDriver" />
+        <property name="batchName"            value="MatmAircraftBatch" />
+        <property name="batchReportName"      value="MatmAircraftBatch" />
+        <property name="timestampColumnName"  value="${fuser-capture.database.timestampColumnName}"/>
+        <property name="timedBatchPeriod"     value="${fuser-capture.database.batch.interval}" />
+        <property name="timedBatchDelay"      value="${fuser-capture.database.batch.interval}" />
+        <property name="timedReportPeriod"    value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportDelay"     value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportEnabled"   value="${fuser-capture.database.batch.report.enabled}" />
+        <property name="daysToKeep"           value="${fuser-capture.database.daysToKeep}" />
+        <property name="createTable"          value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable"           value="${fuser-capture.database.dropTables}" />
+        <property name="blockingQueueMaxSize"  value="${fuser-capture.database.blockingQueueMaxSize}" />
+        
+        <property name="clients">
+            <list>
+                <ref bean="db.MatmAircraftWriterClient" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="db.viewInitializer" class="com.mosaicatm.fuser.datacapture.db.ViewInitializer">
+        <property name="dbActive"               value="${fuser-capture.capture.database.enabled}" />
+        <property name="createViews"            value="${fuser-capture.capture.database.createview}"/>
+        <property name="tableMapperFactory"     ref="db.mapperFactory" />
+        <property name="databaseNameFactory"    ref="database.DatabaseNameFactory" />
+    </bean>
+    
+    <bean factory-bean="core.MetricProxyFactory" factory-method="monitorProcessTime" >
+        <constructor-arg index="0" ref="db.BulkLoader" />
+        <constructor-arg index="1" value="MatmFlight.totalProcessTime" />
+    </bean>
+    
+    <bean factory-bean="core.MetricProxyFactory" factory-method="monitorSize" >
+        <constructor-arg  index="0" >
+            <ref bean="db.BulkLoader" />
+        </constructor-arg>
+        <constructor-arg index="1" value="MatmFlightBatch" />
+    </bean>
+     
+</beans>

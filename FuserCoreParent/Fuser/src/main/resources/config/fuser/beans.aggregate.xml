@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"> 
+    
+    <bean id="fuser-aggregator.core.Batcher" class="com.mosaicatm.fuser.batch.Batcher" init-method="init">
+        <property name="destination" value="${fuser.endpoint.fromFuser.envelope.process}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.MatmAggregatorProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+    	factory-method="proxyAggregator">
+    	<constructor-arg index="0" ref="fuser-aggregator.core.MatmAggregatorThreaded" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.MatmAggregatorThreaded"
+            class="com.mosaicatm.fuser.aggregator.MatmAggregatorThreaded"
+            init-method="init">
+        <constructor-arg index="0" value="${fuser.aggregator.thread.count}" />
+        <constructor-arg index="1" value="MatmFlight" />
+        <property name="metaDataManager" ref="fuser-aggregator.core.MetaDataManagerProxy" />
+        <property name="fuserStore" ref="fuser.core.FuserStoreProxy" />
+        <property name="flightPreUpdater" ref="fuser-aggregator.core.FlightPreUpdaterFactoryProxy" />
+        <property name="flightPostUpdater" ref="fuser-aggregator.core.FlightPostUpdaterFactoryProxy" />
+        <property name="destinationQueue" value="${fuser.endpoint.fromFuser.process.batch}" />
+        <property name="reportingTimeMillis" value="${fuser.aggregator.thread.queue.size.report.interval.millis}" />
+        <property name="blockingQueueCapacity" value="${fuser.aggregator.thread.queue.capacity}" />
+    </bean>
+
+    <bean id="fuser-aggregator.updater.UpdaterSweeper"
+            class="com.mosaicatm.fuser.updaters.UpdaterSweeper"
+            init-method="start">
+        <property name="active" value="${fuser.updater.updaterSweeper.active}" />
+        <property name="timerStartDelayMillis" value="${fuser.updater.updaterSweeper.timerStartDelayMillis}" />
+        <property name="timerIntervalMillis" value="${fuser.updater.updaterSweeper.timerIntervalMillis}" />
+        <property name="clock" ref="fuser.core.Clock" />
+        <property name="fuserStore" ref="fuser.core.FuserStoreProxy" />
+        <property name="flightPreUpdater" ref="fuser-aggregator.core.FlightPreUpdaterFactoryProxy" />
+        <property name="flightPostUpdater" ref="fuser-aggregator.core.FlightPostUpdaterFactoryProxy" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.FlightPreUpdaterFactoryProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+    	factory-method="proxyUpdater">
+    	<constructor-arg index="0" ref="fuser-aggregator.core.FlightPreUpdaterFactory" />	
+    </bean>
+    
+    <!-- This set of updaters will modify the update prior to the update being applied to the existing flight
+         object. Any changes that need to be made to the existing flight should be made here. -->
+    <bean id="fuser-aggregator.core.FlightPreUpdaterFactory" class="com.mosaicatm.fuser.updaters.UpdaterFactory">
+        <property name="updaters">
+            <list>
+                <ref bean="fuser-aggregator.core.SystemIdUpdater" />
+                <ref bean="fuser-aggregator.core.FacilityIdUpdater" />                
+                <!-- The flight position filter needs to run before the heading updater -->
+                <ref bean="fuser-aggregator.core.FlightPositionMediationUpdater" />
+                <ref bean="fuser-aggregator.core.FlightHeadingUpdater" />
+                <ref bean="fuser-aggregator.core.AircraftIdentificationUpdater" />
+                <ref bean="fuser-aggregator.core.AerodromeUpdater" />
+                <ref bean="fuser-aggregator.core.FlightTypeAndCarrierUpdater" />
+                <ref bean="fuser-aggregator.core.CancellationUpdater" />
+                <ref bean="fuser-aggregator.core.CreationTimeUpdater" />
+                <ref bean="fuser-aggregator.core.IdacExtensionUpdater" />
+                <ref bean="fuser-aggregator.core.MeteredTimesUpdater" /> 
+                <ref bean="fuser-aggregator.core.ReleaseSourceUpdater" />
+                <ref bean="fuser-aggregator.core.DepartureStandActualTimeUpdater" />
+                <ref bean="fuser-aggregator.core.SourceUpdater" />
+                <ref bean="fuser-aggregator.core.ControlledTimesUpdater" />
+                <ref bean="fuser-aggregator.core.DepartureFixUpdater" />
+                <ref bean="fuser-aggregator.core.RunwayOpNecUpdater" />
+                <ref bean="fuser-aggregator.core.PreDepartureFlightPlanUpdater" />
+                <ref bean="fuser-aggregator.core.FixSourceUpdater" />
+                <ref bean="fuser-aggregator.core.GateAssignmentsUpdater" />
+                <ref bean="fuser-aggregator.core.AircraftTypeUpdater" />
+                <ref bean="fuser-aggregator.core.InternalDepartureUpdater" />                               
+                <ref bean="fuser-aggregator.core.TfmTraversalUpdater" />
+            </list>
+        </property>
+        <property name="finalUpdater" ref="fuser-aggregator.core.NullFieldUpdater" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.FlightPostUpdaterFactoryProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+    	factory-method="proxyUpdater">
+    	<constructor-arg index="0" ref="fuser-aggregator.core.FlightPostUpdaterFactory" />	
+    </bean>
+    
+    <!-- WARN: Any changes made here to the update will not be applied to the existing flight. 
+               Changes here are only sent to downstream components like the Fuser-FMC-Bridge 
+               and are stored in the matm_flight table. The only thing that should be done here
+               is copy existing fields from the existing flight to the update. 
+               
+               For example, if the update does not include a call sign, the call sign is copied from 
+               the existing flight to the update so that every entry in the matm_flight table has a call sign-->
+    <bean id="fuser-aggregator.core.FlightPostUpdaterFactory" class="com.mosaicatm.fuser.updaters.UpdaterFactory">
+    	 <property name="updaters">
+            <list>
+            	<ref bean="fuser-aggregator.core.CommonFieldUpdater" />
+                <!-- run this after commonFieldUpdater so aerodromes are populated -->
+                <ref bean="fuser-aggregator.core.InternationalUpdater" /> 
+                <ref bean="fuser-aggregator.core.FacilityIdListUpdater" />  
+                <ref bean="fuser-aggregator.core.SensitiveDataUpdater" /> 
+                <ref bean="fuser-aggregator.core.TbfmExtensionUpdater" />
+                <ref bean="fuser-aggregator.core.DiversionUpdater" />
+                <ref bean="fuser-aggregator.core.RunwayActualTimeUpdater" />
+                <!-- run flight state updater after runway actual time updater -->
+                <ref bean="fuser-aggregator.core.FlightStateUpdater" />
+                <ref bean="fuser-aggregator.core.SectorUpdater" /> 
+                <ref bean="fuser-aggregator.core.PositionDistanceUpdater" />                                
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-aggregator.core.AirportLoader" class="com.mosaicatm.fuser.airport.AirportLoader" init-method="init" />
+    
+    <bean id="fuser-aggregator.core.AdaptationAirportCoordinates" factory-bean="fuser-aggregator.core.AirportLoader"
+    	factory-method="getAdaptationAirportCoordinates" />
+    
+    <bean id="fuser-aggregator.core.FlightHeadingCalculator" class="com.mosaicatm.fuser.updaters.pre.FlightHeadingCalculator">
+    	<property name="adaptationAirportCoordinates" ref="fuser-aggregator.core.AdaptationAirportCoordinates" />
+    </bean>
+    
+	<bean id="fuser-aggregator.core.SystemIdUpdater" class="com.mosaicatm.fuser.updaters.pre.SystemIdUpdater">
+	   <property name="active" value="${fuser.updater.systemId.active}" />
+	</bean>
+    
+    <bean id="fuser-aggregator.core.AerodromeUpdater" class="com.mosaicatm.fuser.updaters.pre.AerodromeUpdater">
+        <property name="airportCodeTranslator" ref="fuser-aggregator.core.AirportCodeTranslator" />
+        <property name="active" value="${fuser.updater.aerodrome.active}" />
+    </bean>
+   
+    <bean id="fuser-aggregator.core.CommonFieldUpdater" class="com.mosaicatm.fuser.updaters.post.CommonFieldUpdater">
+        <property name="active" value="${fuser.updater.commonField.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.InternationalUpdater" class="com.mosaicatm.fuser.updaters.post.InternationalUpdater">
+        <property name="airportCodeTranslator" ref="fuser-aggregator.core.AirportCodeTranslator" />
+        <property name="active" value="${fuser.updater.international.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.FlightHeadingUpdater" class="com.mosaicatm.fuser.updaters.pre.FlightHeadingUpdater">
+    	<property name="flightHeadingCalculator" ref="fuser-aggregator.core.FlightHeadingCalculator" />   
+    	<property name="active" value="${fuser.updater.flightHeading.active}" /> 		    
+    </bean>
+    
+    <bean id="fuser-aggregator.core.FlightPositionMediationUpdater" class="com.mosaicatm.fuser.updaters.pre.FlightPositionMediationUpdater">
+        <property name="active" value="${fuser.updater.flightPositionMediation.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.AirportCodeTranslator" class="com.mosaicatm.fuser.util.FuserAirportCodeTranslator"
+        init-method="init" />
+
+    <bean id="fuser-aggregator.core.AircraftTypeUpdater" class="com.mosaicatm.fuser.updaters.pre.AircraftTypeUpdater">
+        <property name="aircraftTypeManager" ref="fuser.core.AircraftTypeManager" />
+        <property name="active" value="${fuser.updater.aircraftType.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.InternalDepartureUpdater" class="com.mosaicatm.fuser.updaters.pre.InternalDepartureUpdater">
+        <property name="airports" value="${fuser.filter.location.airports}" />
+        <property name="active" value="${fuser.updater.internalDeparture.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.TfmTraversalUpdater" class="com.mosaicatm.fuser.updaters.pre.TfmTraversalUpdater">
+        <property name="active" value="${fuser.updater.tfmTraversalUpdater}" />
+    </bean>        
+
+    <bean id="fuser-aggregator.core.AircraftIdentificationUpdater" class="com.mosaicatm.fuser.updaters.pre.AircraftIdentificationUpdater">
+        <property name="active" value="${fuser.updater.aircraftIdentification.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.FlightTypeAndCarrierUpdater" class="com.mosaicatm.fuser.updaters.pre.FlightTypeAndCarrierUpdater" >
+        <property name="matmFlightCarrierUtil" ref="fuser.core.MatmFlightCarrierUtil" />
+        <property name="active" value="${fuser.updater.flightTypeAndCarrier.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.CancellationUpdater" class="com.mosaicatm.fuser.updaters.pre.CancellationUpdater" >
+        <property name="matmFlightCarrierUtil" ref="fuser.core.MatmFlightCarrierUtil" />
+        <property name="active" value="${fuser.updater.cancellation.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.IdacExtensionUpdater" class="com.mosaicatm.fuser.updaters.pre.IdacExtensionUpdater">
+        <property name="active" value="${fuser.updater.idacExtension.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.MeteredTimesUpdater" class="com.mosaicatm.fuser.updaters.pre.MeteredTimesUpdater">
+        <property name="active" value="${fuser.updater.meteredTimes.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.CreationTimeUpdater" class="com.mosaicatm.fuser.updaters.pre.CreationTimeUpdater" >
+        <constructor-arg index="0" ref="fuser.core.Clock" />
+        <property name="active" value="${fuser.updater.creationTime.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.ReleaseSourceUpdater" class="com.mosaicatm.fuser.updaters.pre.ReleaseSourceUpdater">
+       <property name="idacSource" value="${fuser.updater.releaseSource.idacSource}" />
+       <property name="swimSource" value="${fuser.updater.releaseSource.swimSource}" />
+       <property name="swimSystemIdPattern" value="${fuser.updater.releaseSource.swimSystemIdPattern}" />
+       <property name="amsSource" value="${fuser.updater.releaseSource.amsSource}" />
+       <property name="amsSystemIdPattern" value="${fuser.updater.releaseSource.amsSystemIdPattern}" />
+       <property name="enableAutoReleaseModeFilter" value="${fuser.updater.releaseSource.autoReleaseMode}" />
+       <property name="active" value="${fuser.updater.releaseSource.active}" />
+    </bean>
+
+	<bean id="fuser-aggregator.core.DepartureStandActualTimeUpdater" class="com.mosaicatm.fuser.updaters.pre.DepartureStandActualTimeUpdater">
+		<constructor-arg index="0" ref="fuser.core.Clock" />
+		<property name="allowAirlineTimes" value="${fuser.updater.departureStandActualTime.allowAirlineTimes}" />
+		<property name="active" value="${fuser.updater.departureStandActualTime.active}" />
+    </bean>
+     
+    <bean id="fuser-aggregator.core.SourceUpdater" class="com.mosaicatm.fuser.updaters.pre.SourceUpdater" >
+    	<property name="timestampSetter" ref="fuser.core.TimestampSetter" />
+    	<property name="idLookup" ref="fuser.core.MatmIdLookup" />
+    	<property name="active" value="${fuser.updater.sourceUpdater.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.ControlledTimesUpdater" class="com.mosaicatm.fuser.updaters.pre.ControlledTimesUpdater">
+        <property name="active" value="${fuser.updater.controlledTimes.active}" />
+    </bean>
+	
+	<bean id="fuser-aggregator.core.DepartureFixUpdater" class="com.mosaicatm.fuser.updaters.pre.DepartureFixUpdater">
+	   <property name="active" value="${fuser.updater.departureFix.active}" />
+	</bean>
+    
+    <bean id="fuser-aggregator.core.RunwayOpNecUpdater" class="com.mosaicatm.fuser.updaters.pre.RunwayOpNecUpdater">
+        <property name="active" value="${fuser.updater.runwayOpNec.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.PreDepartureFlightPlanUpdater" class="com.mosaicatm.fuser.updaters.pre.PreDepartureFlightPlanUpdater" >
+        <property name="flightPlanSourcesFromString" value="${fuser.updater.preDepartureFlightPlan.flightPlanPrimarySources}" />
+        <property name="messagePublisher" ref="fuser.core.InternalFuserMessageSender" />
+        <property name="clock" ref="fuser.core.Clock" />
+        <property name="active" value="${fuser.updater.preDepartureFlightPlan.active}" />
+    </bean>
+            
+    <bean id="fuser-aggregator.core.MetaDataManagerProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+    	factory-method="proxyMetaDataManager">
+    	<constructor-arg index="0" ref="fuser-aggregator.core.MetaDataManager" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.MetaDataManager" class="com.mosaicatm.fuser.aggregator.MetaDataManager" >
+        <property name="fuserStore" ref="fuser.core.FuserStoreProxy" />
+    </bean>
+    
+	<bean id="fuser-aggregator.core.FixSourceUpdater" class="com.mosaicatm.fuser.updaters.pre.FixSourceUpdater">
+        <property name="active" value="${fuser.updater.fixSource.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.GateAssignmentsUpdater" class="com.mosaicatm.fuser.updaters.pre.GateAssignmentsUpdater">
+        <property name="active" value="${fuser.updater.gateAssignments.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.FacilityIdUpdater" class="com.mosaicatm.fuser.updaters.pre.FacilityIdUpdater">
+        <property name="active" value="${fuser.updater.facilityId.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.TbfmExtensionUpdater" class="com.mosaicatm.fuser.updaters.post.TbfmExtensionUpdater">
+        <property name="active" value="${fuser.updater.tbfmExtension.active}" />
+    </bean>  
+        
+    <bean id="fuser-aggregator.core.FacilityIdListUpdater" class="com.mosaicatm.fuser.updaters.post.FacilityIdListUpdater">
+        <property name="active" value="${fuser.updater.facilityIdList.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.SensitiveDataUpdater" class="com.mosaicatm.fuser.updaters.post.SensitiveDataUpdater" 
+          init-method="readSensitiveFlightDataFile" >
+        <property name="active" value="${fuser.updater.sensitiveData.active}" />
+        <property name="sensitiveFlightDataLogic" >
+            <bean class="com.mosaicatm.fuser.sfd.SensitiveFlightDataLogic" >
+                <property name="blockAtIndustryIsSensitive" value="${fuser.updater.sensitiveData.blockAtIndustryIsSensitive}" />
+            </bean>
+        </property>
+        <property name="sensitiveFlightDataParser" >
+            <bean class="com.mosaicatm.fuser.sfd.SensitiveFlightDataParser" >
+                <property name="defaultSensitiveFlightDataFolder" value="${fuser.updater.sensitiveData.sfdFile.folder.default}" />
+                <property name="alternateSensitiveFlightDataFolder" value="${fuser.updater.sensitiveData.sfdFile.folder.alternate}" />
+                <property name="password" value="${fuser.updater.sensitiveData.sfdFile.password}" />
+            </bean>
+        </property>        
+    </bean>
+    
+    <bean id="fuser-aggregator.core.NullFieldUpdater"
+            class="com.mosaicatm.fuser.updaters.post.NullFieldUpdater">
+        <property name="active" value="${fuser.updater.nullOutFields.active}" />
+        <property name="fieldsToNullFromString" value="${fuser.updater.nullOutFields.fieldsToNull}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.DiversionUpdater" class="com.mosaicatm.fuser.updaters.post.DiversionUpdater">
+        <property name="active" value="${fuser.updater.diversion.active}" />
+    </bean>
+
+
+    <bean id="fuser-aggregator.core.RunwayActualTimeUpdater" class="com.mosaicatm.fuser.updaters.post.RunwayActualTimeUpdater" >
+        <property name="messagePublisher" ref="fuser.core.InternalFuserMessageSender" />
+        <property name="airportCodeTranslator" ref="fuser-aggregator.core.AirportCodeTranslator" />
+        <property name="active" value="${fuser.updater.runwayActualTime.active}" />
+    </bean>
+
+    <bean id="fuser-aggregator.core.FlightStateUpdater" class="com.mosaicatm.fuser.updaters.post.FlightStateUpdater" >
+        <property name="messagePublisher" ref="fuser.core.InternalFuserMessageSender" />
+        <property name="active" value="${fuser.updater.flightState.active}" />
+    </bean>
+    
+    <bean id="fuser-aggregator.core.PositionDistanceUpdater" class="com.mosaicatm.fuser.updaters.post.PositionDistanceUpdater" >
+        <property name="active" value="${fuser.updater.positionDistance.active}" />
+    </bean>    
+    
+    <!-- SectorUpdater relies on beans that only exit if the sector beans are loaded. 
+         Here, we're using SPEL to set those bean refs if the sector beans are loaded -->
+    <bean id="fuser-aggregator.core.SectorUpdater" class="com.mosaicatm.fuser.updaters.post.SectorUpdater" >
+        <property name="active" value="${fuser.updater.sector.active}" />
+        <property name="moduleFinder" value="#{ getBeanFactory().containsBean('sector.core.SectorModuleFinder') ? getBeanFactory().getBean('sector.core.SectorModuleFinder') : null }" />
+        <property name="sectorAssignmentDataStore" value="#{ getBeanFactory().containsBean('sector.core.SectorAssignmentStoreProxy') ? getBeanFactory().getBean('sector.core.SectorAssignmentStoreProxy') : null }" />
+    </bean> 
+
+    <!-- Schedule cron job to check for new sensitive data files -->
+    <bean id="fuser-aggregator.core.readSensitiveFlightDataScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup" value="${fuser.updater.sensitiveData.active}" />
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.threadPool.threadCount">1</prop>
+            </props>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="fuser-aggregator.core.readSensitiveFlightDataFileCron" />
+            </list>
+        </property>
+    </bean>    
+    
+    <bean id="fuser-aggregator.core.readSensitiveFlightDataFileCron" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="cronExpression" value="${fuser.updater.sensitiveData.sfdFile.folder.cronCheck}" />
+        <property name="jobDetail">
+            <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+                <property name="targetObject" ref="fuser-aggregator.core.SensitiveDataUpdater" />
+                <property name="targetMethod" value="readSensitiveFlightDataFile" />
+            </bean>            
+        </property>  
+    </bean>    
+
+</beans>

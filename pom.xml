@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mosaicatm</groupId>
+    <artifactId>FuserParent</artifactId>
+    <version>5.0.25-NASA-OPENSOURCE-1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>FuserParent</name>
+
+    <modules>
+        <module>FuserClientParent</module>
+        <module>FuserCoreParent</module>
+        <module>FuserPluginParent</module>
+    </modules>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/nasa/atd2-fuser.git</developerConnection>
+        <tag>FuserParent-5.0.25</tag>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <name>Nexus Snapshot Repository</name>
+            <id>${distribution.snapshots.server.id}</id>
+            <url>${distribution.snapshots.server.url}</url>
+        </snapshotRepository>
+        <repository>
+            <name>Nexus Release Repository</name>
+            <id>${distribution.releases.server.id}</id>
+            <url>${distribution.releases.server.url}</url>
+        </repository>
+    </distributionManagement>
+
+</project>

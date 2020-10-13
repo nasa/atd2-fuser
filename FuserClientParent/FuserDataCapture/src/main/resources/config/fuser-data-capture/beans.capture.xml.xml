@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+        
+    <bean id="xml.XmlCaptureHandler" class="com.mosaicatm.fuser.datacapture.handle.XmlCaptureHandler">
+        <property name="xmlCapture" ref="xml.MatmFlightXmlCapture" />
+    </bean>
+    
+    <bean id="xml.XmlAircraftCaptureHandler" class="com.mosaicatm.fuser.datacapture.handle.XmlCaptureHandler">
+        <property name="xmlCapture" ref="xml.MatmAircraftXmlCapture" />
+    </bean>
+
+    <bean id="xml.XmlCaptureAllHandler" class="com.mosaicatm.fuser.datacapture.handle.XmlCaptureHandler">
+        <property name="xmlCapture" ref="xml.MatmFlightXmlAllCapture" />
+    </bean>
+    
+    <bean id="xml.XmlAircraftCaptureAllHandler" class="com.mosaicatm.fuser.datacapture.handle.XmlCaptureHandler">
+        <property name="xmlCapture" ref="xml.MatmAircraftXmlAllCapture" />
+    </bean>
+
+    <bean id="xml.MatmFlightXmlCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingXmlCapture"
+        init-method="start" destroy-method="stop">
+        <property name="active" value="${fuser-capture.capture.xml.enabled}" />
+        <property name="marshaller" ref="marshalling.MatmFlightMarshaller" />
+        <property name="capture" ref="xml.MatmFlightXmlRollingCapture" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="xml.MatmAircraftXmlCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingXmlCapture"
+        init-method="start" destroy-method="stop">
+        <property name="active" value="${fuser-capture.capture.xml.enabled}" />
+        <property name="marshaller" ref="marshalling.MatmAircraftMarshaller" />
+        <property name="capture" ref="xml.MatmAircraftXmlRollingCapture" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="xml.MatmFlightXmlAllCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingXmlCapture"
+        init-method="start" destroy-method="stop">
+        <property name="active" value="${fuser-capture.capture.xml.all.enabled}" />
+        <property name="marshaller" ref="marshalling.MatmFlightMarshaller" />
+        <property name="capture" ref="xml.MatmFlightXmlAllRollingCapture" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="xml.MatmAircraftXmlAllCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingXmlCapture"
+        init-method="start" destroy-method="stop">
+        <property name="active" value="${fuser-capture.capture.xml.all.enabled}" />
+        <property name="marshaller" ref="marshalling.MatmAircraftMarshaller" />
+        <property name="capture" ref="xml.MatmAircraftAllXmlRollingCapture" />
+        <property name="clock" ref="api.Clock" />
+    </bean>    
+    
+    <bean id="xml.MatmAircraftXmlRollingCapture" factory-bean="xml.MatmFlightXmlRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="xml.MatmAircraftAllXmlRollingCapture" factory-bean="xml.MatmAircraftXmlAllRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="xml.MatmFlightXmlRollingCapture" factory-bean="xml.MatmFlightXmlRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="xml.MatmFlightXmlAllRollingCapture" factory-bean="xml.MatmFlightXmlAllRollingCaptureFactory" factory-method="create" />    
+    
+    <bean id="xml.MatmFlightXmlRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.capture.xml.file}" />
+        <property name="fileNameExtension" value=".xml" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="xml.MatmFlightXmlAllRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.capture.xml.all.file}" />
+        <property name="fileNameExtension" value=".xml" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="xml.MatmAircraftXmlRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.aircraft.capture.xml.file}" />
+        <property name="fileNameExtension" value=".xml" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="xml.MatmAircraftXmlAllRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.aircraft.capture.xml.all.file}" />
+        <property name="fileNameExtension" value=".xml" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+
+</beans>

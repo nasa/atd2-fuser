@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="database.MatmFlightDatabaseBatchCaptureHandler" 
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchCaptureHandler">
+        <property name="bulkLoader" ref="db.BulkLoader" />
+    </bean>
+    
+    <bean id="database.MatmAircraftDatabaseBatchCaptureHandler" 
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchCaptureHandler">
+        <property name="bulkLoader" ref="db.AircraftBulkLoader" />
+    </bean>
+    
+    <bean id="database.MatmFlightAllDatabaseBatchCaptureHandler" 
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchCaptureHandler">
+        <property name="bulkLoader" ref="db.matm-all.BulkLoader" />
+    </bean>
+    
+    <bean id="database.MatmAircraftAllDatabaseBatchCaptureHandler" 
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchCaptureHandler">
+        <property name="bulkLoader" ref="db.matm-all.AircraftBulkLoader" />
+    </bean>
+    
+    <bean id="database.MatmPositionDatabaseBatchCaptureHandler" 
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchPositionCaptureHandler">
+        <property name="bulkLoader" ref="db.position.BulkLoader" />
+    </bean> 
+    
+    <bean id="database.MatmRemovedDatabaseBatchCaptureHandler"
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchCaptureHandler">
+        <property name="bulkLoader" ref="db.removed.BulkLoader" />
+    </bean>
+    
+    <bean id="database.MatmAircraftRemovedDatabaseBatchCaptureHandler"
+        class="com.mosaicatm.fuser.datacapture.handle.DatabaseBatchCaptureHandler">
+        <property name="bulkLoader" ref="db.removed.AircraftBulkLoader" />
+    </bean>
+        
+    <bean id="database.DatabaseNameFactory" class="com.mosaicatm.fuser.datacapture.db.DatabaseNameFactoryImpl" />
+    
+    <bean id="database.MatmFlightDelimitedObjectFactory" class="com.mosaicatm.fuser.datacapture.io.DatabaseDelimitedObjectFactoryImpl">
+        <property name="databaseNameFactory" ref="database.DatabaseNameFactory" />
+        <property name="bulkDriver"                ref="db.IbatisBulkDriver" />
+    </bean>
+    
+    <bean id="database.MatmFlightAllDelimitedObjectFactory" class="com.mosaicatm.fuser.datacapture.io.DatabaseDelimitedObjectFactoryImpl">
+        <property name="databaseNameFactory" ref="database.DatabaseNameFactory" />
+        <property name="bulkDriver"                ref="db.matm-all.IbatisBulkDriver" />
+    </bean>
+      
+    <bean id="database.MatmPositionUpdateDelimitedObjectFactory" class="com.mosaicatm.fuser.datacapture.io.DatabaseDelimitedObjectFactoryImpl">
+        <property name="databaseNameFactory" ref="database.DatabaseNameFactory" />
+        <property name="bulkDriver"                ref="db.IbatisBulkDriver" />
+    </bean>  
+    
+    <bean id="database.MatmFlightRemovedDelimitedObjectFactory" class="com.mosaicatm.fuser.datacapture.io.DatabaseDelimitedObjectFactoryImpl">
+        <property name="databaseNameFactory" ref="database.DatabaseNameFactory" />
+        <property name="bulkDriver" ref="db.removed.IbatisBulkDriver" />
+    </bean>
+
+    <bean id="core.MetricsReporter" class="com.mosaicatm.performancemonitor.common.MetricsReporterFactory">
+        <constructor-arg index="0" ref="MetricRegistry" />
+        <property name="active" value="${fuser-capture.performancemonitor.report.active}"/>
+        <property name="reportType" value="${fuser-capture.performancemonitor.report.type}"/>
+        <property name="destination" value="${fuser-capture.jms.performancemonitor.destination}" />
+        <property name="reportSeconds" value="${fuser-capture.performancemonitor.report.seconds}" />
+        <property name="applicationName" value="${fuser-capture.application.name}" />
+        <property name="fileDirectory" value="{fuser-capture.performancemonitor.report.filedirectory}" />
+    </bean>
+    
+    <bean id="core.MetricProxyFactory" class="com.mosaicatm.fuser.datacapture.metrics.FuserMetricProxyFactory">
+        <property name="metricRegistry" ref="MetricRegistry"/>
+        <property name="metricsActive" value="${fuser-capture.performancemonitor.active}"/>
+    </bean>
+</beans>

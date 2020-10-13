@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+    xmlns:sec="http://cxf.apache.org/configuration/security"
+    xsi:schemaLocation="
+       http://cxf.apache.org/configuration/security
+       http://cxf.apache.org/schemas/configuration/security.xsd
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://cxf.apache.org/jaxws
+       http://cxf.apache.org/schemas/jaxws.xsd
+       http://cxf.apache.org/transports/http-jetty/configuration
+       http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+    ">
+
+    <jaxws:server
+            id="fuser.services.server.FuserSyncService"
+            address="${fuser.services.server.url}/fuserSyncService"
+            depends-on="port-8993-tls-config">
+        <jaxws:properties>
+            <entry key="mtom-enabled" value="true"/>
+        </jaxws:properties>
+        <jaxws:serviceBean>
+            <ref bean="fuser.services.FuserSyncService"/>
+        </jaxws:serviceBean>
+    </jaxws:server>
+
+    <httpj:engine-factory bus="cxf" id="port-8993-tls-config">
+        <httpj:engine port="8993">
+            <httpj:tlsServerParameters>
+                <sec:keyManagers keyPassword="${fuser.services.secure.keystore.password}">
+                    <sec:keyStore type="${fuser.services.secure.keystore.type}"
+                            password="${fuser.services.secure.keystore.password}"
+                            file="${fuser.services.secure.keystore.location}"/>
+                </sec:keyManagers>
+                <sec:excludeProtocols>
+                    <sec:excludeProtocol>TLSv1.0</sec:excludeProtocol>
+                    <sec:excludeProtocol>TLSv1.1</sec:excludeProtocol>
+                </sec:excludeProtocols>
+            </httpj:tlsServerParameters>
+        </httpj:engine>
+    </httpj:engine-factory>
+
+    <bean id="fuser.services.FuserSyncService" 
+    	  class="com.mosaicatm.fuser.service.FuserSyncService">
+        <property name="flightSyncService" ref="fuser.services.FuserFlightSyncService" />
+    </bean>
+    
+    <bean id="fuser.services.FuserFlightSyncService" 
+          class="com.mosaicatm.fuser.service.FuserFlightSyncServiceImpl">
+        <property name="store" ref="fuser.core.FuserStoreProxy" />
+        <property name="syncPoint" ref="fuser.core.SyncPoint" />
+        <property name="matmEnvelopeMarshaller" ref="fuser.marshall.MatmTransferEnvelope" />
+    </bean>
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+
+</beans>

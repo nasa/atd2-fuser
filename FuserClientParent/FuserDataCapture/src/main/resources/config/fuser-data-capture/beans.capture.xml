@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+        
+    <bean id="capture.FlatFactory" class="com.mosaicatm.fuser.datacapture.flat.FlatFactoryImpl" >
+        <property name="filterUpdateSources" value="${fuser-capture.database.filter.updatesources.enable}" />
+        <property name="filterFacilityIdList" value="${fuser-capture.database.filter.facilityIdList.enable}" />
+        <property name="filterPreDepartureFlightPlanList"
+                value="${fuser-capture.database.filter.preDepartureFlightPlanList.enable}" />
+        <property name="adsbExtEnabled" value="${fuser-capture.ext.adsb.enabled}" />
+        <property name="asdexExtEnabled" value="${fuser-capture.ext.asdex.enabled}" />
+        <property name="cat11ExtEnabled" value="${fuser-capture.ext.cat11.enabled}" />
+        <property name="cat62ExtEnabled" value="${fuser-capture.ext.cat62.enabled}" />
+        <property name="derivedExtEnabled" value="${fuser-capture.ext.derived.enabled}" />
+        <property name="tbfmExtEnabled" value="${fuser-capture.ext.tbfm.enabled}" />
+        <property name="tfmExtEnabled" value="${fuser-capture.ext.tfm.enabled}" />
+        <property name="tfmTfdmExtEnabled" value="${fuser-capture.ext.tfmtfdm.enabled}" />
+        <property name="tfmTraversalExtEnabled" value="${fuser-capture.ext.tfmtraversal.enabled}" />
+        <property name="matmAirlineMsgExtEnabled" value="${fuser-capture.ext.matm-airline-message.enabled}" />
+        <property name="idacExtEnabled" value="${fuser-capture.ext.idac.enabled}" />
+        <property name="surfaceModelExtEnabled" value="${fuser-capture.ext.surface-model.enabled}" />
+        <property name="aefsExtEnabled" value="${fuser-capture.ext.aefs.enabled}" />
+        <property name="sfdpsExtEnabled" value="${fuser-capture.ext.sfdps.enabled}" />
+        <property name="smesExtEnabled" value="${fuser-capture.ext.smes.enabled}" />
+        <property name="tmiExtEnabled" value="${fuser-capture.ext.tmi.enabled}" />
+    </bean>
+    
+    <bean id="capture.DelimitedObjectFactory" class="com.mosaicatm.fuser.datacapture.io.DelimitedObjectFactoryImpl" />
+
+</beans>

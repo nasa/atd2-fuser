@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+    <xs:complexType name="matmAirlineMessageExtension">
+        <xs:sequence>
+            <xs:element name="availableRunways" type="xs:string" minOccurs="0" />
+            <xs:element name="comments" type="xs:string" minOccurs="0" />
+            <xs:element name="creationDate" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="dataSource" type="xs:string" minOccurs="0" />
+            <xs:element name="airlineDataSource" type="xs:string" minOccurs="0" />
+            <xs:element name="flightLeg" type="xs:int" minOccurs="0" />
+            <xs:element name="outTimeActual" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="outTimeControlled" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="sourceId" type="xs:string" minOccurs="0" />
+            <xs:element name="type" type="xs:string" minOccurs="0" />
+            <xs:element name="cancelled" type="xs:boolean" minOccurs="0" />
+            <xs:element name="flightLegStatus" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+
+</xs:schema>
+

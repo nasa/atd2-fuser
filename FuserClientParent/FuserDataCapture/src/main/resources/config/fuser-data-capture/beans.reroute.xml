@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    
+    <bean id="reroute.FuserDataReceivingRerouteListener" class="com.mosaicatm.fuser.datacapture.FuserDataReceivingRerouteListener"
+       init-method="start" >
+        <property name="active" value="${fuser-capture.reroute.active}" />
+        <property name="interval" value="${fuser-capture.reroute.batch.interval}" />
+        <property name="batchSize" value="${fuser-capture.reroute.batchSize}" />
+        <property name="sender" ref="reroute.FuserDataReceivingRerouteSender" />
+    </bean>
+    
+    <bean id="reroute.FuserDataReceivingRerouteSender"
+          class="com.mosaicatm.lib.messaging.MessageProducerSender"  >
+        <property name="messageDestination"
+                  value="${fuser-capture.reroute.process}" />
+    </bean> 
+    
+    <!-- Register for data update events. These are after the data is processed and applied to the flight manager -->       
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" >
+        <property name="targetObject" ref="api.FuserClientApi" />
+        <property name="targetMethod" value="registerProcessedEventListener" />
+        <property name="arguments">
+            <list>
+                <ref bean="reroute.FuserDataReceivingRerouteListener" />
+            </list>
+        </property>
+    </bean>  
+    
+</beans>

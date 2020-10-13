@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    <changeSet id="fuserDataCapture-2020_09-1" author="ec" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="position_distance_total"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="position_distance_total" type="double precision" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_09-2" author="ec" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="position_distance_total"/>                         
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="position_distance_total" type="double precision" />                      
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_09-3" author="ec" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="position_distance_total"/> 
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="position_distance_total" type="double precision" />
+        </addColumn>
+    </changeSet>    
+    
+    <changeSet id="fuserDataCapture-2020_09-4" author="ec" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_position_all"/>
+            <not>
+                <columnExists tableName="matm_position_all" columnName="position_distance_total"/>    
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_position_all">
+            <column name="position_distance_total" type="double precision" />
+        </addColumn>
+    </changeSet>      
+
+    <changeSet id="fuserDataCapture-2020_09-5" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tmi_extension"/>
+            <columnExists tableName="tmi_extension" columnName="fix_closures"/>
+        </preConditions>
+
+        <renameColumn tableName="tmi_extension" newColumnName="resource_closures" oldColumnName="fix_closures"/>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_09-6" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tmi_extension_all"/>
+            <columnExists tableName="tmi_extension_all" columnName="fix_closures"/>
+        </preConditions>
+
+        <renameColumn tableName="tmi_extension_all" newColumnName="resource_closures" oldColumnName="fix_closures"/>
+    </changeSet>
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-2020_09" author="atd2" runAlways="true">
+        <tagDatabase tag="2020_09" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+    <xs:complexType name="tbfmExtension">
+        <xs:sequence>
+            <xs:element name="systemId" type="xs:string" minOccurs="0" />
+            <xs:element name="tmaId" type="xs:string" minOccurs="0" />
+            <xs:element name="securityLevel" type="xs:string" minOccurs="0" >
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates sensitivity. Values are: "*", "All", "Nas Only"
+                    </xs:documentation>
+                </xs:annotation>                 
+            </xs:element>                
+            <xs:element name="lastTbfmPosition" type="mc:position" minOccurs="0" /> 
+
+            <xs:element name="arrivalMeterFix" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalSchedulingFix" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalRunway" type="xs:string" minOccurs="0" />            
+            <xs:element name="arrivalRunwayTraconAssigned" type="xs:string" minOccurs="0" />            
+            <xs:element name="arrivalRunwayEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalRunwaySta" type="xs:dateTime" minOccurs="0" />            
+            <xs:element name="arrivalMeterFixEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalSchedulingFixEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuter4thArcEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuter3rdArcEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuterOuterArcEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuterMeterArcEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalDisplayFixEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalSchedulingFixSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuter4thArcSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuter3rdArcSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuterOuterArcSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalOuterMeterArcSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalDisplayFixSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="arrivalStasFrozen" type="xs:boolean" minOccurs="0" />
+            <xs:element name="arrivalSchedulingSuspended" type="xs:boolean" minOccurs="0" />
+            <xs:element name="arrivalRunwayAssignmentFrozen" type="xs:boolean" minOccurs="0" />
+            <xs:element name="arrivalOuterMeterArc" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalOuterOuterArc" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalOuter3rdArc" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalOuter4thArc" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalStreamClass" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalTracon" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalGate" type="xs:string" minOccurs="0" />
+            <xs:element name="arrivalConfiguration" type="xs:string" minOccurs="0" />
+            
+            <xs:element name="departureMeterFix" type="xs:string" minOccurs="0" />
+            <xs:element name="departureProposedTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="departureSchedulingFix" type="xs:string" minOccurs="0" />
+            <xs:element name="departureMeterFixEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="departureSchedulingFixEta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="departureSchedulingFixSta" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="departureStasFrozen" type="xs:boolean" minOccurs="0" />
+            <xs:element name="departureSchedulingStatusCode" type="mfe:tbfmStatusCodeType" minOccurs="0" />            
+            <xs:element name="departureSchedulingSuspended" type="xs:boolean" minOccurs="0" />
+            <xs:element name="departureStreamClass" type="xs:string" minOccurs="0" />
+            <xs:element name="departureTracon" type="xs:string" minOccurs="0" />
+            <xs:element name="departureGate" type="xs:string" minOccurs="0" />
+            <xs:element name="departureConfiguration" type="xs:string" minOccurs="0" />
+            <xs:element name="departureRunway" type="xs:string" minOccurs="0" />
+                        
+            <xs:element name="aircraftReadyTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="swapAircraftId" type="xs:string" minOccurs="0" />
+            
+            <xs:element name="canceledSwimReleaseTime" type="xs:dateTime" minOccurs="0" />            
+            <xs:element name="syncMessage" type="xs:boolean" minOccurs="0" /> 
+            
+            <xs:element name="etm" type="xs:dateTime" minOccurs="0" />            
+            <xs:element name="newEtm" type="xs:boolean" minOccurs="0" /> 
+            
+            <xs:element name="std" type="xs:dateTime" nillable="true" minOccurs="0" />            
+            <xs:element name="newStd" type="xs:boolean" minOccurs="0" />
+            
+            <xs:element name="ctm" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="newCtm" type="xs:boolean" minOccurs="0" /> 
+            
+            <xs:element name="meterReferencePoint" type="mfe:tbfmMeterReferencePointType" minOccurs="0" maxOccurs="100" />
+            
+            <xs:element name="flightPlanStatus" type="xs:string" minOccurs="0" />
+            <xs:element name="aircraftStatus" type="xs:string" minOccurs="0" />
+            <xs:element name="manuallyScheduled" type="xs:boolean" minOccurs="0" />
+                       
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="tbfmMeterReferencePointType">
+        <xs:sequence>
+            <xs:element name="artcc" type="xs:string" minOccurs="0" />
+            <xs:element name="tracon" type="xs:string" minOccurs="0" />
+            <xs:element name="meterFix" type="xs:string" minOccurs="0" />            
+            <xs:element name="category" type="xs:string" minOccurs="0" />
+            <xs:element name="gate" type="xs:string" minOccurs="0" />
+            <xs:element name="streamClass" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="tbfmStatusCodeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UNSCHED" />
+            <xs:enumeration value="REQ" />
+            <xs:enumeration value="REQ_STALE" />
+            <xs:enumeration value="APR" />
+            <xs:enumeration value="ACK" />
+            <xs:enumeration value="ACK_STALE" />
+            <xs:enumeration value="SCHED" />
+            <xs:enumeration value="SWAP" />
+            <xs:enumeration value="SWAP_STALE" />
+            <xs:enumeration value="CANCEL" />
+            <xs:enumeration value="CANCEL_STALE" />
+            <xs:enumeration value="RESCHEDULE_TGUI" />
+            <xs:enumeration value="RESCHEDULE_ACK" />
+            <xs:enumeration value="RESCHEDULE_ACK_STALE" />
+        </xs:restriction>
+    </xs:simpleType>             
+
+</xs:schema>
+

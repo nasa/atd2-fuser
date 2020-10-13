@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    <changeSet id="fuserDataCapture-2020_07-1" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="position_static_sector"/>
+                <columnExists tableName="matm_flight" columnName="position_dynamic_sector"/>
+                <columnExists tableName="matm_flight" columnName="position_fav"/>
+                <columnExists tableName="matm_flight" columnName="position_fav_module"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="position_static_sector" type="varchar" />
+            <column name="position_dynamic_sector" type="varchar" />
+            <column name="position_fav" type="varchar" />
+            <column name="position_fav_module" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_07-2" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="position_static_sector"/>   
+                <columnExists tableName="matm_flight_all" columnName="position_dynamic_sector"/>   
+                <columnExists tableName="matm_flight_all" columnName="position_fav"/>
+                <columnExists tableName="matm_flight_all" columnName="position_fav_module"/>                         
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="position_static_sector" type="varchar" />  
+            <column name="position_dynamic_sector" type="varchar" />  
+            <column name="position_fav" type="varchar" />
+            <column name="position_fav_module" type="varchar" />                      
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_07-3" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="position_static_sector"/> 
+                <columnExists tableName="matm_flight_summary" columnName="position_dynamic_sector"/> 
+                <columnExists tableName="matm_flight_summary" columnName="position_fav"/>
+                <columnExists tableName="matm_flight_summary" columnName="position_fav_module"/>                           
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="position_static_sector" type="varchar" />
+            <column name="position_dynamic_sector" type="varchar" />
+            <column name="position_fav" type="varchar" />
+            <column name="position_fav_module" type="varchar" />            
+        </addColumn>
+    </changeSet>    
+    
+    <changeSet id="fuserDataCapture-2020_07-4" author="msv" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_position_all"/>
+            <not>
+                <columnExists tableName="matm_position_all" columnName="position_static_sector"/>    
+                <columnExists tableName="matm_position_all" columnName="position_dynamic_sector"/>    
+                <columnExists tableName="matm_position_all" columnName="position_fav"/>
+                <columnExists tableName="matm_position_all" columnName="position_fav_module"/>                        
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_position_all">
+            <column name="position_static_sector" type="varchar" />
+            <column name="position_dynamic_sector" type="varchar" />
+            <column name="position_fav" type="varchar" />
+            <column name="position_fav_module" type="varchar" />            
+        </addColumn>
+    </changeSet>      
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-2020_07" author="msv" runAlways="true">
+        <tagDatabase tag="2020_07" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+    <bean id="filter.FlightFilters" class="com.mosaicatm.lib.util.filter.LogicalAndFilter">
+        	<!-- Commented out, we will add these during API loading only if they are active,
+        	otherwise we end up with some unexpected results -->
+         <!-- <property name="filters">
+            <list>
+                <ref bean="filter.AirportFilter" />
+                <ref bean="filter.SurfaceAirportFilter" />
+            </list>
+        </property>-->
+    </bean>
+
+   <bean id="filter.AirportFilter" class="com.mosaicatm.fuser.client.api.impl.filter.AirportFilter">
+        <property name="active" value="${fuser-client-api.filter.airport.active}" />
+        <property name="airportsOfInterestFromString" value="${fuser-client-api.airportsOfInterest}" />
+    </bean>
+    
+    <bean id="filter.SurfaceAirportFilter" class="com.mosaicatm.fuser.client.api.impl.filter.SurfaceAirportFilter">
+        <property name="active" value="${fuser-client-api.filter.asdex.airport.active}" />
+        <property name="airportsOfInterestFromString" value="${fuser-client-api.airportsOfInterest}" />
+    </bean>
+
+</beans>

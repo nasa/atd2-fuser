@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.TbfmExtensionAllMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            aircraft_ready_time timestamp,
+            arrival_meter_fix varchar,
+            arrival_meter_fix_eta timestamp,
+            arrival_runway varchar,
+            arrival_runway_assignment_frozen boolean,
+            arrival_runway_sta timestamp,
+            arrival_runway_tracon_assigned varchar,         
+            arrival_scheduling_fix varchar,
+            arrival_scheduling_fix_eta timestamp,
+            arrival_scheduling_fix_sta timestamp,
+            arrival_scheduling_suspended boolean,
+            arrival_stas_frozen boolean,
+            departure_meter_fix varchar,
+            departure_meter_fix_eta timestamp,
+            departure_scheduling_fix varchar,
+            departure_scheduling_fix_eta timestamp,
+            departure_scheduling_fix_sta timestamp,
+            departure_scheduling_status_code varchar,
+            departure_scheduling_suspended boolean,
+            departure_stas_frozen boolean,
+            last_tbfm_position_altitude double precision,
+            last_tbfm_position_heading double precision,
+            last_tbfm_position_latitude double precision,
+            last_tbfm_position_longitude double precision,
+            last_tbfm_position_source varchar,
+            last_tbfm_position_speed double precision,
+            last_tbfm_position_timestamp timestamp,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            swap_aircraft_id varchar,
+            timestamp timestamp,
+            tma_id varchar
+        )
+        WITH 
+        (
+            OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

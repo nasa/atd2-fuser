@@ -1,0 +1,143 @@
+<jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" 
+    xmlns:annox="http://annox.dev.java.net"
+    xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
+    jaxb:extensionBindingPrefixes="xjc annox namespace">
+  
+	  <jaxb:bindings schemaLocation="../xsd/MatmFlight.xsd" node="/xs:schema">
+        <namespace:prefix name="flt" />
+	    <jaxb:bindings node="xs:complexType[@name='matmFlight']">
+	      <annox:annotate>
+	        <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmFlight"/>
+	      </annox:annotate>
+	    </jaxb:bindings>
+        <jaxb:bindings node="xs:complexType[@name='matmFlight']//xs:element[@name='departureRunwayControlledTime']">
+            <annox:annotate target="setter">@java.lang.Deprecated</annox:annotate>
+            <annox:annotate target="getter">@java.lang.Deprecated</annox:annotate>
+            <annox:annotate target="field">@java.lang.Deprecated</annox:annotate>
+        </jaxb:bindings>
+        <jaxb:bindings node="xs:complexType[@name='matmFlight']//xs:element[@name='departureStandTargetTime']">
+            <annox:annotate target="setter">@java.lang.Deprecated</annox:annotate>
+            <annox:annotate target="getter">@java.lang.Deprecated</annox:annotate>
+            <annox:annotate target="field">@java.lang.Deprecated</annox:annotate>
+        </jaxb:bindings>
+	  </jaxb:bindings>
+	  
+	  <jaxb:bindings schemaLocation="../xsd/MatmFlightComposite.xsd" node="/xs:schema">
+        <namespace:prefix name="fltcom" />
+	    <jaxb:bindings node="xs:complexType[@name='matmFlightComposite']">
+	      <annox:annotate>
+	        <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmFlightComposite"/>
+	      </annox:annotate>
+	    </jaxb:bindings>
+	  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmTransferEnvelope.xsd" node="/xs:schema">
+    <namespace:prefix name="env" />    
+    <jaxb:bindings node="xs:complexType[@name='matmTransferEnvelope']">
+      <annox:annotate>
+        <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmTransferEnvelope"/>
+      </annox:annotate>
+    </jaxb:bindings>
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmPositionUpdate.xsd" node="/xs:schema">
+    <namespace:prefix name="pos" />
+    <jaxb:bindings node="xs:complexType[@name='matmPositionUpdate']">
+      <annox:annotate>
+        <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmPositionUpdate"/>
+      </annox:annotate>
+    </jaxb:bindings>
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmPositionUpdateEnvelope.xsd" node="/xs:schema">
+    <namespace:prefix name="posenv" />
+    <jaxb:bindings node="xs:complexType[@name='matmPositionUpdateEnvelope']">
+      <annox:annotate>
+        <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmPositionUpdateEnvelope"/>
+      </annox:annotate>
+    </jaxb:bindings>
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmCommon.xsd" node="/xs:schema">
+    <namespace:prefix name="com" />
+    <jaxb:bindings node="xs:complexType[@name='metaData']">
+      <annox:annotate>
+        <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="metaData"/>
+      </annox:annotate>
+    </jaxb:bindings>
+  </jaxb:bindings>
+
+  <jaxb:bindings schemaLocation="../xsd/Heartbeat.xsd" node="/xs:schema">
+      <namespace:prefix name="hb" />
+      <jaxb:bindings node="xs:complexType[@name='heartbeat']">
+        <annox:annotate>
+          <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="heartbeat"/>
+        </annox:annotate>
+      </jaxb:bindings>
+  </jaxb:bindings>
+
+  <jaxb:bindings schemaLocation="../xsd/MatmSectorAssignment.xsd" node="/xs:schema">
+      <namespace:prefix name="sa" />
+      <jaxb:bindings node="xs:complexType[@name='matmSectorAssignment']">
+          <annox:annotate>
+              <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmSectorAssignment"/>
+          </annox:annotate>
+      </jaxb:bindings>
+      
+      <jaxb:bindings node="xs:complexType[@name='matmSectorAssignment']//xs:element[@name='fixedAirspaceVolume']">
+          <jaxb:property name="fixedAirspaceVolumeList"/>
+      </jaxb:bindings>        
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmSectorAssignmentEnvelope.xsd" node="/xs:schema">
+      <namespace:prefix name="sae" />
+      <jaxb:bindings node="xs:complexType[@name='matmSectorAssignmentEnvelope']">
+          <annox:annotate>
+              <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmSectorAssignmentEnvelope"/>
+          </annox:annotate>
+      </jaxb:bindings>
+      <jaxb:bindings node="xs:complexType[@name='matmSectorAssignmentEnvelope']//xs:element[@name='sectorAssignment']">
+          <jaxb:property name="sectorAssignmentList"/>
+      </jaxb:bindings>         
+  </jaxb:bindings>  
+
+  <jaxb:bindings schemaLocation="../xsd/Extension/MatmExtensions.xsd" node="/xs:schema">
+    <namespace:prefix name="ext" />
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmAircraft.xsd" node="/xs:schema">
+      <namespace:prefix name="ax" />
+      <jaxb:bindings node="xs:complexType[@name='matmAircraft']">
+          <annox:annotate>
+              <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmAircraft" />
+          </annox:annotate>
+      </jaxb:bindings>
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/MatmAircraftComposite.xsd" node="/xs:schema">
+     <namespace:prefix name="aircom" />
+     <jaxb:bindings node="xs:complexType[@name='matmAircraftComposite']">
+       <annox:annotate>
+         <annox:annotate annox:class="javax.xml.bind.annotation.XmlRootElement" name="matmAircraftComposite"/>
+       </annox:annotate>
+     </jaxb:bindings>
+  </jaxb:bindings>
+  
+  <jaxb:bindings schemaLocation="../xsd/Extension/TbfmExtension.xsd" node="/xs:schema">
+      <jaxb:bindings node="xs:complexType[@name='tbfmExtension']//xs:element[@name='meterReferencePoint']">
+          <jaxb:property name="meterReferencePointList"/>
+      </jaxb:bindings>    
+  </jaxb:bindings>
+  
+  <jaxb:globalBindings>
+	  <xjc:javaType name="java.util.Date" xmlType="xs:dateTime"
+	    adapter="com.mosaicatm.matmdata.util.DateTimeXmlAdapter"
+	    />
+	  <xjc:serializable uid="1"/>
+</jaxb:globalBindings>
+	
+	
+  
+</jaxb:bindings>

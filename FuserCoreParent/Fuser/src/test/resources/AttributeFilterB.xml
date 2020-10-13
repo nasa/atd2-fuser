@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attributeFilters>
+    <arrivalAttributeFilters>
+        <attributeFilter source="AIRLINE" type="include">
+            <arrivalAttributeB />
+        </attributeFilter>
+    </arrivalAttributeFilters>
+    
+    <departureAttributeFilters>
+        <attributeFilter source="AIRLINE" type="include">
+            <departureAttributeB />
+        </attributeFilter>
+    </departureAttributeFilters>
+</attributeFilters>

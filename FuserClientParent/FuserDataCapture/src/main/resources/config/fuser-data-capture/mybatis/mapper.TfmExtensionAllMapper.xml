@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.TfmExtensionAllMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            arrival_runway_airline_time timestamp,
+            arrival_runway_original_controlled_time timestamp,
+            arrival_stand_airline_time timestamp,
+            canceled boolean,
+            cdm_participant boolean,
+            control_element varchar,
+            control_indicator varchar,
+            departure_runway_airline_time timestamp,
+            departure_runway_original_controlled_time timestamp,
+            departure_stand_actual_time timestamp,
+            departure_stand_airline_time timestamp,
+            diversion boolean,
+            diversion_cancel_flight_ref integer,
+            diversion_cancel_new_flight_ref integer,        
+            diversion_indicator varchar,
+            flight_creation_time timestamp,
+            flight_ref integer,
+            last_tfm_position_altitude double precision,
+            last_tfm_position_heading double precision,
+            last_tfm_position_latitude double precision,
+            last_tfm_position_longitude double precision,
+            last_tfm_position_source varchar,
+            last_tfm_position_speed double precision,
+            last_tfm_position_timestamp timestamp,
+            message_trigger varchar,
+            message_type varchar,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            timestamp timestamp
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

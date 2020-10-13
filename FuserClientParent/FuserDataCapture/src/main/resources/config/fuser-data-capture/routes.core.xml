@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:amq="http://activemq.apache.org/schema/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:camel="http://activemq.apache.org/camel/schema/spring"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/spring
+       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    
+    
+    <!-- Camel Routes -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="routes.core.CamelContext" >
+       
+       <endpoint id="endpoint.source.ClockSync" uri="${fuser-capture.position.uri.clock.source}" />
+       <endpoint id="endpoint.source.MatmPositionUpdate" uri="${fuser-capture.position.uri.matmPositionUpdate.source}" />
+       <endpoint id="endpoint.source.MatmPositionUpdateEnvelope" uri="${fuser-capture.position.uri.matmPositionUpdateEnvelope.source}" />
+        
+       <endpoint id="endpoint.process.ClockSync" uri="${fuser-capture.position.uri.clock.process}" />
+       <endpoint id="endpoint.process.MatmPositionUpdate" uri="${fuser-capture.position.uri.matmPositionUpdate.process}" />
+       <endpoint id="endpoint.process.MatmPositionUpdateEnvelope" uri="${fuser-capture.position.uri.matmPositionUpdateEnvelope.process}" />
+       
+       <endpoint id="endpoint.reroute.MatmTransferEnvelope" uri="${fuser-capture.reroute.process}" />
+       <endpoint id="endpoint.reroute.destination" uri="${fuser-capture.reroute.destination}" />
+              
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>  
+            <process ref="routes.RouteErrorHandler"/>           
+        </onException>        
+        
+        <route id="route.source.ClockSyncRoute"  autoStartup="false">
+            <from uri="endpoint.source.ClockSync" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="marshalling.ClockSyncMarshaller" method="unmarshall" />
+            <bean ref="core.Clock" method="clockStateChanged" />
+            <bean ref="playback.DailyRepositoryCacheHandler" method="timeUpdated" />
+            <bean ref="core.Clock.ClockSyncPoint" method="unlock" />                        
+        </route>
+        
+        <route id="route.source.MatmPositionUpdate" autoStartup="false">
+            <from uri="endpoint.source.MatmPositionUpdate" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="core.Clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmPositionUpdateMarshaller" method="unmarshall" />
+            <to uri="endpoint.process.MatmPositionUpdate" />
+        </route>
+        
+        <route id="route.source.MatmPositionUpdateEnvelope" autoStartup="false">
+            <from uri="endpoint.source.MatmPositionUpdateEnvelope" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="core.Clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmPositionUpdateEnvelopeMarshaller" method="unmarshall" />
+            <to uri="endpoint.process.MatmPositionUpdateEnvelope" />
+        </route>
+        
+        <route id="route.process.MatmPositionUpdateEnvelope" autoStartup="false">
+            <from uri="endpoint.process.MatmPositionUpdateEnvelope" />
+            <split>
+            	<method ref="database.MatmPositionDatabaseBatchCaptureHandler" method="getFlights" />
+            	<to uri="endpoint.process.MatmPositionUpdate" />
+            </split>
+        </route>
+        
+        <route id="route.process.MatmPositionUpdate" autoStartup="false">
+            <from uri="endpoint.process.MatmPositionUpdate" />
+            <filter>
+	            <method ref="core.AiportFilter" method="doFilter" />
+	            
+	            <bean ref="database.MatmPositionDatabaseBatchCaptureHandler" method="handle" />
+            </filter>
+        </route>
+        
+        <route id="route.reroute.MatmTransferEnvelope" autoStartup="false">
+            <from uri="endpoint.reroute.MatmTransferEnvelope" />
+            <bean ref="marshalling.MatmTransferEnvelopeMarshaller" method="marshall" />
+            <to uri="endpoint.reroute.destination" />
+        </route>
+        
+     </camelContext>
+     
+    <bean id="routes.RouteErrorHandler" class="com.mosaicatm.fuser.client.api.camel.RouteErrorHandler" />
+    
+    <bean id="MetricRegistry" class="com.codahale.metrics.MetricRegistry"/>
+   	
+   	<bean id="routes.MessageProducer" class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="routes.core.CamelContext" />
+    </bean>
+    
+    <bean id="routes.core.MessageProducerOwnerInitializer" class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="routes.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="reroute.FuserDataReceivingRerouteSender" />
+                <ref bean="core.MetricsReporter" />
+                <ref bean="playback.FuserDataMultiplexPublisher" />
+            </list>
+        </property>
+    </bean>
+    
+</beans>

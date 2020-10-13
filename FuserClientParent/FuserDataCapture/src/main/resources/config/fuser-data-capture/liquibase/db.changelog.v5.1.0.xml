@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<!-- Detailed configuration can be found on Confluence under ATD-2 Database 
+		Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v5.1.0-20190703-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension" />
+            <not>
+                <columnExists tableName="derived_extension" 
+                    columnName="departure_fix_undelayed_time_at_pushback" />
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension">
+            <column name="departure_fix_undelayed_time_at_pushback" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.1.0-20190703-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all" />
+            <not>
+                <columnExists tableName="derived_extension_all" 
+                    columnName="departure_fix_undelayed_time_at_pushback" />
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension_all">
+            <column name="departure_fix_undelayed_time_at_pushback" type="timestamp" />
+        </addColumn>
+    </changeSet>
+        
+    <!-- This needs to be the last changeset in the file -->
+	<changeSet id="fuserDataCapture-v5.1.0" author="atd2"
+		runAlways="true">
+		<tagDatabase tag="5.1.0" />
+	</changeSet>
+
+</databaseChangeLog>

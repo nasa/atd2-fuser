@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+    <xs:complexType name="asdexExtension">
+        <xs:sequence>
+            <xs:element name="sendTo" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>
+                        The sendTo message header in ASDE-X messages indicates the sensitivity. 
+                        It is either "all" or "authorized".
+                    </xs:documentation>
+                </xs:annotation>                 
+            </xs:element>
+            <xs:element name="asdexAirport" type="mc:aerodrome"
+                minOccurs="0" />
+            <xs:element name="lastAsdexPosition" type="mc:position"
+                minOccurs="0" />
+            <xs:element name="trackId" type="xs:int" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

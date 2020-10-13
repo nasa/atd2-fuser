@@ -1,0 +1,40 @@
+<xs:schema
+   targetNamespace="http://www.mosaicatm.com/matmdata/aircraft"
+   version="1.0"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:ax="http://www.mosaicatm.com/matmdata/aircraft"
+   xmlns:mc="http://www.mosaicatm.com/matmdata/common"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <import namespace="http://www.mosaicatm.com/matmdata/common" schemaLocation="./MatmCommon.xsd" />
+    
+    <xs:element name="MatmAircraft" type="ax:matmAircraft" />
+    
+    <xs:complexType name="matmAircraft">
+        <xs:complexContent>
+            <xs:extension base="mc:matmObject">
+		        <xs:sequence>            
+		            <xs:element name="address" type="xs:string" minOccurs="0" />
+		            <xs:element name="atOperatingAirport" type="xs:boolean" minOccurs="0" nillable="true" />
+		            <xs:element name="atOperatingAirportSource" type="xs:string" minOccurs="0" nillable="true" />
+		            <xs:element name="atGate" type="xs:boolean" minOccurs="0" nillable="true" />
+                    <xs:element name="gateStatusSource" type="xs:string" minOccurs="0" nillable="true" />
+		            <xs:element name="equipmentQualifier" type="xs:string" minOccurs="0" />
+		            <xs:element name="faaEngineClass" type="xs:string" minOccurs="0" />
+		            <xs:element name="lastKnownGate" type="xs:string" minOccurs="0" nillable="true" />
+		            <xs:element name="lastKnownGufi" type="xs:string" minOccurs="0" nillable="true" />
+		            <xs:element name="lastKnownPosition" type="mc:position" minOccurs="0"/>
+		            <xs:element name="lastKnownSurfaceFlightState" type="mc:surfaceFlightState" minOccurs="0" nillable="true" />
+		            <xs:element name="operatingAirportName" type="xs:string" minOccurs="0" nillable="true" />
+		            <xs:element name="recatEngineClass" type="xs:string" minOccurs="0" />
+		            <xs:element name="registration" type="xs:string" minOccurs="0" />
+			        <xs:element name="repositioned" type="xs:boolean" minOccurs="0" nillable="true" />
+			        <xs:element name="repositionDestination" type="xs:string" minOccurs="0" nillable="true" />   
+		            <xs:element name="type" type="xs:string" minOccurs="0"  />
+		            <xs:element name="hidden" type="xs:boolean" minOccurs="0" nillable="true" />
+		        </xs:sequence>
+	        </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+</xs:schema>

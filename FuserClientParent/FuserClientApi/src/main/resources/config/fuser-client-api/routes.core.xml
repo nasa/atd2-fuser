@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This file defines the Camel routes that connect the applications to 
+the TIB bus for testing/demo. 
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    
+    
+    <!-- Camel Routes -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="routes.core.CamelContext" >
+       
+       <endpoint id="endpoint.source.ClockSync" uri="${fuser-client-api.uri.clock.source}" />
+       <endpoint id="endpoint.source.MatmFlight" uri="${fuser-client-api.uri.matmFlight.source}" />
+       <endpoint id="endpoint.source.MatmTransferEnvelope" uri="${fuser-client-api.uri.matmTransferEnvelope.source}" />
+       
+       <endpoint id="endpoint.source.MatmFlight.remove" uri="${fuser-client-api.uri.matmFlight.source.remove}" />
+       
+       <endpoint id="endpoint.process.ClockSync" uri="${fuser-client-api.uri.clock.process}" />
+       <endpoint id="endpoint.process.MatmFlight" uri="${fuser-client-api.uri.matmFlight.process}" />
+       
+       <endpoint id="endpoint.process.MatmFlight.remove" uri="${fuser-client-api.uri.matmFlight.process.remove}" />
+       
+       <endpoint id="endpoint.process.MatmFlight.publish" uri="${fuser-client-api.uri.matmFlight.process.publish}" />
+       <endpoint id="endpoint.process.MatmFlight.publishBatch" uri="${fuser-client-api.uri.matmFlight.process.publishBatch}" />
+       
+       <endpoint id="endpoint.process.MatmFlight.remove.publish" uri="${fuser-client-api.uri.matmFlight.process.publishRemove}" />
+       
+       <endpoint id="endpoint.destination.MatmFlight" uri="${fuser-client-api.uri.matmFlight.destination}" />
+       <endpoint id="endpoint.destination.MatmFlightBatch" uri="${fuser-client-api.uri.matmFlight.batch.destination}" />
+       <endpoint id="endpoint.destination.MatmFlightRemove" uri="${fuser-client-api.uri.matmFlight.process.publishRemove.destination}" />
+       
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>  
+            <process ref="routes.RouteErrorHandler"/>           
+        </onException>        
+        
+        <route id="route.source.ClockSyncRoute"  autoStartup="false">
+            <from uri="endpoint.source.ClockSync" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="marshalling.ClockSyncMarshaller" method="unmarshall" />
+            <to uri="endpoint.process.ClockSync" />
+        </route>
+        
+        <route id="route.process.ClockSyncRoute" autoStartup="false">
+            <from uri="endpoint.process.ClockSync" />
+            <bean ref="core.Clock" method="clockStateChanged" />
+            <bean ref="core.clock.ClockSyncPoint" method="unlock" />
+        </route>
+        
+        <route id="route.destination.MatmFlight" autoStartup="false">
+        	<from uri="endpoint.process.MatmFlight.publish" />
+        	<bean ref="marshalling.MatmFlightMarshaller" method="marshall" />
+        	<to uri="endpoint.destination.MatmFlight" />
+        </route>
+        
+        <route id="route.destination.MatmFlightBatch" autoStartup="false">
+        	<from uri="endpoint.process.MatmFlight.publishBatch" />
+        	<bean ref="marshalling.MatmTransferEnvelopeMarshaller" method="marshall" />
+        	<to uri="endpoint.destination.MatmFlightBatch" />
+        </route>
+        
+        <route id="route.source.MatmFlight" autoStartup="false">
+            <from uri="endpoint.source.MatmFlight" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmFlightMarshaller" method="unmarshall" />
+            <bean ref="core.MatmFlightReceiver" method="receive" />
+        </route>
+        
+        <!-- Something was going pretty weird using envelopes when viewing the display -->
+        <route id="route.source.MatmTransferEnvelope" autoStartup="false">
+            <from uri="endpoint.source.MatmTransferEnvelope" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmTransferEnvelopeMarshaller" method="unmarshall" />
+            <split>
+                <simple>${in.body.getFlights}</simple>
+                <bean ref="core.MatmFlightReceiver" method="receive" />
+            </split>
+        </route>
+        
+        <route id="route.process.MatmFlight" autoStartup="false">
+            <from uri="endpoint.process.MatmFlight" />
+            <bean ref="core.MatmFlightUpdateHandler" method="handleUpdate" />
+        </route>
+        
+        <!--  consume remove -->
+        <route id="route.source.MatmFlight.remove" autoStartup="false">
+            <from uri="endpoint.source.MatmFlight.remove" />
+            <bean ref="core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmFlightMarshaller" method="unmarshall" />
+            <to uri="endpoint.process.MatmFlight.remove" />
+        </route>
+        
+        <route id="route.process.MatmFlight.remove" autoStartup="false">
+            <from uri="endpoint.process.MatmFlight.remove" />
+            <bean ref="core.MatmFlightUpdateHandler" method="handleRemove" /> 
+        </route>
+        
+        <!-- publish remove -->
+        <route id="route.process.MatmFlight.remove.publish" autoStartup="false">
+            <from uri="endpoint.process.MatmFlight.remove.publish" />
+            <bean ref="marshalling.MatmFlightMarshaller" method="marshall" />
+            <to uri="endpoint.destination.MatmFlightRemove" />
+        </route>
+     </camelContext>
+     
+    <bean id="routes.RouteErrorHandler" class="com.mosaicatm.fuser.client.api.camel.RouteErrorHandler" />
+
+   	<bean id="routes.MessageProducer" class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="routes.core.CamelContext" />
+    </bean>
+    
+    <bean id="routes.MessageProducerOwnerInitializer" class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="routes.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="core.MatmFlightForwardingHandler" />
+            </list>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.SfdpsExtensionAllMapper">
+
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            comm_code varchar,
+            datalink_code varchar,
+            fdps_gufi varchar,
+            gufi varchar,
+            message_type varchar,
+            other_datalink_capabilities varchar,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            timestamp timestamp
+        )
+        WITH
+        (
+          OIDS=FALSE
+        )    
+    </update>
+
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

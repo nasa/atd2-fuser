@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    
+    <bean id="mybatis.IbatisSession" factory-bean="mybatis.IbatisSessionFactory" factory-method="createSession" destroy-method="close" />
+    
+    <bean id="mybatis.IbatisSessionFactory" class="com.mosaicatm.fuser.datacapture.db.mybatis.IbatisSessionFactory" >
+        <property name="active" value="#{ ${fuser-capture.capture.database.enabled} || ${fuser-capture.capture.database.all.enabled} }" />
+        <property name="configurationFileName" value="${fuser-capture.database.mybatis.configuration}"/>
+        <property name="configurer" ref="fuser-data-capture.propertyConfigurer"/>
+    </bean>
+    
+    <bean id="mybatis.ManagementDaoFactory" class="com.mosaicatm.fuser.datacapture.db.dao.ManagementDaoFactory">
+        <property name="session" ref="mybatis.IbatisSession" />
+        <property name="createTable" value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable" value="${fuser-capture.database.dropTables}" />
+    </bean>
+    
+    <bean id="mybatis.DaoManager" class="com.mosaicatm.fuser.datacapture.db.dao.DaoManager"
+        init-method="init">
+        <property name="active" value="#{ ${fuser-capture.capture.database.enabled} || ${fuser-capture.capture.database.all.enabled} }" />
+        <property name="managementFactory" ref="mybatis.ManagementDaoFactory" />
+        <property name="createPosition" value="${fuser-capture.capture.database.position.enabled}" />
+    </bean>
+
+</beans>

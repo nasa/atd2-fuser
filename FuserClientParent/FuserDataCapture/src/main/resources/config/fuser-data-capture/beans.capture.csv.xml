@@ -1,0 +1,973 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="csv.FileHeaderFactory" class="com.mosaicatm.fuser.datacapture.io.rolling.FileHeaderFactory">
+        <constructor-arg index="0" ref="capture.DelimitedObjectFactory" />
+    </bean>
+    
+    <bean id="csv.MatmFlightFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="MATM_FLIGHT" />
+    </bean>
+    <bean id="csv.AdsbFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_ADSB" />
+    </bean>
+    <bean id="csv.AsdexFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_ASDEX" />
+    </bean>
+    <bean id="csv.Cat11FileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_CAT11" />
+    </bean>
+    <bean id="csv.Cat62FileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_CAT62" />
+    </bean>
+    <bean id="csv.DerivedFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_DERIVED" />
+    </bean>
+    <bean id="csv.TbfmFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_TBFM" />
+    </bean>
+    <bean id="csv.TfmFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_TFM" />
+    </bean>
+    <bean id="csv.TfmTfdmFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_TFM_TFDM" />
+    </bean>
+    <bean id="csv.TfmTraversalFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_TFM_TRAVERSAL" />
+    </bean>
+    <bean id="csv.MatmAirlineFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_MATM_AIRLINE_MESSAGE" />
+    </bean>
+    <bean id="csv.IdacFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_IDAC" />
+    </bean>
+    <bean id="csv.SurfaceModelFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_SURFACE_MODEL" />
+    </bean>
+    <bean id="csv.AefsFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_AEFS" />
+    </bean>
+    <bean id="csv.SfdpsFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_SFDPS" />
+    </bean>
+    <bean id="csv.SmesFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_SMES" />
+    </bean>
+    <bean id="csv.TmiFileHeader" factory-bean="csv.FileHeaderFactory" factory-method="getFileHeader">
+        <constructor-arg value="EXT_TMI" />
+    </bean>
+
+        
+    <bean id="csv.CsvCaptureHandler" class="com.mosaicatm.fuser.datacapture.handle.CsvCaptureHandler">
+        <property name="matmFlightCapture" ref="csv.MatmFlightCsvCapture" />
+        <property name="adsbExtensionCapture" ref="csv.AdsbExtensionCsvCapture" />
+        <property name="asdexExtensionCapture" ref="csv.AsdexExtensionCsvCapture" />
+        <property name="cat11ExtensionCapture" ref="csv.Cat11ExtensionCsvCapture" />
+        <property name="cat62ExtensionCapture" ref="csv.Cat62ExtensionCsvCapture" />
+        <property name="derivedExtensionCapture" ref="csv.DerivedExtensionCsvCapture" />
+        <property name="tbfmExtensionCapture" ref="csv.TbfmExtensionCsvCapture" />
+        <property name="tfmExtensionCapture" ref="csv.TfmExtensionCsvCapture" />
+        <property name="tfmTfdmExtensionCapture" ref="csv.TfmTfdmExtensionCsvCapture" />
+        <property name="tfmTraversalExtensionCapture" ref="csv.TfmTraversalExtensionCsvCapture" />
+        <property name="matmAirlineMessageExtensionCapture" ref="csv.MatmAirlineMessageExtensionCsvCapture" />
+        <property name="idacExtensionCapture" ref="csv.IdacExtensionCsvCapture" />
+        <property name="surfaceModelExtensionCapture" ref="csv.SurfaceModelExtensionCsvCapture" />
+        <property name="aefsExtensionCapture" ref="csv.AefsExtensionCsvCapture" />
+        <property name="sfdpsExtensionCapture" ref="csv.SfdpsExtensionCsvCapture" />
+        <property name="smesExtensionCapture" ref="csv.SmesExtensionCsvCapture" />
+        <property name="tmiExtensionCapture" ref="csv.TmiExtensionCsvCapture" />
+    </bean>
+    
+    <bean id="csv.CsvCaptureAllHandler" class="com.mosaicatm.fuser.datacapture.handle.CsvCaptureHandler">
+        <property name="matmFlightCapture" ref="csv.MatmFlightAllCsvCapture" />
+        <property name="adsbExtensionCapture" ref="csv.AdsbExtensionAllCsvCapture" />
+        <property name="asdexExtensionCapture" ref="csv.AsdexExtensionAllCsvCapture" />
+        <property name="cat11ExtensionCapture" ref="csv.Cat11ExtensionAllCsvCapture" />
+        <property name="cat62ExtensionCapture" ref="csv.Cat62ExtensionAllCsvCapture" />
+        <property name="derivedExtensionCapture" ref="csv.DerivedExtensionAllCsvCapture" />
+        <property name="tbfmExtensionCapture" ref="csv.TbfmExtensionAllCsvCapture" />
+        <property name="tfmExtensionCapture" ref="csv.TfmExtensionAllCsvCapture" />
+        <property name="tfmTfdmExtensionCapture" ref="csv.TfmTfdmExtensionAllCsvCapture" />
+        <property name="matmAirlineMessageExtensionCapture" ref="csv.MatmAirlineMessageExtensionAllCsvCapture" />
+        <property name="idacExtensionCapture" ref="csv.IdacExtensionAllCsvCapture" />
+        <property name="surfaceModelExtensionCapture" ref="csv.SurfaceModelExtensionAllCsvCapture" />
+        <property name="aefsExtensionCapture" ref="csv.AefsExtensionAllCsvCapture" />
+        <property name="sfdpsExtensionCapture" ref="csv.SfdpsExtensionAllCsvCapture" />
+        <property name="smesExtensionCapture" ref="csv.SmesExtensionAllCsvCapture" />
+        <property name="tmiExtensionCapture" ref="csv.TmiExtensionAllCsvCapture" />
+    </bean>    
+
+    <!-- MATM FLIGHT CAPTURE -->
+    <bean id="csv.MatmFlightCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MATM_FLIGHT" />
+        <property name="active" value="${fuser-capture.matmFlight.enabled}" />
+        <property name="capture" ref="csv.MatmFlightCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.MatmFlightCsvRollingCapture" factory-bean="csv.MatmFlightCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.MatmFlightCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.matmFlight.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.matmFlight.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.matmFlight.header.enabled}" />
+        <property name="fileHeader" ref="csv.MatmFlightFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.MatmFlightAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MATM_FLIGHT_ALL" />
+        <property name="active" value="${fuser-capture.matmFlight.enabled}" />
+        <property name="capture" ref="csv.MatmFlightAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.MatmFlightAllCsvRollingCapture" factory-bean="csv.MatmFlightAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.MatmFlightAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.matmFlight.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.matmFlight.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.matmFlight.header.enabled}" />
+        <property name="fileHeader" ref="csv.MatmFlightFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+        
+    <!-- ADSB EXTENSION CAPTURE -->   
+    <bean id="csv.AdsbExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_ADSB" />
+        <property name="active" value="${fuser-capture.ext.adsb.enabled}" />
+        <property name="capture" ref="csv.AdsbExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.AdsbExtensionCsvRollingCapture" factory-bean="csv.AdsbExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.AdsbExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.adsb.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.adsb.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.adsb.header.enabled}" />
+        <property name="fileHeader" ref="csv.AdsbFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    <bean id="csv.AdsbExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_ADSB_ALL" />
+        <property name="active" value="${fuser-capture.ext.adsb.enabled}" />
+        <property name="capture" ref="csv.AdsbExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.AdsbExtensionAllCsvRollingCapture" factory-bean="csv.AdsbExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.AdsbExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.adsb.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.adsb.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.adsb.header.enabled}" />
+        <property name="fileHeader" ref="csv.AdsbFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    <!-- ASDEX EXTENSION CAPTURE -->
+    <bean id="csv.AsdexExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_ASDEX" />
+        <property name="active" value="${fuser-capture.ext.asdex.enabled}" />
+        <property name="capture" ref="csv.AsdexExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.AsdexExtensionCsvRollingCapture" factory-bean="csv.AsdexExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.AsdexExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.asdex.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.asdex.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.asdex.header.enabled}" />
+        <property name="fileHeader" ref="csv.AsdexFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.AsdexExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_ASDEX_ALL" />
+        <property name="active" value="${fuser-capture.ext.asdex.enabled}" />
+        <property name="capture" ref="csv.AsdexExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.AsdexExtensionAllCsvRollingCapture" factory-bean="csv.AsdexExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.AsdexExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.asdex.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.asdex.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.asdex.header.enabled}" />
+        <property name="fileHeader" ref="csv.AsdexFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    <!-- CAT11 EXTENSION CAPTURE -->
+    <bean id="csv.Cat11ExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_CAT11" />
+        <property name="active" value="${fuser-capture.ext.cat11.enabled}" />
+        <property name="capture" ref="csv.Cat11ExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.Cat11ExtensionCsvRollingCapture" factory-bean="csv.Cat11ExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.Cat11ExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.cat11.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.cat11.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.cat11.header.enabled}" />
+        <property name="fileHeader" ref="csv.Cat11FileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.Cat11ExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_CAT11_ALL" />
+        <property name="active" value="${fuser-capture.ext.cat11.enabled}" />
+        <property name="capture" ref="csv.Cat11ExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.Cat11ExtensionAllCsvRollingCapture" factory-bean="csv.Cat11ExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.Cat11ExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.cat11.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.cat11.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.cat11.header.enabled}" />
+        <property name="fileHeader" ref="csv.Cat11FileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    <!-- CAT62 EXTENSION CAPTURE -->
+    <bean id="csv.Cat62ExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_CAT62" />
+        <property name="active" value="${fuser-capture.ext.cat62.enabled}" />
+        <property name="capture" ref="csv.Cat62ExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.Cat62ExtensionCsvRollingCapture" factory-bean="csv.Cat62ExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.Cat62ExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.cat62.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.cat62.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.cat62.header.enabled}" />
+        <property name="fileHeader" ref="csv.Cat62FileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.Cat62ExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_CAT62_ALL" />
+        <property name="active" value="${fuser-capture.ext.cat62.enabled}" />
+        <property name="capture" ref="csv.Cat62ExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.Cat62ExtensionAllCsvRollingCapture" factory-bean="csv.Cat62ExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.Cat62ExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.cat62.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.cat62.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.cat62.header.enabled}" />
+        <property name="fileHeader" ref="csv.Cat62FileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    <!-- DERIVED EXTENSION CAPTURE -->
+    <bean id="csv.DerivedExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_DERIVED" />
+        <property name="active" value="${fuser-capture.ext.derived.enabled}" />
+        <property name="capture" ref="csv.DerivedExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.DerivedExtensionCsvRollingCapture" factory-bean="csv.DerivedExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.DerivedExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.derived.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.derived.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.derived.header.enabled}" />
+        <property name="fileHeader" ref="csv.DerivedFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.DerivedExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_DERIVED_ALL" />
+        <property name="active" value="${fuser-capture.ext.derived.enabled}" />
+        <property name="capture" ref="csv.DerivedExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.DerivedExtensionAllCsvRollingCapture" factory-bean="csv.DerivedExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.DerivedExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.derived.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.derived.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.derived.header.enabled}" />
+        <property name="fileHeader" ref="csv.DerivedFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <!-- TBFM EXTENSION CAPTURE -->
+    <bean id="csv.TbfmExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TBFM" />
+        <property name="active" value="${fuser-capture.ext.tbfm.enabled}" />
+        <property name="capture" ref="csv.TbfmExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TbfmExtensionCsvRollingCapture" factory-bean="csv.TbfmExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TbfmExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tbfm.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tbfm.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tbfm.header.enabled}" />
+        <property name="fileHeader" ref="csv.TbfmFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.TbfmExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TBFM_ALL" />
+        <property name="active" value="${fuser-capture.ext.tbfm.enabled}" />
+        <property name="capture" ref="csv.TbfmExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TbfmExtensionAllCsvRollingCapture" factory-bean="csv.TbfmExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TbfmExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tbfm.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tbfm.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tbfm.header.enabled}" />
+        <property name="fileHeader" ref="csv.TbfmFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    <!-- TFM EXTENSION CAPTURE -->
+    <bean id="csv.TfmExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TFM" />
+        <property name="active" value="${fuser-capture.ext.tfm.enabled}" />
+        <property name="capture" ref="csv.TfmExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TfmExtensionCsvRollingCapture" factory-bean="csv.TfmExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TfmExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tfm.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tfm.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tfm.header.enabled}" />
+        <property name="fileHeader" ref="csv.TfmFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.TfmExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TFM_ALL" />
+        <property name="active" value="${fuser-capture.ext.tfm.enabled}" />
+        <property name="capture" ref="csv.TfmExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TfmExtensionAllCsvRollingCapture" factory-bean="csv.TfmExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TfmExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tfm.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tfm.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tfm.header.enabled}" />
+        <property name="fileHeader" ref="csv.TfmFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+    
+    
+    <!-- TFM TFDM EXTENSION CAPTURE -->
+    <bean id="csv.TfmTfdmExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TFM_TFDM" />
+        <property name="active" value="${fuser-capture.ext.tfmtfdm.enabled}" />
+        <property name="capture" ref="csv.TfmTfdmExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TfmTfdmExtensionCsvRollingCapture" factory-bean="csv.TfmTfdmExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TfmTfdmExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tfmtfdm.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tfmtfdm.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tfmtfdm.header.enabled}" />
+        <property name="fileHeader" ref="csv.TfmTfdmFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.TfmTfdmExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TFM_TFDM_ALL" />
+        <property name="active" value="${fuser-capture.ext.tfmtfdm.enabled}" />
+        <property name="capture" ref="csv.TfmTfdmExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TfmTfdmExtensionAllCsvRollingCapture" factory-bean="csv.TfmTfdmExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TfmTfdmExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tfmtfdm.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tfmtfdm.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tfmtfdm.header.enabled}" />
+        <property name="fileHeader" ref="csv.TfmTraversalFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>     
+    
+    <!-- TFM TRAVERSAL EXTENSION CAPTURE -->
+    <bean id="csv.TfmTraversalExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TFM_TRAVERSAL" />
+        <property name="active" value="${fuser-capture.ext.tfmtraversal.enabled}" />
+        <property name="capture" ref="csv.TfmTraversalExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TfmTraversalExtensionCsvRollingCapture" factory-bean="csv.TfmTraversalExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TfmTraversalExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tfmtraversal.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tfmtraversal.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tfmtraversal.header.enabled}" />
+        <property name="fileHeader" ref="csv.TfmTfdmFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.TfmTraversalExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TFM_TRAVERSAL_ALL" />
+        <property name="active" value="${fuser-capture.ext.tfmtraversal.enabled}" />
+        <property name="capture" ref="csv.TfmTraversalExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TfmTraversalExtensionAllCsvRollingCapture" factory-bean="csv.TfmTraversalExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TfmTraversalExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tfmtraversal.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tfmtraversal.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tfmtraversal.header.enabled}" />
+        <property name="fileHeader" ref="csv.TfmTraversalFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>        
+    
+    <!-- AIRLINE MESSAGE EXTENSION CAPTURE -->
+    <bean id="csv.MatmAirlineMessageExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_MATM_AIRLINE_MESSAGE" />
+        <property name="active" value="${fuser-capture.ext.matm-airline-message.enabled}" />
+        <property name="capture" ref="csv.MatmAirlineMessageExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.MatmAirlineMessageExtensionCsvRollingCapture" factory-bean="csv.MatmAirlineMessageExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.MatmAirlineMessageExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.matm-airline-message.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.matm-airline-message.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.matm-airline-message.header.enabled}" />
+        <property name="fileHeader" ref="csv.MatmAirlineFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.MatmAirlineMessageExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_MATM_AIRLINE_MESSAGE_ALL" />
+        <property name="active" value="${fuser-capture.ext.matm-airline-message.enabled}" />
+        <property name="capture" ref="csv.MatmAirlineMessageExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.MatmAirlineMessageExtensionAllCsvRollingCapture" factory-bean="csv.MatmAirlineMessageExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.MatmAirlineMessageExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.matm-airline-message.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.matm-airline-message.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.matm-airline-message.header.enabled}" />
+        <property name="fileHeader" ref="csv.MatmAirlineFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>    
+
+    <!-- IDAC EXTENSION CAPTURE -->
+    <bean id="csv.IdacExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_IDAC" />
+        <property name="active" value="${fuser-capture.ext.idac.enabled}" />
+        <property name="capture" ref="csv.IdacExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.IdacExtensionCsvRollingCapture" factory-bean="csv.IdacExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.IdacExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.idac.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.idac.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.idac.header.enabled}" />
+        <property name="fileHeader" ref="csv.IdacFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.IdacExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_IDAC_ALL" />
+        <property name="active" value="${fuser-capture.ext.idac.enabled}" />
+        <property name="capture" ref="csv.IdacExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.IdacExtensionAllCsvRollingCapture" factory-bean="csv.IdacExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.IdacExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.idac.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.idac.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.idac.header.enabled}" />
+        <property name="fileHeader" ref="csv.IdacFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean> 
+    
+    <!-- SURFACE MODEL EXTENSION CAPTURE -->
+    <bean id="csv.SurfaceModelExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_SURFACE_MODEL" />
+        <property name="active" value="${fuser-capture.ext.surface-model.enabled}" />
+        <property name="capture" ref="csv.SurfaceModelExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.SurfaceModelExtensionCsvRollingCapture" factory-bean="csv.SurfaceModelExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.SurfaceModelExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.surface-model.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.surface-model.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.surface-model.header.enabled}" />
+        <property name="fileHeader" ref="csv.SurfaceModelFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.SurfaceModelExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_SURFACE_MODEL_ALL" />
+        <property name="active" value="${fuser-capture.ext.surface-model.enabled}" />
+        <property name="capture" ref="csv.SurfaceModelExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.SurfaceModelExtensionAllCsvRollingCapture" factory-bean="csv.SurfaceModelExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.SurfaceModelExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.surface-model.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.surface-model.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.surface-model.header.enabled}" />
+        <property name="fileHeader" ref="csv.SurfaceModelFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+
+    <!-- AEFS EXTENSION CAPTURE -->
+    <bean id="csv.AefsExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_AEFS" />
+        <property name="active" value="${fuser-capture.ext.aefs.enabled}" />
+        <property name="capture" ref="csv.AefsExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.AefsExtensionCsvRollingCapture" factory-bean="csv.AefsExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.AefsExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.aefs.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.aefs.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.aefs.header.enabled}" />
+        <property name="fileHeader" ref="csv.AefsFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.AefsExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_AEFS_ALL" />
+        <property name="active" value="${fuser-capture.ext.aefs.enabled}" />
+        <property name="capture" ref="csv.AefsExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.AefsExtensionAllCsvRollingCapture" factory-bean="csv.AefsExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.AefsExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.aefs.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.aefs.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.aefs.header.enabled}" />
+        <property name="fileHeader" ref="csv.AefsFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+
+    <!-- SFDPS EXTENSION CAPTURE -->
+    <bean id="csv.SfdpsExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_SFDPS" />
+        <property name="active" value="${fuser-capture.ext.sfdps.enabled}" />
+        <property name="capture" ref="csv.SfdpsExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.SfdpsExtensionCsvRollingCapture" factory-bean="csv.SfdpsExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.SfdpsExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.sfdps.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.sfdps.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.sfdps.header.enabled}" />
+        <property name="fileHeader" ref="csv.SfdpsFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.SfdpsExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_SFDPS_ALL" />
+        <property name="active" value="${fuser-capture.ext.sfdps.enabled}" />
+        <property name="capture" ref="csv.SfdpsExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.SfdpsExtensionAllCsvRollingCapture" factory-bean="csv.SfdpsExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.SfdpsExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.sfdps.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.sfdps.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.sfdps.header.enabled}" />
+        <property name="fileHeader" ref="csv.SfdpsFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+
+    <!-- SMES EXTENSION CAPTURE -->
+    <bean id="csv.SmesExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+          init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_SMES" />
+        <property name="active" value="${fuser-capture.ext.smes.enabled}" />
+        <property name="capture" ref="csv.SmesExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+
+    <bean id="csv.SmesExtensionCsvRollingCapture" factory-bean="csv.SmesExtensionCsvRollingCaptureFactory" factory-method="create" />
+
+    <bean id="csv.SmesExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.smes.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.smes.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.smes.header.enabled}" />
+        <property name="fileHeader" ref="csv.SmesFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+
+    <bean id="csv.SmesExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+          init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_SMES_ALL" />
+        <property name="active" value="${fuser-capture.ext.smes.enabled}" />
+        <property name="capture" ref="csv.SmesExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+
+    <bean id="csv.SmesExtensionAllCsvRollingCapture" factory-bean="csv.SmesExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+
+    <bean id="csv.SmesExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.smes.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.smes.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.smes.header.enabled}" />
+        <property name="fileHeader" ref="csv.SmesFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <!-- TMI EXTENSION CAPTURE -->
+    <bean id="csv.TmiExtensionCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TMI" />
+        <property name="active" value="${fuser-capture.ext.tmi.enabled}" />
+        <property name="capture" ref="csv.TmiExtensionCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TmiExtensionCsvRollingCapture" factory-bean="csv.TmiExtensionCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TmiExtensionCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tmi.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tmi.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tmi.header.enabled}" />
+        <property name="fileHeader" ref="csv.TmiFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="csv.TmiExtensionAllCsvCapture" class="com.mosaicatm.fuser.datacapture.io.rolling.FuserRollingCsvCapture"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="EXT_TMI_ALL" />
+        <property name="active" value="${fuser-capture.ext.tmi.enabled}" />
+        <property name="capture" ref="csv.TmiExtensionAllCsvRollingCapture" />
+        <property name="delimitedObjectFactory" ref="capture.DelimitedObjectFactory" />
+        <property name="flatFactory" ref="capture.FlatFactory" />
+        <property name="clock" ref="api.Clock" />
+    </bean>
+    
+    <bean id="csv.TmiExtensionAllCsvRollingCapture" factory-bean="csv.TmiExtensionAllCsvRollingCaptureFactory" factory-method="create" />
+    
+    <bean id="csv.TmiExtensionAllCsvRollingCaptureFactory" class="com.mosaicatm.rollingfile.capture.RollingCaptureFactory">
+        <property name="active" value="${fuser-capture.ext.tmi.enabled}" />
+        <property name="path" value="${fuser-capture.capture.path}" />
+        <property name="fileName" value="${fuser-capture.ext.tmi.all.file}" />
+        <property name="fileNameExtension" value=".csv" />
+        <property name="fileHeaderActive" value="${fuser-capture.ext.tmi.header.enabled}" />
+        <property name="fileHeader" ref="csv.TmiFileHeader" />
+        <property name="archivePath" value="${fuser-capture.capture.archive.path}" />
+        <property name="rollPeriod" value="${fuser-capture.capture.roll.period}" />
+        <property name="archiveThreaded" value="${fuser-capture.capture.archive.threaded}" />
+        <property name="useMessageTime" value="${fuser-capture.capture.useMessageTime}" />
+    </bean>
+    
+</beans>

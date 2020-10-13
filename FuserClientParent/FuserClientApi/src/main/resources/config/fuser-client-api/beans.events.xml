@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="events.ProcessedEventManager" class="com.mosaicatm.fuser.client.api.impl.event.GenericFuserProcessedEventManager" />
+    
+    <bean id="events.ReceivedEventManager" class="com.mosaicatm.fuser.client.api.impl.event.GenericFuserReceivedEventManager" />
+
+    <bean id="events.FuserSyncCompleteEventManager"
+            class="com.mosaicatm.fuser.client.api.impl.event.GenericFuserSyncCompleteEventManager" />
+</beans>

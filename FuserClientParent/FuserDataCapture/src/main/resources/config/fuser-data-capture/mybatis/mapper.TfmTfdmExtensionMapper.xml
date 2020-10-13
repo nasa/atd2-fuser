@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.TfmTfdmExtensionMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            acc_dep_rwys varchar,
+            actual_in_block_time timestamp,
+            actual_landing_time timestamp,
+            actual_off_block_time timestamp,
+            actual_take_off_time timestamp,
+            arr_intent_to_hold_in_move boolean,
+            arr_intent_to_hold_non_move boolean,
+            arr_stand_assignment varchar,
+            arr_stand_available boolean,
+            cancelled boolean,
+            cdm_participant boolean,
+            dep_intent_to_hold_in_move boolean,
+            dep_intent_to_hold_non_move boolean,
+            dep_readiness boolean,
+            dep_stand_assignment varchar,
+            earliest_off_block_time timestamp,
+            flight_ref varchar,
+            initial_off_block_time timestamp,
+            intended_arr_spot varchar,
+            intended_deice_location varchar,
+            intended_dep_spot varchar,
+            intent_return_to_gate boolean,
+            intent_to_be_deiced boolean,
+            major_carrier varchar,
+            message_type varchar,
+            projected_wheels_up_time timestamp,
+            record_identifier varchar,
+            record_timestamp timestamp,        
+            source varchar,
+            source_facility varchar,
+            target_m_a_entry_time timestamp,
+            target_off_block_time timestamp,
+            target_take_off_time timestamp,
+            timestamp timestamp,        
+            tmat_marked_for_sub boolean,
+            tmat_relinquish boolean,
+            unacc_dep_rwys varchar
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

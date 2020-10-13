@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="sector.core.MatmSectorAssignmentForwardingHandler" class="com.mosaicatm.lib.messaging.ForwardingMessageHandler">
+        <constructor-arg index="0" value="${fuser-client-api.uri.matmSectorAssignment.handle}" />
+    </bean>
+    
+    <bean id="sector.core.MatmSectorAssignmentUpdateHandler" class="com.mosaicatm.fuser.client.api.impl.data.GenericFuserUpdateHandler" />
+
+    <bean id="sector.core.SectorAssignmentClientStore" class="com.mosaicatm.fuser.client.api.impl.data.FuserLockingProxyStore">
+        <constructor-arg index="0" ref="sector.core.SectorAssignmentStore" />
+    </bean>
+
+    <bean id="sector.core.SectorAssignmentStore" class="com.mosaicatm.fuser.client.api.impl.data.FuserClientMatmSectorAssignmentStore" />
+
+    <bean id="sector.core.SyncPoint" class="com.mosaicatm.fuser.client.api.util.SyncPoint">
+        <constructor-arg value="${fuser-client-api.service.sync.sectorAssignments.enabled}" />
+    </bean>
+
+</beans>

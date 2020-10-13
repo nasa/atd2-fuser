@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="core.Clock" class="com.mosaicatm.lib.time.SystemClock" />
+        
+    <bean id="core.clock.ClockSyncPoint" class="com.mosaicatm.lib.util.concurrent.SyncPoint">
+   	 	<constructor-arg value="${fuser-client-api.clocksync.active}" />
+    </bean>
+    
+    <bean id="core.MatmFlightReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+          init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmFlightReceiver" />
+        <constructor-arg index="1" ref="core.MatmFlightForwardingHandler" />
+        <constructor-arg index="2" value="${fuser-client-api.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>        
+    
+    <bean id="core.MatmFlightForwardingHandler" class="com.mosaicatm.lib.messaging.ForwardingMessageHandler">
+        <constructor-arg index="0" value="${fuser-client-api.uri.matmFlight.process}" />
+    </bean>
+    
+    <bean id="core.MatmFlightUpdateHandler" class="com.mosaicatm.fuser.client.api.impl.data.GenericFuserUpdateHandler">
+    </bean>
+
+    <bean id="core.FuserClientStore" class="com.mosaicatm.fuser.client.api.impl.data.FuserLockingProxyStore">
+        <constructor-arg index="0" ref="core.FlightStore" />
+    </bean>
+    
+    <bean id="core.FlightStore" class="com.mosaicatm.fuser.client.api.impl.data.FuserClientMatmFlightStore" >
+    	
+    </bean>
+    
+    <bean id="core.SyncPoint" class="com.mosaicatm.fuser.client.api.util.SyncPoint">
+   	 	<constructor-arg value="${fuser-client-api.service.sync.enabled}" />
+    </bean>
+
+    <bean id="core.FuserSyncRequest" class="com.mosaicatm.fuser.services.client.FuserSyncRequest">
+        <property name="airportFilterActive" value="${fuser-client-api.filter.airport.active}" />
+        <property name="surfaceFilterActive" value="${fuser-client-api.filter.asdex.airport.active}" />
+        <property name="airportsFromString" value="${fuser-client-api.airportsOfInterest}" />
+    </bean>
+
+</beans>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+	version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+	xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+	xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<import namespace="http://www.mosaicatm.com/matmdata/common"
+		schemaLocation="../MatmCommon.xsd" />
+
+    <xs:complexType name="idacExtension">
+      <xs:sequence>
+        <xs:element name="upstreamTmaId" type="xs:string" minOccurs="0"/>
+        <xs:element name="globalId" type="xs:string" minOccurs="0" />
+        <xs:element name="acid" type="xs:string" minOccurs="0" />
+        <xs:element name="callSign" type="xs:string" minOccurs="0" />
+        <xs:element name="scheduledStatusCode" type="xs:string" minOccurs="0" />
+        
+        <xs:element name="fused" type="xs:boolean" minOccurs="0" />
+        
+        <xs:element name="aircraftReadyTime" type="xs:dateTime" minOccurs="0" />
+        <xs:element name="estimatedDepartureTime" type="xs:dateTime" minOccurs="0" />
+        <xs:element name="estimatedDepartureClearanceTime" type="xs:dateTime" minOccurs="0" />
+
+        <xs:element name="schedulingPointConstraintSatisfactionPoint" type="xs:string" minOccurs="0" />
+        <xs:element name="schedulingPointArtcc" type="xs:string" minOccurs="0" />
+        <xs:element name="schedulingPointTracon" type="xs:string" minOccurs="0" />
+            
+        <xs:element name="firstArtcc" type="xs:string" minOccurs="0" /> 
+        
+        <xs:element name="aircraftStatus" type="mc:aircraftStatus" minOccurs="0" />
+        
+        <xs:element name="departureRunway" type="xs:string" minOccurs="0" />
+        
+        <!-- this field is not part of the idac messaging, it was added to help
+             track when idac release negotiation occurs -->
+        <xs:element name="negotiatingRelease" type="xs:boolean" minOccurs="0" />
+
+        <xs:element name="artccSchedulingList" minOccurs="0">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element name="artccSchedulingData" maxOccurs="unbounded">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="artccId" type="xs:string"/>
+                                <xs:element name="tmaId" type="xs:string"/>
+                                <xs:element name="traconGroup" type="xs:string"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:element>
+
+        <xs:element name="flowAssignmentList" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="flowAssignmentData" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="superStreamClassIdentifierId" type="xs:int" minOccurs="0"/>
+                    <xs:element name="superStreamClassIdentifierName" type="xs:string" minOccurs="0"/>
+                    <xs:element name="superStreamClassIdentifierFacility" type="xs:string" minOccurs="0"/>
+                    <xs:element name="superStreamClassIdentifierTracon" type="xs:string" minOccurs="0"/>
+                    <xs:element name="csp" type="xs:string" minOccurs="0"/>
+                    <xs:element name="apreqMode" type="mc:releaseMode" minOccurs="0"/>
+                    <xs:element name="activationTime" type="xs:dateTime" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+
+
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
+

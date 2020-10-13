@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attributeFilters>
+    <arrivalAttributeFilters>
+        <attributeFilter source="AIRLINE" type="exclude">
+            <arrivalFixActualTime />
+            <arrivalMovementAreaActualTime />
+        </attributeFilter>
+        <attributeFilter source="TFM" type="exclude">
+        </attributeFilter>
+        <attributeFilter source="TFM_TFDM" type="exclude">
+        </attributeFilter>        
+        <attributeFilter source="IDAC" type="exclude">
+        </attributeFilter>
+        <attributeFilter source="TMA" type="exclude">
+        </attributeFilter>   
+        <attributeFilter source="FMC" type="exclude">
+            <arrivalSpotAirline />
+            <arrivalStandAirline />
+            <arrivalRunwayAirline />
+            <arrivalRunwayAssigned />
+            <arrivalRunwayScratchpad />
+        </attributeFilter>  
+        <!-- 
+        May want to put this back once we sort out why the model is intentionally setting these:
+        <arrivalFixSourceData />
+        -->
+    </arrivalAttributeFilters>
+
+    <departureAttributeFilters>
+        <attributeFilter source="AIRLINE" type="exclude">
+            <departureFixActualTime />
+            <departureMovementAreaActualTime />
+            <departureStartupRequestActualTime />
+            <departureStartupApprovalActualTime />
+            <departureStandReadyActualTime />
+            <departureQueueEntryActualTime />
+        </attributeFilter>
+        <attributeFilter source="TFM" type="exclude">
+        </attributeFilter>
+        <attributeFilter source="TFM_TFDM" type="exclude">
+        </attributeFilter>        
+        <attributeFilter source="IDAC" type="exclude">
+            <departureRunwayAssigned />
+            <departureStandProposedTime />
+        </attributeFilter>
+        <attributeFilter source="TMA" type="exclude">
+            <departureRunwayAssigned />
+            <departureStandProposedTime />
+        </attributeFilter>   
+        <attributeFilter source="FMC" type="exclude">
+            <departureSpotAirline />
+            <departureStandAirline />
+            <departureRunwayAirline />
+            <departureRunwayAssigned />
+        </attributeFilter>
+        <!-- 
+        May want to put this back once we sort out why the model is intentionally setting these:
+        <departureFixSourceData />
+        -->
+    </departureAttributeFilters>
+</attributeFilters>

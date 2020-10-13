@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    
+   <changeSet id="fuserDataCapture-v5.5.0-20190930-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="last_update_gufi"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="last_update_gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v5.5.0-20190930-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="last_update_gufi"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="last_update_gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.5.0-20190930-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="last_update_gufi"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="last_update_gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.5.0-20191112-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="delay_report_required"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="delay_report_required" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.5.0-20191112-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="delay_report_required"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="delay_report_required" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.5.0-20191112-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="delay_report_required"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="delay_report_required" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v5.5.0" author="atd2" runAlways="true">
+        <tagDatabase tag="5.5.0" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.TfmTraversalExtensionAllMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            gufi                varchar,
+            system_id           varchar,
+            fix_traversal       jsonb,
+            waypoint_traversal  jsonb,
+            center_traversal    jsonb,
+            sector_traversal    jsonb,
+            record_identifier   varchar,
+            record_timestamp    timestamp,
+            timestamp           timestamp
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

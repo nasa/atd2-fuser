@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/heartbeat"
+           version="1.0" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:hb="http://www.mosaicatm.com/matmdata/heartbeat"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="heartbeat" type="hb:heartbeat" />
+    
+    <xs:complexType name="heartbeat">
+        <xs:sequence>
+            <xs:element name="lastUpdateTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="source" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+</xs:schema>
+

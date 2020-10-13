@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="jms-destConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${fuser-capture.performancemonitor.jms.url}"/>
+        <property name="userName" value="${fuser-capture.performancemonitor.jms.username}" />
+        <property name="password" value="${fuser-capture.performancemonitor.jms.password}" />
+        <property name="trustAllPackages" value="true" />
+    </bean>
+
+    <bean id="jms-destPooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+       destroy-method="stop">
+        <property name="maxConnections" value="8" />
+        <property name="maximumActiveSessionPerConnection" value="500" />
+        <property name="connectionFactory" ref="jms-destConnectionFactory" />
+    </bean>
+
+
+    <bean id="jms-destConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+        <property name="connectionFactory" ref="jms-destPooledConnectionFactory" />
+        <property name="transacted" value="false" />
+        <property name="concurrentConsumers" value="1" />
+        <property name="pubSubNoLocal" value="true" />
+    </bean>
+
+    <bean id="jms-dest" class="org.apache.camel.component.activemq.ActiveMQComponent"
+       destroy-method="stop">
+        <property name="configuration" ref="jms-destConfig" />
+    </bean>
+
+</beans>

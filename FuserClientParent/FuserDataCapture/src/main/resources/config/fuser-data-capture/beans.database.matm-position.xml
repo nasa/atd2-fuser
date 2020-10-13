@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <!-- position -->
+    <bean id="db.PositionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="position" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"    value="com.mosaicatm.fuser.datacapture.db.dao.PositionMapper" />
+                <property name="sqlSessionFactory"  ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.MatmPositionMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="matm_position_all" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"    value="com.mosaicatm.fuser.datacapture.db.dao.MatmPositionAllMapper" />
+                <property name="sqlSessionFactory"  ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="db.PositionWriterClientFactory" class="com.mosaicatm.fuser.datacapture.io.batch.WriterClientFactory">
+        <property name="delimitedFactory" ref="database.MatmPositionUpdateDelimitedObjectFactory" /> 
+        <property name="flatFactory"      ref="capture.FlatFactory" />
+        <property name="clock"            ref="core.Clock" />
+    </bean>     
+    
+    <bean id="db.PositionWriterClient" factory-bean="db.PositionWriterClientFactory" factory-method="getPositionClientInstance">
+        <constructor-arg name="captureType" value="POSITION" />
+        <constructor-arg name="parentTable" value="position" />
+        <constructor-arg name="active" value="${fuser-capture.capture.database.position.enabled}" />
+    </bean>
+    
+    <bean id="db.MatmPositionWriterClient" factory-bean="db.PositionWriterClientFactory" factory-method="getPositionClientInstance">
+        <constructor-arg name="captureType" value="MATM_POSITION_ALL" />
+        <constructor-arg name="parentTable" value="matm_position_all" />
+        <constructor-arg name="active" value="${fuser-capture.capture.database.matm.position.enabled}" />
+    </bean>
+    
+    <!-- mapping cores -->
+    <bean id="db.position.mapperFactory" class="com.mosaicatm.lib.database.ibatis.mapper.TableMapperFactoryImpl">
+        <property name="tableMappers" >
+            <list>
+                <ref bean="db.PositionMapperWrapper" />
+                <ref bean="db.MatmPositionMapperWrapper" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="db.position.IbatisBulkDriver" class="com.mosaicatm.lib.database.ibatis.IBatisBulkDriver" destroy-method="close">
+        <constructor-arg ref="db.dataSource" />
+        <constructor-arg ref="db.DatabaseMapper" />
+        <constructor-arg ref="db.position.mapperFactory" />
+    </bean>
+    
+    <bean id="db.position.BulkLoader" class="com.mosaicatm.lib.database.ibatis.IBatisBulkLoader" init-method="start" >
+        <property name="active"
+                  value="#{${fuser-capture.capture.database.position.enabled} ||
+                  	       ${fuser-capture.capture.database.matm.position.enabled}}" />
+        <property name="bulkDriver"                ref="db.position.IbatisBulkDriver" />
+        <property name="batchName"                value="MatmPositionBatch" />
+        <property name="batchReportName"        value="MatmPositionBatch" />
+        <property name="timestampColumnName"    value="${fuser-capture.database.timestampColumnName}"/>
+        <property name="timedBatchPeriod"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedBatchDelay"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedReportPeriod"         value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportDelay"         value="${fuser-capture.database.batch.report.interval}" />        
+        <property name="timedReportEnabled"        value="${fuser-capture.database.batch.report.enabled}" />
+        <property name="daysToKeep"             value="${fuser-capture.database.daysToKeep}" />
+        <!-- Those are handled in the bean "db.matm-all.BulkLoader" -->
+<!--     <property name="createTable"             value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable"             value="${fuser-capture.database.dropTables}" /> -->
+        <property name="blockingQueueMaxSize"  value="${fuser-capture.database.blockingQueueMaxSize}" />
+        
+        <property name="clients">
+            <list>
+                <ref bean="db.PositionWriterClient" />
+                <ref bean="db.MatmPositionWriterClient" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean factory-bean="core.MetricProxyFactory" factory-method="monitorProcessTime" >
+        <constructor-arg index="0" ref="db.position.BulkLoader" />
+        <constructor-arg index="1" value="MatmPosition.totalProcessTime" />
+    </bean>
+    
+    <bean factory-bean="core.MetricProxyFactory" factory-method="monitorSize" >
+        <constructor-arg  index="0" >
+            <ref bean="db.position.BulkLoader" />
+        </constructor-arg>
+        <constructor-arg index="1" value="MatmPositionUpdateBatch" />
+    </bean>
+    
+</beans>

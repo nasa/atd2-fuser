@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    
+    <changeSet id="fuserDataCapture-v5.8.0-20200224-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all_join"/>
+            <not>
+                <columnExists tableName="matm_flight_all_join" columnName="smes_ext_all_record_identifier"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all_join">
+            <column name="smes_ext_all_record_identifier" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v5.8.0" author="atd2" runAlways="true">
+        <tagDatabase tag="5.8.0" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file defines the Camel routes that connect the applications to 
+the TIB bus for testing/demo. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- Camel Routes -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="routes.sector.CamelContext" 
+                  autoStartup="true" allowUseOriginalMessage="false">
+        <jmxAgent id="agent" disabled="true"/>
+        
+        <endpoint id="endpoint.toFuser.sectorAssignment.sync" uri="${fuser.endpoint.toFuser.sectorAssignment.sync}" />
+        <endpoint id="endpoint.toFuser.sectorAssignment.receive" uri="${fuser.endpoint.toFuser.sectorAssignment.receive}" />
+        <endpoint id="endpoint.toFuser.sectorAssignment.process" uri="${fuser.endpoint.toFuser.sectorAssignment.process}" />
+        <endpoint id="endpoint.fromFuser.sectorAssignment.envelope" uri="${fuser.endpoint.fromFuser.sectorAssignment.envelope}" />
+        <endpoint id="endpoint.fromFuser.sectorAssignment.batch" uri="${fuser.endpoint.fromFuser.sectorAssignment.batch}" />
+        <endpoint id="endpoint.fromFuser.sectorAssignment.envelope.process" uri="${fuser.endpoint.fromFuser.sectorAssignment.envelope.process}" />
+        <endpoint id="endpoint.fromFuser.sectorAssignment.remove.forward" uri="${fuser.endpoint.fromFuser.sectorAssignment.remove.forward}" />
+        <endpoint id="endpoint.fromFuser.sectorAssignment.remove" uri="${fuser.endpoint.fromFuser.sectorAssignment.remove}" />
+                
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <process ref="routes.sector.RouteErrorHandler" />
+        </onException>
+        
+        <route id="route.toFuser.sectorAssignment.sync">
+            <from uri="endpoint.toFuser.sectorAssignment.sync" />
+            <setHeader name="fuser.timestampFuserReceived" >
+                <method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            <to uri="endpoint.toFuser.sectorAssignment.receive"/>
+        </route>        
+        
+        <!-- Fuser sector assignment messages -->
+        <route id="route.toFuser.sectorAssignment.receive">            
+            <from uri="endpoint.toFuser.sectorAssignment.receive" /> 
+            <bean ref="monitor.endpoint.toFuser.sectorAssignment.receive" method="mark(1)" />
+            <bean ref="core.DataFeederSignaler" method="messageReceived" />
+            <to uri="endpoint.toFuser.sectorAssignment.process" />
+        </route>   
+        
+        <route id="route.toFuser.sectorAssignment.process">            
+            <from uri="endpoint.toFuser.sectorAssignment.process" />                   
+            <bean ref="monitor.endpoint.toFuser.sectorAssignment.process" method="mark(1)" />        
+            
+            <bean ref="sector.core.SectorAssignmentUpdater" />            
+            
+            <bean ref="fuser.core.TimestampSetter" method="setTimestampFuserReceived(${body}, ${header.fuser.timestampFuserReceived})" />
+            <bean ref="fuser.core.TimestampSetter" method="updateTimeFuserProcessed(${body})" />            
+            
+            <to uri="endpoint.fromFuser.sectorAssignment.batch" />
+        </route>     
+        
+        <route id="route.fuser.toFuser.sectorAssignment.process.fuse.batch">
+            <from uri="endpoint.fromFuser.sectorAssignment.batch" />
+            <bean ref="core.DataFeederSignaler" method="messageProcessed" />
+            <bean ref="playback.DataSignaler" method="messageProcessed( ${headers} )" />
+            <bean ref="sector.core.SectorAssignmentBatcher" method="batch" />              
+        </route>
+        
+        <route id="route.fuser.toFuser.sectorAssignment.processBatch">
+            <from uri="endpoint.fromFuser.sectorAssignment.envelope.process" />
+            <bean ref="fuser.marshall.MatmTransferEnvelope" method="marshall" />
+            <to uri="endpoint.fromFuser.sectorAssignment.envelope" />
+        </route>           
+        
+        <route id="route.fuser.source.sectorAssignment.remove.forward">
+            <from uri="endpoint.fromFuser.sectorAssignment.remove.forward" />
+            <bean ref="fuser.marshall.MatmSectorAssignment" method="marshall" />
+            <to uri="endpoint.fromFuser.sectorAssignment.remove" />
+        </route>          
+        
+    </camelContext>
+
+    <bean id="routes.sector.RouteErrorHandler" class="com.mosaicatm.lib.camel.RouteErrorHandler" />
+    
+    <bean id="monitor.endpoint.toFuser.sectorAssignment.receive" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.toFuser.sectorAssignment.receive" />
+        <constructor-arg index="1" value="endpoint.toFuser.sectorAssignment.receive" />
+    </bean>   
+    
+    <bean id="monitor.endpoint.toFuser.sectorAssignment.process" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.toFuser.sectorAssignment.process" />
+        <constructor-arg index="1" value="endpoint.toFuser.sectorAssignment.process" />
+    </bean>        
+    
+    <bean id="routes.sector.MessageProducer" class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="routes.sector.CamelContext" />
+    </bean>    
+    
+    <bean id="routes.sector.fuser.MessageProducerOwnerInitializer" class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="routes.sector.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="sector.core.SectorAssignmentBatcher" />
+            </list>
+        </property>
+    </bean>    
+    
+</beans>

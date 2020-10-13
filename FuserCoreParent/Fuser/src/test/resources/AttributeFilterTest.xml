@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attributeFilters>
+    <arrivalAttributeFilters>
+		<attributeFilter source="AIRLINE" type="include">
+			<arrivalAerodrome.iataName />
+			<wakeTurbulenceCategory />
+		</attributeFilter>
+		<attributeFilter source="TFM" type="include">
+			<extensions.tfmExtension.lastTfmPosition.altitude.arrival />
+			<extensions.tfmExtension.lastTfmPosition.latitude.arrival />
+			<extensions.tfmExtension.lastTfmPosition.longitude.arrival />
+			<extensions.tfmExtension.lastTfmPosition.timestamp.arrival />
+			<extensions.tfmExtension.diversion />
+		</attributeFilter>
+		<attributeFilter source="ASDEX" type="exclude">
+			<extensions.asdexExtension.lastAsdexPositionArrival />
+		</attributeFilter>
+    </arrivalAttributeFilters>
+    
+    <departureAttributeFilters>
+	    <attributeFilter source="AIRLINE" type="include">
+	        <extensions.matmAirlineMessageExtension.dataSource />
+	        <departureFixActualTime />
+	    </attributeFilter>
+	    <attributeFilter source="TFM" type="include">
+	        <extensions.tfmExtension.lastTfmPosition.altitude.departure />
+	        <extensions.tfmExtension.lastTfmPosition.latitude.departure />
+	        <extensions.tfmExtension.lastTfmPosition.longitude.departure />
+	        <extensions.tfmExtension.lastTfmPosition.timestamp.departure />
+	        <extensions.tfmExtension.diversion />
+	    </attributeFilter>
+	    <attributeFilter source="ASDEX" type="exclude">
+	        <extensions.asdexExtension.lastAsdexPosition />
+	    </attributeFilter>
+    </departureAttributeFilters>
+</attributeFilters>

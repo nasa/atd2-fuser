@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension/tfmcomm"
+           version="1.0" xmlns="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
+    <xs:simpleType name="tfmSensitivityType">
+        <xs:annotation>
+            <xs:documentation>
+                A = All users including government (not sensitive)
+                R = Restricted - government agency only
+                D = All users except government because duplicate
+            </xs:documentation>
+        </xs:annotation>        
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="A" />            
+            <xs:enumeration value="R" />
+            <xs:enumeration value="D" />
+        </xs:restriction>
+    </xs:simpleType> 
+    
+    <xs:simpleType name="tfmSensitivityReasonType">
+        <xs:annotation>
+            <xs:documentation>
+                FM = Military
+                FS = Sensitive flight
+                DR = Sensitive data type
+            </xs:documentation>
+        </xs:annotation>        
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FM" />            
+            <xs:enumeration value="FS" />
+            <xs:enumeration value="DR" />
+        </xs:restriction>
+    </xs:simpleType>        
+    
+</xs:schema>
+

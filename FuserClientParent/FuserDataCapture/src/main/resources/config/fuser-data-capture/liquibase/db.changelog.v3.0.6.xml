@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+<!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v3.0.6-20170919-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension"/>
+            <not>
+                <columnExists tableName="derived_extension" columnName="departure_stand_airline_derived_actual_time"/>
+                <columnExists tableName="derived_extension" columnName="departure_stand_controller_derived_actual_time_value"/>
+                <columnExists tableName="derived_extension" columnName="departure_stand_position_derived_actual_time_value"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension">
+            <column name="departure_stand_airline_derived_actual_time" type="timestamp" />
+            <column name="departure_stand_controller_derived_actual_time_value" type="timestamp" />
+            <column name="departure_stand_position_derived_actual_time_value" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20170919-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all"/>
+            <not>
+                <columnExists tableName="derived_extension_all" columnName="departure_stand_airline_derived_actual_time"/>
+                <columnExists tableName="derived_extension_all" columnName="departure_stand_controller_derived_actual_time_value"/>
+                <columnExists tableName="derived_extension_all" columnName="departure_stand_position_derived_actual_time_value"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension_all">
+            <column name="departure_stand_airline_derived_actual_time" type="timestamp" />
+            <column name="departure_stand_controller_derived_actual_time_value" type="timestamp" />
+            <column name="departure_stand_position_derived_actual_time_value" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171010-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension"/>
+            <not>
+                <columnExists tableName="surface_model_extension" columnName="repositioned"/>
+                <columnExists tableName="surface_model_extension" columnName="suspended_from_scheduling"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="surface_model_extension">
+            <column name="repositioned" type="boolean" />
+            <column name="suspended_from_scheduling" type="boolean" />
+        </addColumn>
+
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171010-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension_all"/>
+            <not>
+                <columnExists tableName="surface_model_extension_all" columnName="repositioned"/>
+                <columnExists tableName="surface_model_extension_all" columnName="suspended_from_scheduling"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="surface_model_extension_all">
+            <column name="repositioned" type="boolean" />
+            <column name="suspended_from_scheduling" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171013-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="departure_movement_area_surface_metered_time_value"/>
+                <columnExists tableName="matm_flight" columnName="departure_stand_surface_metered_time_value"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="departure_movement_area_surface_metered_time_value" type="timestamp" />
+            <column name="departure_stand_surface_metered_time_value" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171013-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="departure_movement_area_surface_metered_time_value"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_stand_surface_metered_time_value"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="departure_movement_area_surface_metered_time_value" type="timestamp" />
+            <column name="departure_stand_surface_metered_time_value" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171013-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension"/>
+            <columnExists tableName="surface_model_extension" columnName="spot_compliance_time"/>
+        </preConditions>
+        
+        <dropColumn columnName="spot_compliance_time" tableName="surface_model_extension" />
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171013-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension_all"/>
+            <columnExists tableName="surface_model_extension_all" columnName="spot_compliance_time"/>
+        </preConditions>
+        
+        <dropColumn columnName="spot_compliance_time" tableName="surface_model_extension_all" />
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171017-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="pushback_clearance_undone"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="pushback_clearance_undone" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171017-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="pushback_clearance_undone"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="pushback_clearance_undone" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.6-20171017-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="pushback_clearance_undone"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_stand_surface_metered_time_value"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_movement_area_surface_metered_time_value"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="pushback_clearance_undone" type="boolean" />
+            <column name="departure_stand_surface_metered_time_value" type="timestamp" />
+            <column name="departure_movement_area_surface_metered_time_value" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v3.0.6" author="atd2" runAlways="true">
+        <tagDatabase tag="3.0.6" />
+    </changeSet>
+
+</databaseChangeLog>

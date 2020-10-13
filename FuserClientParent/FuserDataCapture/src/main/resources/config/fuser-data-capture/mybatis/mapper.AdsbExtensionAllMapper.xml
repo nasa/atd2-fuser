@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.AdsbExtensionAllMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            last_adsb_position_altitude double precision,
+            last_adsb_position_heading double precision,
+            last_adsb_position_latitude double precision,
+            last_adsb_position_longitude double precision,
+            last_adsb_position_source varchar,
+            last_adsb_position_speed double precision,
+            last_adsb_position_timestamp timestamp,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            timestamp timestamp
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

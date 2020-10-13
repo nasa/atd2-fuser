@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+    
+<configuration>
+
+    <environments default="postgres">
+        <environment id="postgres">
+            <transactionManager type="JDBC" />
+            <dataSource type="POOLED">
+                <property name="driver" value="${fuser-capture.database.driver}" />
+                <property name="url" value="${fuser-capture.database.url}" />
+                <property name="username" value="${fuser-capture.database.username}" />
+                <property name="password" value="${fuser-capture.database.password}" />
+            </dataSource>
+        </environment>
+    </environments>
+    
+    <mappers>
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmFlightMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmFlightAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.AsdexExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.AsdexExtensionAllMapper.xml" />        
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.DerivedExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.DerivedExtensionAllMapper.xml" />        
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TbfmExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TbfmExtensionAllMapper.xml" />        
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TfmExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TfmExtensionAllMapper.xml" />        
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TfmTfdmExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TfmTfdmExtensionAllMapper.xml" />   
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TfmTraversalExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TfmTraversalExtensionAllMapper.xml" />                
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmAirlineMessageExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmAirlineMessageExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.IdacExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.IdacExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.SurfaceModelExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.SurfaceModelExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.AefsExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.AefsExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.PositionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmPositionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmFlightSummary.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.AdsbExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.AdsbExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.Cat11ExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.Cat11ExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.Cat62ExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.Cat62ExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.FlightRemovedMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmFlightAllJoinMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmAircraftMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmAircraftAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.MatmAircraftSummary.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.SfdpsExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.SfdpsExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.SmesExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.SmesExtensionAllMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TmiExtensionMapper.xml" />
+        <mapper resource="config/fuser-data-capture/mybatis/mapper.TmiExtensionAllMapper.xml" />
+    </mappers>
+    
+</configuration>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="marshalling.ClockSyncMarshaller" class="com.mosaicatm.lib.jaxb.GenericMarshaller">
+        <constructor-arg value="com.mosaicatm.lib.time.ClockSync" />
+        <property name="marshallFormatted" value="false"/>
+        <property name="namespacePrefixMapper" ref="marshalling.MatmFlightNamespacePrefixMapper" />
+    </bean>
+    
+    <bean id="marshalling.MatmFlightMarshaller" class="com.mosaicatm.lib.jaxb.GenericMarshaller">
+        <constructor-arg value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="marshallFormatted" value="false"/>
+        <property name="namespacePrefixMapper" ref="marshalling.MatmFlightNamespacePrefixMapper" />
+    </bean>
+    
+    <bean id="marshalling.MatmFlightNamespacePrefixMapper" class="com.mosaicatm.matmdata.util.MatmFlightNamespacePrefixMapper"/>
+    
+    <bean id="marshalling.MatmAircraftMarshaller" class="com.mosaicatm.lib.jaxb.GenericMarshaller">
+        <constructor-arg value="com.mosaicatm.matmdata.aircraft.MatmAircraft" />
+        <property name="marshallFormatted" value="false"/>
+        <property name="namespacePrefixMapper" ref="marshalling.MatmAircraftNamespacePrefixMapper" />
+    </bean>
+    
+    <bean id="marshalling.MatmAircraftNamespacePrefixMapper" class="com.mosaicatm.matmdata.util.MatmAircraftNamespacePrefixMapper"/>
+    
+    <bean id="marshalling.MatmSectorAssignmentMarshaller" class="com.mosaicatm.lib.jaxb.GenericMarshaller">
+        <constructor-arg value="com.mosaicatm.matmdata.sector.MatmSectorAssignment" />
+        <property name="marshallFormatted" value="false"/>
+        <property name="namespacePrefixMapper" ref="marshalling.MatmSectorAssignmentNamespacePrefixMapper" />
+    </bean>   
+        
+    <bean id="marshalling.MatmSectorAssignmentNamespacePrefixMapper" class="com.mosaicatm.matmdata.util.MatmSectorAssignmentNamespacePrefixMapper"/>
+    
+    <bean id="marshalling.MatmTransferEnvelopeMarshaller" class="com.mosaicatm.lib.jaxb.GenericMarshaller">
+        <constructor-arg index="0" value="com.mosaicatm.matmdata.envelope.MatmTransferEnvelope" />
+        <property name="marshallFormatted" value="false" />
+        <property name="marshallHeader" value="false" />
+    </bean>
+
+        
+</beans>

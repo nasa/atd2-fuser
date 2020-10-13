@@ -1,0 +1,24 @@
+<xs:schema
+    targetNamespace="http://www.mosaicatm.com/matmdata/sector"
+    version="1.0"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common"
+    xmlns:sa="http://www.mosaicatm.com/matmdata/sector"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <import namespace="http://www.mosaicatm.com/matmdata/common" schemaLocation="./MatmCommon.xsd" />
+
+    <xs:element name="matmSectorAssignment" type="sa:matmSectorAssignment" />
+    
+    <xs:complexType name="matmSectorAssignment">
+        <xs:complexContent>
+            <xs:extension base="mc:matmObject">        
+                <xs:sequence>     
+                    <xs:element name="sourceFacility" type="xs:string" minOccurs="0"/>
+                    <xs:element name="sectorName" type="xs:string" minOccurs="1"/>                    
+                    <xs:element name="fixedAirspaceVolume" type="xs:string" minOccurs="1" maxOccurs="1000"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>      
+    </xs:complexType>     
+</xs:schema>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">  
+       
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations">
+	        <list>
+	            <value>classpath:config/fuser/rules.properties.test.props</value>
+	        </list>
+	    </property>
+    </bean>
+    
+    <bean id="fuser.core.MatmAircraftIdLookup" class="com.mosaicatm.fuser.common.matm.util.aircraft.MatmAircraftIdLookup" />
+    <bean id="fuser.core.MatmFlightIdLookup" class="com.mosaicatm.fuser.common.matm.util.flight.MatmFlightIdLookup" />
+    
+    <bean id="fuser.core.MatmIdLookup" class="com.mosaicatm.fuser.common.matm.util.MatmIdLookupFactory">
+        <property name="lookups">
+            <map>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.aircraft.MatmAircraft</value></key>
+                    <ref bean="fuser.core.MatmAircraftIdLookup" />
+                </entry>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.flight.MatmFlight</value></key>
+                    <ref bean="fuser.core.MatmFlightIdLookup" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <import resource="beans.rules.xml"/>
+    
+</beans>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v4.7.0-20190716-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="block_at_industry"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="block_at_industry" type="boolean" />
+        </addColumn>                 
+    </changeSet>  
+    
+    <changeSet id="fuserDataCapture-v4.7.0-20190716-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="block_at_industry"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="block_at_industry" type="boolean" />
+        </addColumn>                 
+    </changeSet>    
+    
+    <changeSet id="fuserDataCapture-v4.7.0-20190716-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="block_at_industry"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="block_at_industry" type="boolean" />
+        </addColumn>                 
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.7.0-20190725-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="center_list_values"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="center_list_values" type="varchar"/>
+        </addColumn>
+    </changeSet>                          
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v4.7.0" author="atd2" runAlways="true">
+        <tagDatabase tag="4.7.0" />
+    </changeSet>
+
+</databaseChangeLog>

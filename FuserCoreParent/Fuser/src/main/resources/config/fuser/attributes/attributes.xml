@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attributeFilters>
+    <arrivalAttributeFilters>
+	    <attributeFilter source="AIRLINE" type="exclude">
+	        <arrivalFixActualTime />
+	        <arrivalMovementAreaActualTime />
+	        <arrivalRunwayActualTime />
+	    </attributeFilter>
+	    <attributeFilter source="TFM" type="exclude">
+	        <arrivalRunwayActualTime />
+	    </attributeFilter>
+	    <attributeFilter source="TFM_TFDM" type="exclude">
+	        <arrivalRunwayActualTime />
+	    </attributeFilter>
+	    <attributeFilter source="TMA" type="exclude">
+	        <arrivalRunwayActualTime />
+	    </attributeFilter>   
+	    <attributeFilter source="FMC" type="exclude">
+	        <arrivalSpotAirline />
+	        <arrivalStandAirline />
+	        <arrivalRunwayAirline />
+	        <arrivalRunwayAssigned />
+	        <arrivalRunwayScratchpad />
+	        <!-- 
+	        May want to put this back once we sort out why the model is intentionally setting these:
+	        <arrivalFixSourceData />
+	        -->
+	    </attributeFilter>
+        <attributeFilter source="SMES" type="exclude">
+            <arrivalRunwayActualTime />
+            <arrivalMovementAreaActualTime />
+        </attributeFilter>
+    </arrivalAttributeFilters>
+    <departureAttributeFilters>
+        <attributeFilter source="AIRLINE" type="exclude">
+            <departureFixActualTime />
+            <departureMovementAreaActualTime />
+            <departureRunwayActualTime />
+            <departureStartupRequestActualTime />
+            <departureStartupApprovalActualTime />
+            <departureStandReadyActualTime />
+            <departureQueueEntryActualTime />
+        </attributeFilter>
+        <attributeFilter source="TFM" type="exclude">
+            <departureRunwayActualTime />
+        </attributeFilter>
+        <attributeFilter source="TFM_TFDM" type="exclude">
+            <departureRunwayActualTime />
+        </attributeFilter>        
+        <attributeFilter source="IDAC" type="exclude">
+            <departureRunwayAssigned />
+            <departureStandProposedTime />
+        </attributeFilter>
+        <attributeFilter source="TMA" type="exclude">
+            <departureRunwayActualTime />         
+            <departureRunwayAssigned />
+            <departureStandProposedTime />
+        </attributeFilter>   
+        <attributeFilter source="FMC" type="exclude">
+            <departureSpotAirline />
+            <departureStandAirline />
+            <departureRunwayAirline />
+            <departureRunwayAssigned />
+            <!-- 
+            May want to put this back once we sort out why the model is intentionally setting these:
+            <departureFixSourceData />
+            -->
+        </attributeFilter>
+        <attributeFilter source="SMES" type="exclude">
+            <departureRunwayActualTime />
+            <departureMovementAreaActualTime />
+        </attributeFilter>
+    </departureAttributeFilters>
+          
+</attributeFilters>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+
+    <xs:complexType name="sfdpsExtension">
+        <xs:sequence>
+            <xs:element name="lastSfdpsPosition" type="mc:position" minOccurs="0" />
+            <xs:element name="commCode" type="xs:string" minOccurs="0" />
+            <xs:element name="datalinkCode" type="xs:string" minOccurs="0" />
+            <xs:element name="fdpsGufi" type="xs:string" minOccurs="0" />
+            <xs:element name="messageType" type="mfe:sfdpsMessageTypeType" minOccurs="0" />
+            <xs:element name="otherDatalinkCapabilities" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="sfdpsMessageTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AH"/>
+            <xs:enumeration value="BA"/>
+            <xs:enumeration value="CL"/>
+            <xs:enumeration value="DH"/>
+            <xs:enumeration value="ET"/>
+            <xs:enumeration value="FH"/>
+            <xs:enumeration value="HF"/>
+            <xs:enumeration value="HH"/>
+            <xs:enumeration value="HP"/>
+            <xs:enumeration value="HT"/>
+            <xs:enumeration value="HU"/>
+            <xs:enumeration value="HV"/>
+            <xs:enumeration value="HX"/>
+            <xs:enumeration value="HZ"/>
+            <xs:enumeration value="IH"/>
+            <xs:enumeration value="LH"/>
+            <xs:enumeration value="NI"/>
+            <xs:enumeration value="NL"/>            
+            <xs:enumeration value="NP"/>
+            <xs:enumeration value="NU"/>
+            <xs:enumeration value="OH"/>
+            <xs:enumeration value="PH"/>
+            <xs:enumeration value="PT"/>
+            <xs:enumeration value="RE"/>
+            <xs:enumeration value="RH"/>
+            <xs:enumeration value="TH"/>
+            <xs:enumeration value="BATCH_TH"/>
+            <xs:enumeration value="DBRTFPI"/>
+        </xs:restriction>
+    </xs:simpleType>    
+
+</xs:schema>
+

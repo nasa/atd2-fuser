@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="aircraft.routes.CamelContext">
+
+        <endpoint id="endpoint.source.MatmAircraft" uri="${fuser-client-api.uri.matmAircraft.source}" />
+        <endpoint id="endpoint.source.MatmAircraft.remove" uri="${fuser-client-api.uri.matmAircraft.remove.source}" />
+        <endpoint id="endpoint.source.MatmAircraft.batch" uri="${fuser-client-api.uri.matmAircraft.batch.source}" />
+        
+        <endpoint id="endpoint.process.MatmAircraft" uri="${fuser-client-api.uri.matmAircraft.process}" />
+        <endpoint id="endpoint.process.MatmAircraft.remove" uri="${fuser-client-api.uri.matmAircraft.remove.process}" />
+        <endpoint id="endpoint.process.MatmAircraft.batch" uri="${fuser-client-api.uri.matmAircraft.batch.process}" />
+        
+        <endpoint id="endpoint.handle.MatmAircraft" uri="${fuser-client-api.uri.matmAircraft.handle}" />
+       
+        <endpoint id="endpoint.publish.MatmAircraft" uri="${fuser-client-api.uri.matmAircraft.publish}" />
+        <endpoint id="endpoint.publish.MatmAircraft.remove" uri="${fuser-client-api.uri.matmAircraft.remove.publish}" />
+        <endpoint id="endpoint.publish.MatmAircraft.batch" uri="${fuser-client-api.uri.matmAircraft.batch.publish}" />
+       
+        <endpoint id="endpoint.destination.MatmAircraft" uri="${fuser-client-api.uri.matmAircraft.destination}" />
+        <endpoint id="endpoint.destination.MatmAircraft.remove" uri="${fuser-client-api.uri.matmAircraft.remove.destination}" />
+        <endpoint id="endpoint.destination.MatmAircraft.batch" uri="${fuser-client-api.uri.matmAircraft.batch.destination}" />
+       
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>  
+            <process ref="aircraft.routes.RouteErrorHandler"/>           
+        </onException>
+        
+        <!-- MatmAircraft Routing -->
+        <route id="aircraft.route.source.MatmAircraft" autoStartup="false">
+            <from uri="endpoint.source.MatmAircraft" />
+            <to uri="endpoint.process.MatmAircraft" />
+        </route>
+        
+        <route id="aircraft.route.process.MatmAircraft" autoStartup="false">
+            <from uri="endpoint.process.MatmAircraft" />
+            <bean ref="aircraft.core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmAircraftMarshaller" method="unmarshall" />
+            <to uri="endpoint.handle.MatmAircraft" />
+        </route>
+        
+        <route id="aircraft.route.handle.MatmAircraft" autoStartup="false">
+            <from uri="endpoint.handle.MatmAircraft" />
+            <bean ref="aircraft.core.MatmAircraftUpdateHandler" method="handleUpdate" />
+        </route>
+        
+        <route id="aircraft.route.publish.MatmAircraft" autoStartup="false">
+            <from uri="endpoint.publish.MatmAircraft" />
+            <bean ref="marshalling.MatmAircraftMarshaller" method="marshall" />
+            <to uri="endpoint.destination.MatmAircraft" />
+        </route>
+        
+        <!-- MatmAircraft Batch Routing -->
+        <route id="aircraft.route.source.MatmAircraft.batch" autoStartup="false">
+            <from uri="endpoint.source.MatmAircraft.batch" />
+            <to uri="endpoint.process.MatmAircraft.batch" />
+        </route>
+        
+        <route id="aircraft.route.process.MatmAircraft.batch" autoStartup="false">
+            <from uri="endpoint.process.MatmAircraft.batch" />
+            <bean ref="aircraft.core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmTransferEnvelopeMarshaller" method="unmarshall" />
+            <split>
+                <simple>${in.body.getAircraft}</simple>
+                <to uri="endpoint.handle.MatmAircraft" />
+            </split>
+        </route>
+        
+        <route id="aircraft.route.publish.MatmAircraft.batch" autoStartup="false">
+            <from uri="endpoint.publish.MatmAircraft.batch" />
+            <bean ref="marshalling.MatmTransferEnvelopeMarshaller" method="marshall" />
+            <to uri="endpoint.destination.MatmAircraft.batch" />
+        </route>
+        
+        <!-- MatmAircraft Remove Routing -->
+        <route id="route.source.MatmAircraft.remove" autoStartup="false">
+            <from uri="endpoint.source.MatmAircraft.remove" />
+            <to uri="endpoint.process.MatmAircraft.remove" />
+        </route>
+        
+        <route id="route.process.MatmAircraft.remove" autoStartup="false">
+            <from uri="endpoint.process.MatmAircraft.remove" />
+            <bean ref="aircraft.core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmAircraftMarshaller" method="unmarshall" />
+            <bean ref="aircraft.core.MatmAircraftUpdateHandler" method="handleRemove" /> 
+        </route>
+        
+        <route id="route.process.MatmAircraft.remove.publish" autoStartup="false">
+            <from uri="endpoint.publish.MatmAircraft.remove" />
+            <bean ref="marshalling.MatmAircraftMarshaller" method="marshall" />
+            <to uri="endpoint.destination.MatmAircraft.remove" />
+        </route>
+
+    </camelContext>
+
+    <bean id="aircraft.routes.RouteErrorHandler" 
+          class="com.mosaicatm.fuser.client.api.camel.RouteErrorHandler" />
+
+    <bean id="aircraft.routes.MessageProducer" 
+          class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="aircraft.routes.CamelContext" />
+    </bean>
+    
+    <bean id="aircraft.routes.MessageProducerOwnerInitializer" 
+          class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="aircraft.routes.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="aircraft.core.MatmAircraftForwardingHandler" />
+            </list>
+        </property>
+    </bean>
+
+</beans>

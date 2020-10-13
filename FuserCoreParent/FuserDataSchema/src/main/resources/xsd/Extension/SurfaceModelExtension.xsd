@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+    <xs:complexType name="surfaceModelExtension">
+        <xs:sequence>
+            <xs:element name="tacticalGroup" type="xs:string" minOccurs="0" />
+            <xs:element name="outActualTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="operationalStatus" type="mfe:operationalStatus" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+     <xs:complexType name="operationalStatus">
+        <xs:sequence>
+            <element name="repositioned" type="xs:boolean" minOccurs="0" />
+            <element name="suspendedFromScheduling" type="xs:boolean" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    
+    <import resource="beans.properties.xml" />
+    <import resource="beans.api.xml" />
+    <import resource="beans.jms.xml" />
+    <import resource="beans.jms-dest.xml" />
+    
+    <import resource="beans.database.matm.xml" />
+    <import resource="beans.database.matm-all.xml" />
+    <import resource="beans.liquibase.xml" />
+    <import resource="beans.database.matm-position.xml" />
+    <import resource="beans.database.matm-removed.xml" />
+    <import resource="beans.database.slicer.xml" />
+    <import resource="beans.capture.api.xml" />
+    <import resource="beans.capture.xml" />
+    
+    <import resource="routes.core.xml" />  
+    
+    <import resource="beans.capture.database.xml"/>
+    <import resource="beans.marshalling.xml" />
+    
+    <import resource="beans.capture.csv.xml" />
+    
+    <import resource="beans.reroute.xml" />
+    
+    <import resource="beans.capture.xml.xml" /> 
+    <import resource="beans.slice.xml" />
+    <import resource="beans.playback.xml" />
+              
+</beans>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+           version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+           xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+           xmlns:mc="http://www.mosaicatm.com/matmdata/common"
+           xmlns:tc="http://www.mosaicatm.com/matmdata/flight/extension/tfmcomm" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+            schemaLocation="../MatmCommon.xsd" />    
+    <import namespace="http://www.mosaicatm.com/matmdata/flight/extension/tfmcomm"
+            schemaLocation="TfmCommon.xsd" />
+
+    <xs:complexType name="tfmExtension">
+        <xs:sequence>
+            <xs:element name="flightRef" type="xs:int" minOccurs="0" />
+            <xs:element name="lastTfmPosition" type="mc:position" minOccurs="0" />
+            <xs:element name="messageType" type="mfe:tfmMessageTypeType" minOccurs="0"/>
+            <xs:element name="messageTrigger" type="mfe:tfmMessageTriggerType" minOccurs="0"/>
+            <xs:element name="sensitivity" type="tc:tfmSensitivityType" minOccurs="0"/>
+            <xs:element name="sensitivityReason" type="tc:tfmSensitivityReasonType" minOccurs="0"/>
+            
+            <xs:element name="cdmParticipant" type="xs:boolean" minOccurs="0" />
+            <xs:element name="canceled" type="xs:boolean" minOccurs="0" />
+            <xs:element name="controlElement" type="xs:string" nillable="true" minOccurs="0" />
+            <xs:element name="controlIndicator" type="mfe:tfmControlIndicatorType" minOccurs="0" />
+            <xs:element name="diversion" type="xs:boolean" minOccurs="0" />            
+            <xs:element name="diversionIndicator" type="mfe:tfmDiversionIndicatorType" minOccurs="0" />            
+            <xs:element name="diversionCancelFlightRef" type="xs:int" minOccurs="0" />            
+            <xs:element name="diversionCancelNewFlightRef" type="xs:int" minOccurs="0" />            
+            <xs:element name="flightCreationTime" type="xs:dateTime" minOccurs="0"/>
+            
+            <xs:element name="arrivalRunwayAirlineTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRunwayOriginalControlledTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalStandAirlineTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRunwayAirlineTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRunwayOriginalControlledTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureStandActualTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureStandAirlineTime" type="xs:dateTime" minOccurs="0"/>
+            
+            <xs:element name="sourceFacility" type="xs:string" minOccurs="0" />
+            <xs:element name="computerId" type="xs:string" minOccurs="0"/>                
+        </xs:sequence>                                                                                                      
+    </xs:complexType>
+        
+    <xs:simpleType name="tfmMessageTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ARRIVAL_INFORMATION" />            
+            <xs:enumeration value="BEACON_CODE_INFORMATION" />
+            <xs:enumeration value="BOUNDARY_CROSSING_UPDATE" />
+            <xs:enumeration value="DEPARTURE_INFORMATION" />
+            <xs:enumeration value="FLIGHT_CONTROL" />
+            <xs:enumeration value="FLIGHT_CREATE" />
+            <xs:enumeration value="FLIGHT_MODIFY" />
+            <xs:enumeration value="FLIGHT_PLAN_AMENDMENT_INFORMATION" />
+            <xs:enumeration value="FLIGHT_PLAN_CANCELLATION" />
+            <xs:enumeration value="FLIGHT_PLAN_INFORMATION" />
+            <xs:enumeration value="FLIGHT_ROUTE" />
+            <xs:enumeration value="FLIGHT_SCHEDULE_ACTIVATE" />
+            <xs:enumeration value="FLIGHT_SECTORS" />
+            <xs:enumeration value="FLIGHT_TIMES" />
+            <xs:enumeration value="OCEANIC_REPORT" />
+            <xs:enumeration value="TRACK_INFORMATION" /> 
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="tfmMessageTriggerType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ACTIVATE_CMD" />            
+            <xs:enumeration value="ACTIVATE_SCHEDULED_FLIGHTS" />
+            <xs:enumeration value="AIRSPACE_ASSIGNMENT" />
+            <xs:enumeration value="CANCEL_CMD" />
+            <xs:enumeration value="CTOP_ROUTE_ASSIGNMENT" />
+            <xs:enumeration value="CTOP_ROUTE_CANCEL" />
+            <xs:enumeration value="EARLY_INTENT_MSG" />
+            <xs:enumeration value="FD_FLIGHT_CANCEL_MSG" />
+            <xs:enumeration value="FD_FLIGHT_CREATE_MSG" />
+            <xs:enumeration value="FD_FLIGHT_MODIFY_MSG" />
+            <xs:enumeration value="HCS_AMENDMENT_MSG" />
+            <xs:enumeration value="HCS_ARRIVAL_MSG" />
+            <xs:enumeration value="HCS_BEACON_CODE_MSG" />
+            <xs:enumeration value="HCS_CANCELLATION_MSG" />
+            <xs:enumeration value="HCS_DEPARTURE_MSG" />
+            <xs:enumeration value="HCS_FLIGHT_PLAN_MSG" />
+            <xs:enumeration value="HCS_OCEANIC_POSITION_REPORT_MSG" />
+            <xs:enumeration value="HCS_TRACK_MSG" />
+            <xs:enumeration value="HCS_UPDATE_MSG" />
+            <xs:enumeration value="IADE_AMENDMENT_MSG" />
+            <xs:enumeration value="IADE_ARRIVAL_MSG" />
+            <xs:enumeration value="IADE_BEACON_CODE_MSG" />
+            <xs:enumeration value="IADE_CANCELLATION_MSG" />
+            <xs:enumeration value="IADE_DEPARTURE_MSG" />
+            <xs:enumeration value="IADE_FLIGHT_PLAN_MSG" />
+            <xs:enumeration value="IADE_OCEANIC_POSITION_REPORT_MSG" />
+            <xs:enumeration value="IADE_TRACK_MSG" />
+            <xs:enumeration value="NEMS_TBFM_FLT_DEPARTURE_MSG" />
+            <xs:enumeration value="RECOMPUTE_NCSM" />
+            <xs:enumeration value="REMOVE_CMD" />
+            <xs:enumeration value="REROUTE_ASSIGNED_ROUTE" />
+            <xs:enumeration value="REROUTE_HISTORICAL_ROUTE" />
+            <xs:enumeration value="RESTORE_CMD" />
+            <xs:enumeration value="REROUTE_HISTORICAL_ROUTE" />
+            <xs:enumeration value="SMA_TRACK_MSG" />
+            <xs:enumeration value="STDDS_SURFACE_MOVEMENT_MSG" />
+            <xs:enumeration value="TMI_UPDATE" />
+            <xs:enumeration value="TRAJECTORY_OPTION_SET_MSG" />
+            <xs:enumeration value="UPDATE_CANCEL_SCHEDULE_TIMEOUT" />
+            <xs:enumeration value="UPDATE_CANCEL_TIMEOUT" />
+            <xs:enumeration value="UPDATE_COMPLETE_TIMEOUT" />
+            <xs:enumeration value="UPDATE_DEPARTURE_TIMEOUT" />
+            <xs:enumeration value="UPDATE_INHIBIT_FLIGHTS" />
+            <xs:enumeration value="UPDATE_INTERNATIONAL_CANCEL_TIMEOUT" />
+        </xs:restriction>
+    </xs:simpleType>      
+    
+    <xs:simpleType name="tfmControlIndicatorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CONTROL_ACTIVE" />            
+            <xs:enumeration value="CONTROL_CANCELED" />
+        </xs:restriction>  
+    </xs:simpleType>
+
+    <xs:simpleType name="tfmDiversionIndicatorType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AIRBORN_NOCTL" />            
+            <xs:enumeration value="AIRBORN_CTL" />
+            <xs:enumeration value="GROUND_NOCTL" />
+            <xs:enumeration value="GROUND_CTL" />
+            <xs:enumeration value="NO_DIVERSION" />
+        </xs:restriction>
+    </xs:simpleType>      
+
+</xs:schema>
+

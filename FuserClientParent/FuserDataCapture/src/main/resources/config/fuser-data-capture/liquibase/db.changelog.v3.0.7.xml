@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+<!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v3.0.7-20171121-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_airline_message_extension"/>
+            <not>
+                <columnExists tableName="matm_airline_message_extension" columnName="flight_leg_status"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_airline_message_extension">
+            <column name="flight_leg_status" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.7-20171121-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_airline_message_extension_all"/>
+            <not>
+                <columnExists tableName="matm_airline_message_extension_all" columnName="flight_leg_status"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_airline_message_extension_all">
+            <column name="flight_leg_status" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v3.0.7" author="atd2" runAlways="true">
+        <tagDatabase tag="3.0.7" />
+    </changeSet>
+
+</databaseChangeLog>

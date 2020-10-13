@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    <changeSet id="fuserDataCapture-v5.10.0-20200330-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="departure_runway_model_confidence"/>
+                <columnExists tableName="matm_flight" columnName="departure_taxi_estimated_duration_confidence"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="departure_runway_model_confidence" type="double" />
+            <column name="departure_taxi_estimated_duration_confidence" type="double" />
+        </addColumn>
+    </changeSet>    
+
+    <changeSet id="fuserDataCapture-v5.10.0-20200330-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="departure_runway_model_confidence"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_taxi_estimated_duration_confidence"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="departure_runway_model_confidence" type="double" />
+            <column name="departure_taxi_estimated_duration_confidence" type="double" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.10.0-20200330-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="departure_runway_model_confidence"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_taxi_estimated_duration_confidence"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="departure_runway_model_confidence" type="double" />
+            <column name="departure_taxi_estimated_duration_confidence" type="double" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v5.10.0-20200413-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="smes_extension"/>
+            <not>
+                <columnExists tableName="smes_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="smes_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.10.0-20200413-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="smes_extension_all"/>
+            <not>
+                <columnExists tableName="smes_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="smes_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v5.10.0" author="atd2" runAlways="true">
+        <tagDatabase tag="5.10.0" />
+    </changeSet>
+
+</databaseChangeLog>

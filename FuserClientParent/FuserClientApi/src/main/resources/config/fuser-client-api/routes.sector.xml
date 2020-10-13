@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="sector.routes.CamelContext">
+
+        <endpoint id="endpoint.source.MatmSectorAssignment.remove" uri="${fuser-client-api.uri.matmSectorAssignment.remove.source}" />
+        <endpoint id="endpoint.source.MatmSectorAssignment.batch" uri="${fuser-client-api.uri.matmSectorAssignment.batch.source}" />        
+        <endpoint id="endpoint.process.MatmSectorAssignment" uri="${fuser-client-api.uri.matmSectorAssignment.process}" />
+        <endpoint id="endpoint.process.MatmSectorAssignment.batch" uri="${fuser-client-api.uri.matmSectorAssignment.batch.process}" />        
+        <endpoint id="endpoint.process.MatmSectorAssignment.remove" uri="${fuser-client-api.uri.matmSectorAssignment.remove.process}" />
+        <endpoint id="endpoint.handle.MatmSectorAssignment" uri="${fuser-client-api.uri.matmSectorAssignment.handle}" />
+       
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>  
+            <process ref="sector.routes.RouteErrorHandler"/>           
+        </onException>
+        
+        <!-- MatmSectorAssignment Batch Routing -->
+        <route id="sector.route.source.MatmSectorAssignment.batch" autoStartup="false">
+            <from uri="endpoint.source.MatmSectorAssignment.batch" />
+            <to uri="endpoint.process.MatmSectorAssignment.batch" />
+        </route>
+        
+        <!-- MatmSectorAssignment Remove Routing -->
+        <route id="route.source.MatmSectorAssignment.remove" autoStartup="false">
+            <from uri="endpoint.source.MatmSectorAssignment.remove" />
+            <to uri="endpoint.process.MatmSectorAssignment.remove" />
+        </route>        
+        
+        <route id="route.process.MatmSectorAssignment.remove" autoStartup="false">
+            <from uri="endpoint.process.MatmSectorAssignment.remove" />
+            <bean ref="sector.core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmSectorAssignmentMarshaller" method="unmarshall" />
+            <bean ref="sector.core.MatmSectorAssignmentUpdateHandler" method="handleRemove" /> 
+        </route>        
+        
+        <route id="sector.route.process.MatmSectorAssignment.batch" autoStartup="false">
+            <from uri="endpoint.process.MatmSectorAssignment.batch" />
+            <bean ref="sector.core.SyncPoint" method="sync" />
+            <bean ref="core.clock.ClockSyncPoint" method="sync" />
+            <bean ref="marshalling.MatmTransferEnvelopeMarshaller" method="unmarshall" />
+            <split>
+                <simple>${in.body.getSectorAssignments}</simple>
+                <to uri="endpoint.handle.MatmSectorAssignment" />
+            </split>
+        </route>        
+
+        <!-- MatmSectorAssignment Routing -->
+        <route id="sector.route.handle.MatmSectorAssignment" autoStartup="false">
+            <from uri="endpoint.handle.MatmSectorAssignment" />
+            <bean ref="sector.core.MatmSectorAssignmentUpdateHandler" method="handleUpdate" />
+        </route>
+        
+    </camelContext>
+
+    <bean id="sector.routes.RouteErrorHandler" 
+          class="com.mosaicatm.fuser.client.api.camel.RouteErrorHandler" />
+
+    <bean id="sector.routes.MessageProducer" 
+          class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="sector.routes.CamelContext" />
+    </bean>
+    
+    <bean id="sector.routes.MessageProducerOwnerInitializer" 
+          class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="sector.routes.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="sector.core.MatmSectorAssignmentForwardingHandler" />
+            </list>
+        </property>
+    </bean>
+
+</beans>

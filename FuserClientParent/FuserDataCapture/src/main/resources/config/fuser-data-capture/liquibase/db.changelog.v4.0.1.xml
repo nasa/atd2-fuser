@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v4.0.1-20180830-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension" columnName="etm"/>
+                <columnExists tableName="tbfm_extension" columnName="new_etm"/>
+                <columnExists tableName="tbfm_extension" columnName="std"/>
+                <columnExists tableName="tbfm_extension" columnName="new_std"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="etm" type="timestamp" />
+            <column name="new_etm" type="boolean" />
+            <column name="std" type="timestamp" />
+            <column name="new_std" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.1-20180830-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>
+                <columnExists tableName="tbfm_extension_all" columnName="etm"/>
+                <columnExists tableName="tbfm_extension_all" columnName="new_etm"/>
+                <columnExists tableName="tbfm_extension_all" columnName="std"/>
+                <columnExists tableName="tbfm_extension_all" columnName="new_std"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="etm" type="timestamp" />
+            <column name="new_etm" type="boolean" />
+            <column name="std" type="timestamp" />
+            <column name="new_std" type="boolean" />
+        </addColumn>
+    </changeSet>    
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v4.0.1" author="atd2" runAlways="true">
+        <tagDatabase tag="4.0.1" />
+    </changeSet>
+
+</databaseChangeLog>

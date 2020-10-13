@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200429-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>                
+                <columnExists tableName="tbfm_extension" columnName="ctm"/>
+                <columnExists tableName="tbfm_extension" columnName="new_ctm"/>
+                <columnExists tableName="tbfm_extension" columnName="departure_proposed_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="ctm" type="timestamp" />
+            <column name="new_ctm" type="boolean" />
+            <column name="departure_proposed_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200507-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>                
+                <columnExists tableName="tbfm_extension_all" columnName="ctm"/>
+                <columnExists tableName="tbfm_extension_all" columnName="new_ctm"/>
+                <columnExists tableName="tbfm_extension_all" columnName="departure_proposed_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="ctm" type="timestamp" />
+            <column name="new_ctm" type="boolean" />
+            <column name="departure_proposed_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200521-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>                
+                <columnExists tableName="tbfm_extension" columnName="flight_plan_status"/>
+                <columnExists tableName="tbfm_extension" columnName="aircraft_status"/>
+                <columnExists tableName="tbfm_extension" columnName="departure_runway"/>
+                <columnExists tableName="tbfm_extension" columnName="manually_scheduled"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="flight_plan_status" type="varchar" />
+            <column name="aircraft_status" type="varchar" />
+            <column name="departure_runway" type="varchar" />
+            <column name="manually_scheduled" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200521-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>                
+                <columnExists tableName="tbfm_extension_all" columnName="flight_plan_status"/>
+                <columnExists tableName="tbfm_extension_all" columnName="aircraft_status"/>
+                <columnExists tableName="tbfm_extension_all" columnName="departure_runway"/>
+                <columnExists tableName="tbfm_extension_all" columnName="manually_scheduled"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="flight_plan_status" type="varchar" />
+            <column name="aircraft_status" type="varchar" />
+            <column name="departure_runway" type="varchar" />
+            <column name="manually_scheduled" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <viewExists viewName="matm_flight_view" />
+        </preConditions>
+        <dropView viewName="matm_flight_view"/>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <viewExists viewName="matm_flight_all_view" />
+        </preConditions>
+        <dropView viewName="matm_flight_all_view"/>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <viewExists viewName="matm_aircraft_view" />
+        </preConditions>
+        <dropView viewName="matm_aircraft_view"/>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <viewExists viewName="matm_aircraft_all_view" />
+        </preConditions>
+        <dropView viewName="matm_aircraft_all_view"/>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200522-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <columnExists tableName="matm_flight" columnName="sequence_id" />
+        </preConditions>
+        
+        <modifyDataType 
+            columnName="sequence_id"
+            newDataType="bigint"
+            tableName="matm_flight" />
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200522-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <columnExists tableName="matm_flight_all" columnName="sequence_id" />
+        </preConditions>
+        
+        <modifyDataType 
+            columnName="sequence_id"
+            newDataType="bigint"
+            tableName="matm_flight_all" />
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200522-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft"/>
+            <columnExists tableName="matm_aircraft" columnName="sequence_id" />
+        </preConditions>
+        
+        <modifyDataType 
+            columnName="sequence_id"
+            newDataType="bigint"
+            tableName="matm_aircraft" />
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200522-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_all"/>
+            <columnExists tableName="matm_aircraft_all" columnName="sequence_id" />
+        </preConditions>
+        
+        <modifyDataType 
+            columnName="sequence_id"
+            newDataType="bigint"
+            tableName="matm_aircraft_all" />
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-5" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="matm_flight_view" />
+            </not>
+            <tableExists tableName="matm_flight"/>
+        </preConditions>
+        <createView viewName="matm_flight_view">
+            SELECT *,
+               COALESCE
+               (
+                   departure_stand_actual_time,
+                   departure_stand_intended_time,
+                   departure_stand_earliest_time,
+                   departure_stand_airline_time,
+                   departure_stand_estimated_time,
+                   departure_stand_proposed_time,
+                   departure_stand_scheduled_time,
+                   departure_stand_initial_time
+               )
+               AS departure_stand_best_time,
+               COALESCE
+               (
+                   departure_runway_actual_time,
+                   departure_runway_estimated_time,
+                   departure_runway_scheduled_time
+               )
+               AS departure_runway_best_time,
+               COALESCE
+               (
+                   arrival_runway_actual_time,
+                   arrival_runway_metered_time_value,
+                   arrival_runway_estimated_time,
+                   arrival_runway_scheduled_time
+               )
+               AS arrival_runway_best_time,
+               COALESCE
+               (
+                   arrival_stand_actual_time,
+                   arrival_stand_airline_time,
+                   arrival_stand_estimated_time,
+                   arrival_stand_proposed_time,
+                   arrival_stand_scheduled_time
+               )
+               AS arrival_stand_best_time
+            FROM matm_flight
+        </createView>
+    </changeSet>
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-6" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="matm_flight_all_view" />
+            </not>
+            <tableExists tableName="matm_flight_all"/>
+        </preConditions>
+        <createView viewName="matm_flight_all_view">
+            SELECT *,
+               COALESCE
+               (
+                   departure_stand_actual_time,
+                   departure_stand_intended_time,
+                   departure_stand_earliest_time,
+                   departure_stand_airline_time,
+                   departure_stand_estimated_time,
+                   departure_stand_proposed_time,
+                   departure_stand_scheduled_time,
+                   departure_stand_initial_time
+               )
+               AS departure_stand_best_time,
+               COALESCE
+               (
+                   departure_runway_actual_time,
+                   departure_runway_estimated_time,
+                   departure_runway_scheduled_time
+               )
+               AS departure_runway_best_time,
+               COALESCE
+               (
+                   arrival_runway_actual_time,
+                   arrival_runway_metered_time_value,
+                   arrival_runway_estimated_time,
+                   arrival_runway_scheduled_time
+               )
+               AS arrival_runway_best_time,
+               COALESCE
+               (
+                   arrival_stand_actual_time,
+                   arrival_stand_airline_time,
+                   arrival_stand_estimated_time,
+                   arrival_stand_proposed_time,
+                   arrival_stand_scheduled_time
+               )
+               AS arrival_stand_best_time
+            FROM matm_flight_all
+        </createView>
+    </changeSet>
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-7" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="matm_aircraft_view" />
+            </not>
+            <tableExists tableName="matm_aircraft"/>
+        </preConditions>
+        <createView viewName="matm_aircraft_view">
+            SELECT * FROM matm_aircraft
+        </createView>
+    </changeSet>
+    <changeSet id="fuserDataCapture-v5.11.0-20200602-8" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <viewExists viewName="matm_aircraft_all_view" />
+            </not>
+            <tableExists tableName="matm_aircraft_all"/>
+        </preConditions>
+        <createView viewName="matm_aircraft_all_view">
+            SELECT * FROM matm_aircraft_all
+        </createView>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200706-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="departure_stand_source_data"/>
+                <columnExists tableName="matm_flight" columnName="departure_spot_source_data"/>
+                <columnExists tableName="matm_flight" columnName="departure_runway_source_data"/>
+                <columnExists tableName="matm_flight" columnName="arrival_stand_source_data"/>
+                <columnExists tableName="matm_flight" columnName="arrival_spot_source_data"/>
+                <columnExists tableName="matm_flight" columnName="arrival_runway_source_data"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="departure_stand_source_data" type="varchar" />
+            <column name="departure_spot_source_data" type="varchar" />
+            <column name="departure_runway_source_data" type="varchar" />
+            <column name="arrival_stand_source_data" type="varchar" />
+            <column name="arrival_spot_source_data" type="varchar" />
+            <column name="arrival_runway_source_data" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200706-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="departure_stand_source_data"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_spot_source_data"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_runway_source_data"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_stand_source_data"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_spot_source_data"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_runway_source_data"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="departure_stand_source_data" type="varchar" />
+            <column name="departure_spot_source_data" type="varchar" />
+            <column name="departure_runway_source_data" type="varchar" />
+            <column name="arrival_stand_source_data" type="varchar" />
+            <column name="arrival_spot_source_data" type="varchar" />
+            <column name="arrival_runway_source_data" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.11.0-20200706-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="departure_stand_source_data"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_spot_source_data"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_runway_source_data"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_stand_source_data"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_spot_source_data"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_runway_source_data"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="departure_stand_source_data" type="varchar" />
+            <column name="departure_spot_source_data" type="varchar" />
+            <column name="departure_runway_source_data" type="varchar" />
+            <column name="arrival_stand_source_data" type="varchar" />
+            <column name="arrival_spot_source_data" type="varchar" />
+            <column name="arrival_runway_source_data" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v5.11.0" author="atd2" runAlways="true">
+        <tagDatabase tag="5.11.0" />
+    </changeSet>
+
+</databaseChangeLog>

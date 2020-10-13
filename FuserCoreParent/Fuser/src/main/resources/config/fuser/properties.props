@@ -1,0 +1,344 @@
+redis.enabled=false
+redis.cleanStart=false
+redis.host=localhost
+redis.password=
+
+jms.source.data.airports=CLT,KCLT
+
+fuser.jms.url=failover:(tcp://localhost:61616)?timeout=30000&jms.useCompression=true
+fuser.jms.user=
+fuser.jms.password=
+
+fuser.core.loadLogging=true
+fuser.core.loadRoutes=true
+fuser.core.loadJms=true
+fuser.core.loadServices=true
+fuser.core.loadSecureSync=false
+fuser.core.loadServiceClients=false
+fuser.core.loadRules=true
+
+fuser.aircraft.loadBeans=true
+fuser.aircraft.loadRoutes=true
+fuser.aircraft.loadServices=true
+
+fuser.sector.loadBeans=false
+fuser.sector.loadRoutes=false
+fuser.sector.loadServices=false
+
+# csv list of airports of interest to the sync service
+fuser.core.sync.airports=
+fuser.core.sync.duration.seconds=120
+
+# Gufi Service configuration =========================================================
+fuser.core.gufi-service.mode=JMS
+fuser.core.gufi-service.reply-queue-name=gufiservice.reply.fuser
+fuser.core.gufi-service.request-queue-name=jms:queue:gufiservice.request
+fuser.core.gufi-service.update-queue-name=jms:queue:gufiservice.update.flight
+fuser.core.gufi-service.assignGufi.active=false
+
+fuser.core.filterNullGufi=true
+fuser.aircraft.filterNullRegistration=true
+
+fuser.loadTransforms=true
+
+# Comma separated list of plugin types to load, note the plugin must be available in the plugins folder, and not in disabled.txt
+# in other words, disabled.txt takes higher precedence than this list
+# If you have 2 plugins implementing tfm then list 'tfm' here, and disable one of the implementations in "disabled.txt"
+fuser.pluginTypesToLoad=asdex-transform-plugin,tfm-transform-plugin,tma-transform-plugin
+
+fuser.transform.source.camel.component=jms:topic:
+fuser.transform.use.direct=false
+
+fuser.store.remove.active=true
+# Amount of time to remove any flight
+fuser.store.remove.threshold.hours=36
+# Amount of time to remove an arrived flight
+fuser.store.remove.arrived.threshold.hours=10
+# Amount of time to remove a flight that has not arrived, but has position data
+fuser.store.remove.active.threshold.hours=20
+# Amount of time to remove a flight (past expected departure time) that has not departed
+fuser.store.remove.nondeparted.threshold.hours=30
+# Amount of time to remove a flight that only has ASDEX data
+fuser.store.remove.asdex.only.threshold.hours=1
+fuser.store.remove.check.minutes=5
+fuser.store.aircraft.expiration.days=6
+# sector assignments expire relative to sectors in the same ARTCC
+fuser.store.sector.expiration.millis=300000
+
+#These are not active and need to be converted to MatmFlight and MatmTransferEvelope
+fuser.logging.flightType.active=false
+fuser.logging.flightType.fileName=flightType
+
+fuser.logging.fuserTransfer.active=false
+fuser.logging.fuserTransfer.fileName=fuserTransfer
+
+fuser.logging.path=./capture/
+fuser.logging.archivePath=./capture/archive/
+fuser.logging.rollPeriod=HOURLY
+fuser.logging.maxFiles=5
+fuser.logging.maxArchiveFiles=20
+fuser.loadAggregator=true
+fuser.loadFilters=true
+
+fuser.aggregator.thread.count=4
+fuser.aggregator.thread.queue.capacity=100000
+fuser.aggregator.thread.queue.size.report.interval.millis=10000
+
+fuser.services.server.url=http://localhost:8993
+fuser.services.client.url=http://localhost:8993
+
+fuser.services.secure.keystore.location=keyStore.jks
+fuser.services.secure.keystore.password=changeit
+fuser.services.secure.keystore.type=JKS
+
+#Fuser heartbeat properties
+fuser.heartbeat.active=true
+fuser.heartbeat.interval=5000
+
+#Redis database properties
+fuser.redis.enabled=${redis.enabled}
+fuser.redis.cleanstart=${redis.cleanStart}
+fuser.redis.host=${redis.host}
+fuser.redis.port=6379
+fuser.redis.namespace=fuser
+fuser.redis.password=${redis.password}
+fuser.redis.aircraft.keyType=aircraft
+fuser.redis.sector.assignments.keyType=sector:assignments
+fuser.redis.connectionTimeoutMillis=15000
+fuser.redis.maxWaitMillis=30000
+fuser.redis.maxTotalConnections=128
+fuser.redis.bulkProcessInterval=1000
+fuser.redis.bulkReportInterval=10000
+fuser.redis.backupInterval=30000
+
+#Only used for fast-time playback
+fuser.playback.signalMaxAllowableClientLagMillis=60000
+
+##################################
+# Configure filters
+##################################
+
+# Turn on or off all filters
+fuser.filter.active=true
+fuser.aircraft.filter.active=true
+# Filter based on airport 
+fuser.filter.location.active=false
+fuser.filter.location.airports=${jms.source.data.airports}
+# Filter to remove flights with a GUFI of "IGNORE"
+fuser.filter.gufi.active=false
+fuser.aircraft.filter.registration.active=true
+# Filter which will remove a configurable set of attributes
+fuser.filter.attribute.active=false
+fuser.filter.attribute.location.default=config/fuser/attributes/attributes.xml
+fuser.filter.attribute.mappings=
+# Filter out NASA TMA arrival predictions
+fuser.filter.nasaTmaArrivalPredictions.active=false
+# Filter out incomplete position updates
+fuser.filter.flightPositionFilter.active=true
+
+
+# TFM PROPERTIES
+fuser.tfm.transform.includeTraversalData=false
+fuser.tfm.transform.includeFixTraversalData=${fuser.tfm.transform.includeTraversalData}
+fuser.tfm.transform.includeWaypointTraversalData=${fuser.tfm.transform.includeTraversalData}
+fuser.tfm.transform.includeCenterTraversalData=${fuser.tfm.transform.includeTraversalData}
+fuser.tfm.transform.includeSectorTraversalData=${fuser.tfm.transform.includeTraversalData}
+
+##################################
+# Configure updaters
+##################################
+
+fuser.updater.aerodrome.active=true
+fuser.updater.aircraftIdentification.active=true
+fuser.updater.aircraftType.active=true
+fuser.updater.cancellation.active=true
+fuser.updater.commonAircraftField.active=true
+fuser.updater.commonField.active=true
+fuser.updater.controlledTimes.active=true
+fuser.updater.creationTime.active=true
+fuser.updater.departureFix.active=true
+fuser.updater.departureStandActualTime.active=true
+fuser.updater.facilityIdList.active=true
+fuser.updater.facilityId.active=true
+fuser.updater.fixSource.active=true
+fuser.updater.flightHeading.active=true
+fuser.updater.flightPositionMediation.active=true
+fuser.updater.flightTypeAndCarrier.active=true
+fuser.updater.gateAssignments.active=true
+fuser.updater.idacExtension.active=true
+fuser.updater.internalDeparture.active=true
+fuser.updater.international.active=true
+#This property filters out arrival runway metered times for pre-departure flights
+fuser.updater.meteredTimes.active=true
+fuser.updater.preDepartureFlightPlan.active=true
+fuser.updater.releaseSource.active=true
+fuser.updater.runwayOpNec.active=true
+fuser.updater.sourceUpdater.active=true
+fuser.updater.systemId.active=true
+fuser.updater.tbfmExtension.active=true
+fuser.updater.nullOutFields.active=false
+fuser.updater.diversion.active=true
+fuser.updater.runwayActualTime.active=false
+fuser.updater.flightState.active=false
+#Turning on the sector updater requires loading the sector beans and routes
+fuser.updater.sector.active=false
+fuser.updater.positionDistance.active=true
+
+fuser.updater.releaseSource.idacSource=IDAC
+fuser.updater.releaseSource.swimSource=TMA
+# This property should be kept in sync with the AMS property ams.filter.swimReleaseSource.pattern
+fuser.updater.releaseSource.swimSystemIdPattern=TMA\\.(ZTL|ZNY|ZDC)\\.FAA\\.GOV-SWIM
+fuser.updater.releaseSource.amsSource=AMS
+fuser.updater.releaseSource.amsSystemIdPattern=AMS-SWIM
+
+# if the updater.releaseSource.autoReleaseMode is set to 'true' the 
+# corresponding flag ams.filter.fuser.enabled.autoReleaseMode in the Fuser will
+# also need to be set to true to avoid confusion having the release update 
+# source set when it shouldn't be
+fuser.updater.releaseSource.autoReleaseMode=false
+#This property allows departure stand actual time updates from airlines. If 
+#false, only actual times based on track data or user entry in RTC are used.
+fuser.updater.departureStandActualTime.allowAirlineTimes=true
+
+# Primary sources for updating flight plan data from ERAM (make sure this lines up with the mediation rules)
+fuser.updater.preDepartureFlightPlan.flightPlanPrimarySources=TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION
+
+# Set the TFM traversal times if they are null
+fuser.updater.tfmTraversalUpdater=true
+
+# Fields to null out when the NullFieldUpdater is active
+fuser.updater.nullOutFields.fieldsToNull=
+
+# Sensitive data logic parameters
+fuser.updater.sensitiveData.active=false
+fuser.updater.sensitiveData.blockAtIndustryIsSensitive=false
+## Folder where new SFD zip files are stored
+fuser.updater.sensitiveData.sfdFile.folder.default=config/fuser/sfd/
+## Alternate folder where new SFD zip files are stored
+fuser.updater.sensitiveData.sfdFile.folder.alternate=
+## Cron expression for checking new data in the folder (every day at 0800)
+fuser.updater.sensitiveData.sfdFile.folder.cronCheck=0 0 8 * * ?
+fuser.updater.sensitiveData.sfdFile.password=
+
+# Sweeper executes updater logic on a timer
+fuser.updater.updaterSweeper.active=true
+fuser.updater.updaterSweeper.timerStartDelayMillis=180000
+fuser.updater.updaterSweeper.timerIntervalMillis=60000
+
+##################################
+# Configure routes
+##################################
+fuser.playback.mode=false
+fuser.playback.dataFeederSignaler.active=${fuser.playback.mode}
+fuser.syncPoint.locked=true
+fuser.fromFuser.to.prefused.enable=false
+fuser.fromFuser.aircraft.to.prefused.enable=false
+fuser.fromFuser.remove.publish.active=false
+fuser.fromFuser.aircraft.remove.publish.active=false
+fuser.fromFuser.sectorAssignment.remove.publish.active=false
+### batch remove message publish interval in milliseconds
+fuser.fromFuser.remove.publish.interval=60000
+fuser.fromFuser.aircraft.remove.publish.interval=60000
+fuser.fromFuser.sectorAssignment.remove.publish.interval=60000
+
+##################################
+# Configure performance monitor
+##################################
+fuser.core.performancemonitor.active=true
+fuser.core.performancemonitor.report.active=true
+fuser.core.performancemonitor.report.type=JMS
+fuser.core.performancemonitor.report.seconds=60
+fuser.core.application.name=fuser
+fuser.core.performancemonitor.report.filedirectory=./data
+
+##################################
+# Configure aircraf type api
+##################################
+fuser.core.aircraftType.allowClassPathLoading=true
+fuser.core.aircraftType.weightClassGroup=FAA
+
+# Flight Types file
+fuser.core.generalAviationFlightTypes.file=config/fuser/flightType/GeneralAviationCarriers.txt
+
+###### Playback Settings ######
+fuser.internal.playback.enabled=false
+fuser.playback.headerTimestampName=capture-timestamp
+fuser.clock.sync.uri=direct:clock.ClockSync
+fuser.playback.start=2019-08-25T12:00:00
+fuser.playback.end=2019-08-25T15:00:00
+fuser.playback.initializeFromRepositoryCacheFile=true
+fuser.playback.signalerTimeThreshold=120000
+fuser.playback.tfdm.signalerTimeThreshold=1200000
+fuser.playback.signalWaitTimeout=2
+fuser.playback.dynamicScan=true
+
+
+# GUFI Playback Settings
+fuser.playback.gufi.enabled=false
+fuser.playback.gufi.dir=C:\\DataStor\\gufiOutput\\{yyyy}\\{MM}\\{dd}\\tfm_{yyyyMMdd}_{HHmm}.xml.bz2
+fuser.playback.gufi.start=${fuser.playback.start}
+fuser.playback.gufi.end=${fuser.playback.end}
+fuser.playback.gufi.id=GUFI
+fuser.playback.gufi.fileType=CAPTURE
+
+# Sector Assignment Playback Settings
+fuser.playback.sfdps.sectorAssignment.id=SFDPS_SECTOR
+fuser.playback.sfdps.sectorAssignment.enabled=false
+fuser.playback.sfdps.sectorAssignment.dir=C:\\DataStor\\sfdpsParserOutput\\{yyyy}\\{MM}\\{dd}\\sfdpsSectorAssignment_{yyyyMMdd}_{HHmm}.xml.bz2
+fuser.playback.sfdps.sectorAssignment.start=${fuser.playback.start}
+fuser.playback.sfdps.sectorAssignment.end=${fuser.playback.end}
+fuser.playback.sfdps.sectorAssignment.destination=direct:feeder.SFDPS.SectorAssignment.fuser
+fuser.playback.sfdps.sectorAssignment.typeHeader=FDPS_MessageType
+fuser.playback.sfdps.sectorAssignment.typeHeaderValue=SH_AIXM
+
+fuser.playback.sfdps.sectorAssignment.fileType=CAPTURE
+
+fuser.playback.asdex.id=ASDEX
+fuser.playback.asdex.destination=direct:feeder.ASDEX.fuser
+fuser.playback.asdex.typeHeader=msgType
+fuser.playback.asdex.typeHeaderValue=AT
+
+fuser.playback.sfdps.id=SFDPS
+fuser.playback.sfdps.destination=direct:feeder.SFDPS.fuser
+fuser.playback.sfdps.typeHeader=FDPS_DataType
+fuser.playback.sfdps.typeHeaderValue=FlightFIXM
+
+fuser.playback.tfdm.id=TFDM
+fuser.playback.tfdm.destination=direct:feeder.TFDM.fuser
+fuser.playback.tfdm.typeHeader=DEX_SOURCE_TYPE
+fuser.playback.tfdm.typeHeaderValue=TFMS_TFDM_R
+
+fuser.playback.tfm.id=TFM
+fuser.playback.tfm.destination=direct:feeder.TFM.fuser
+fuser.playback.tfm.typeHeader=DEX_SOURCE_TYPE
+fuser.playback.tfm.typeHeaderValue=TFMSR
+
+fuser.playback.tma.id=TMA
+fuser.playback.tma.destination=direct:feeder.TMA.fuser
+fuser.playback.tma.typeHeader=DEX_SOURCE_TYPE
+fuser.playback.tma.typeHeaderValue=TBFM
+
+fuser.playback.smes.id=SMES
+fuser.playback.smes.destination=direct:feeder.SMES.fuser
+fuser.playback.smes.typeHeader=msgType
+fuser.playback.smes.typeHeaderValue=SE
+
+
+###### Capture Properties #######
+fuser.capture.active=false
+fuser.capture.processHoursBeforeWriteIfNoCache=30
+fuser.capture.archive.active=true
+fuser.capture.archive.extension=
+fuser.capture.archive.path={yyyy}/{MM}/{dd}
+fuser.capture.captureallheaders=true
+fuser.capture.excludedefaultheaders=true
+fuser.capture.filedateextension=_{yyyyMMdd}_{HHmm}
+fuser.capture.filename=fuser
+fuser.capture.filenameextension=.xml
+fuser.capture.filepath=capture/data/
+fuser.capture.maximumRollFiles=2
+fuser.capture.rollPeriod=HOURLY
+fuser.capture.timestampHeaderName=capture-timestamp
+fuser.capture.useMessageTime=true
+
+fuser.endpoint.capture=direct-vm:capture

@@ -1,0 +1,13 @@
+<component>
+    <dependencySets>
+        <dependencySet>
+            <unpack>true</unpack>
+            <scope>runtime</scope>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>com.mosaicatm:Fuser:zip:*</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</component>

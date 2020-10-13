@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.DerivedExtensionMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            arrival_adaptation_id varchar,
+            arrival_fix_altitude_derived integer,
+            arrival_fix_derived varchar,
+            arrival_fix_derived_time timestamp,
+            arrival_last_position_time timestamp,
+            arrival_missed_approach boolean,
+            arrival_movement_area_derived_time timestamp,
+            arrival_movement_area_duration_value bigint,
+            arrival_movement_area_entries integer,
+            arrival_movement_area_stop_duration_value bigint,
+            arrival_movement_area_stops integer,
+            arrival_ramp_area_duration_value bigint,
+            arrival_ramp_area_entries integer,
+            arrival_ramp_area_entry_time timestamp,
+            arrival_ramp_area_stop_duration_value bigint,
+            arrival_ramp_area_stops integer,
+            arrival_runway_clear_holdline_time timestamp,
+            arrival_runway_clear_time timestamp,
+            arrival_runway_crossed varchar,
+            arrival_runway_crossings integer,
+            arrival_runway_crossings_duration_value bigint,
+            arrival_runway_derived varchar,
+            arrival_runway_derived_time timestamp,
+            arrival_runway_entry_altitude integer,
+            arrival_runway_entry_time timestamp,
+            arrival_runway_exit_time timestamp,
+            arrival_runway_occupancy_duration_value bigint,
+            arrival_runway_separation_distance double precision,
+            arrival_runway_separation_duration_value bigint,
+            arrival_runway_taxiway_exit varchar,
+            arrival_runway_touchdown_distance double precision,
+            arrival_spot_derived varchar,
+            arrival_stand_derived varchar,
+            arrival_stand_derived_time timestamp,
+            arrival_taxi_actual_duration_value bigint,
+            arrival_taxi_derived_duration_value bigint,
+            arrival_taxi_estimated_duration_value bigint,
+            arrival_taxi_undelayed_duration_value bigint,
+            arrival_taxiway_route varchar,
+            arrival_taxiway_route_detail varchar,
+            departure_adaptation_id varchar,
+            departure_detected_in_movement_area boolean,
+            departure_first_position_time timestamp,
+            departure_fix_altitude_derived integer,
+            departure_fix_derived varchar,
+            departure_fix_derived_time timestamp,
+            departure_movement_area_derived_time timestamp,
+            departure_movement_area_duration_value bigint,
+            departure_movement_area_entries integer,
+            departure_movement_area_stop_duration_value bigint,
+            departure_movement_area_stops integer,
+            departure_queue_length integer,
+            departure_queue_stops integer,
+            departure_ramp_area_duration_value bigint,
+            departure_ramp_area_entries integer,
+            departure_ramp_area_entry_time timestamp,
+            departure_ramp_area_stop_duration_value bigint,
+            departure_ramp_area_stops integer,
+            departure_runway_crossed varchar,
+            departure_runway_crossed_duration_value bigint,
+            departure_runway_crossings integer,
+            departure_runway_crossings_duration_value bigint,
+            departure_runway_derived varchar,
+            departure_runway_derived_time timestamp,
+            departure_runway_entry_time timestamp,
+            departure_runway_exit_altitude integer,
+            departure_runway_exit_time timestamp,
+            departure_runway_holdline_cross_time timestamp,
+            departure_runway_occupancy_duration_value bigint,
+            departure_runway_separation_distance double precision,
+            departure_runway_separation_duration_value bigint,
+            departure_runway_start_of_roll_time timestamp,
+            departure_runway_taxiway_entry varchar,
+            departure_spot_derived varchar,
+            departure_stand_derived varchar,
+            departure_stand_derived_time timestamp,
+            departure_taxi_derived_duration_value bigint,
+            departure_taxiway_route varchar,
+            departure_taxiway_route_detail varchar,
+            matm_processing_trigger varchar,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            timestamp timestamp
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>

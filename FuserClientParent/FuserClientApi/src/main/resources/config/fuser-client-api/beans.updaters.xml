@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="updaters.DataAdder" class="com.mosaicatm.fuser.client.api.impl.data.GenericDataAdder">
+        <constructor-arg index="0" ref="core.FuserClientStore" />
+        <property name="processedEventListener" ref="events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="updaters.DataUpdater" class="com.mosaicatm.fuser.client.api.impl.data.GenericDataUpdater">
+        <constructor-arg index="0" ref="core.FuserClientStore" />
+        <property name="processedEventListener" ref="events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="updaters.DataRemover" class="com.mosaicatm.fuser.client.api.impl.data.TimedProxyDataRemover" 
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="updaters.MatmFlightDataRemover" />
+        <property name="active" value="${fuser-client-api.remover.timed.active}" />
+       <property name="processedEventListener" ref="events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="updaters.MatmFlightDataRemover" class="com.mosaicatm.fuser.client.api.impl.data.MatmFlightDataRemover">
+        <constructor-arg index="0" ref="core.FuserClientStore" />
+        <property name="removeWindowHours" value="${fuser-client-api.remover.window.hours}" />
+        <property name="removeArrivedFlightThresholdHours" value="${fuser-client-api.remove.arrived.threshold.hours}" />
+        <property name="removeActiveFlightThresholdHours" value="${fuser-client-api.remove.active.threshold.hours}" />
+        <property name="removeNonDepartedFlightThresholdHours" value="${fuser-client-api.remove.nondeparted.threshold.hours}" />
+        <property name="removeAsdexOnlyFlightThresholdHours" value="${fuser-client-api.remove.asdex.only.threshold.hours}" />
+        <property name="clock" ref="core.Clock" />
+    </bean>
+
+        
+</beans>

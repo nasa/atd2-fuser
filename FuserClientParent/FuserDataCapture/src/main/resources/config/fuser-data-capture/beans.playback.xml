@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="playback.FuserDataPlaybackSettings" class="com.mosaicatm.lib.playback.PlaybackSettings" >
+        <property name="active" value="${fuser-capture.internal.playback.enabled}" />
+        <property name="playbackDir" value="${fuser-capture.playback.dir}" />
+        <property name="start" value="${fuser-capture.playback.start}" />
+        <property name="end" value="${fuser-capture.playback.end}" />
+        <property name="id" value="${fuser-capture.playback.id}" />
+        <property name="fileType" value="${fuser-capture.playback.fileType}" />
+        <property name="headerTimestampName" value="${fuser-capture.playback.headerTimestampName}" />
+        <property name="dynamicScan" value="${fuser-capture.playback.dynamicScan}" />
+    </bean>
+
+    <bean id="playback.FuserDataRollingFileConsumer"
+            class="com.mosaicatm.lib.playback.RollingFileConsumer"
+            init-method="init">
+        <property name="settings" ref="playback.FuserDataPlaybackSettings" />
+    </bean>
+
+    <bean id="playback.FuserDataMultiplexPublisher" class="com.mosaicatm.lib.playback.MultiplexPublisher">
+        <property name="defaultDestination" value="${fuser-capture.playback.destination}" />
+    </bean>
+
+    <bean id="playback.HeaderUtil" class="com.mosaicatm.lib.playback.util.HeaderUtil">
+        <property name="headerTimestampName" value="${fuser-capture.playback.headerTimestampName}" />
+    </bean>
+
+    <bean id="playback.FuserDataPlayback" class="com.mosaicatm.lib.playback.Playback" >
+        <property name="active" value="${fuser-capture.internal.playback.enabled}" />
+        <property name="clockSyncMarshaller" ref="marshalling.ClockSyncMarshaller" />
+        <property name="clockSyncUri" value="${fuser-capture.position.uri.clock.source}" />
+        <property name="consumer" ref="playback.FuserDataRollingFileConsumer" />
+        <property name="headerUtil" ref="playback.HeaderUtil" />
+        <property name="multiplexPublisher" ref="playback.FuserDataMultiplexPublisher" />
+        <property name="startTime" value="${fuser-capture.playback.start}" />
+    </bean>
+    
+    <bean id="playback.DailyRepositoryCacheHandler" class="com.mosaicatm.fuser.datacapture.playback.DailyFuserRepositoryCacheHandler" >
+        <property name="active" value="${fuser-capture.internal.playback.enabled}" />
+        <property name="clock" ref="core.Clock" />        
+        <property name="fuserClientApi" ref="api.FuserClientApi" />
+        <property name="aircraftFuserClientApi" ref="api.AircraftFuserClientApi" />
+        <property name="archiveRootFolder" value="${fuser-capture.playback.dir.root}" />
+        <property name="archiveDatePathString" value="${fuser-capture.playback.dir.format}" />
+        <property name="initializeFromRepositoryCacheFile" value="${fuser-capture.playback.initializeFromRepositoryCacheFile}" />
+    </bean>     
+</beans>

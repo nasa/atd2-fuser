@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<!-- Detailed configuration can be found on Confluence under ATD-2 Database 
+		Version Control Capability -->
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-1" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+				<columnExists tableName="matm_flight" columnName="super_stream_artcc" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+			<column name="super_stream_artcc" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-2" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+				<columnExists tableName="matm_flight" columnName="super_stream_tracon" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+			<column name="super_stream_tracon" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-3" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+				<columnExists tableName="matm_flight" columnName="super_stream_point" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+			<column name="super_stream_point" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-4" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_all" />
+			<not>
+				<columnExists tableName="matm_flight_all" columnName="super_stream_artcc" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_all">
+			<column name="super_stream_artcc" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-5" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_all" />
+			<not>
+				<columnExists tableName="matm_flight_all" columnName="super_stream_tracon" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_all">
+			<column name="super_stream_tracon" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-6" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_all" />
+			<not>
+				<columnExists tableName="matm_flight_all" columnName="super_stream_point" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_all">
+			<column name="super_stream_point" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-7" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_summary" />
+			<not>
+				<columnExists tableName="matm_flight_summary"
+					columnName="super_stream_artcc" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_summary">
+			<column name="super_stream_artcc" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-8" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_summary" />
+			<not>
+				<columnExists tableName="matm_flight_summary"
+					columnName="super_stream_tracon" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_summary">
+			<column name="super_stream_tracon" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-9" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_summary" />
+			<not>
+				<columnExists tableName="matm_flight_summary"
+					columnName="super_stream_point" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_summary">
+			<column name="super_stream_point" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-10" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+				<columnExists tableName="matm_flight" columnName="release_swap_gufi" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+			<column name="release_swap_gufi" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-11" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_all" />
+			<not>
+				<columnExists tableName="matm_flight_all" columnName="release_swap_gufi" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_all">
+			<column name="release_swap_gufi" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20171211-12" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_summary" />
+			<not>
+				<columnExists tableName="matm_flight_summary"
+					columnName="release_swap_gufi" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_summary">
+			<column name="release_swap_gufi" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180104-1" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="derived_extension" />
+			<not>
+				<columnExists tableName="derived_extension"
+					columnName="departure_stand_actual_time_derived_received_timestamp" />
+				<columnExists tableName="derived_extension"
+					columnName="arrival_fix_undelayed_time_at_arrival_fix" />
+				<columnExists tableName="derived_extension"
+					columnName="arrival_movement_area_undelayed_time_at_on" />
+				<columnExists tableName="derived_extension"
+					columnName="arrival_runway_undelayed_time_at_arrival_fix" />
+				<columnExists tableName="derived_extension"
+					columnName="arrival_stand_time_undelayed_at_movement_area" />
+				<columnExists tableName="derived_extension"
+					columnName="departure_fix_undelayed_time_at_off" />
+				<columnExists tableName="derived_extension"
+					columnName="departure_movement_area_undelayed_time_at_out" />
+				<columnExists tableName="derived_extension"
+					columnName="departure_runway_undelayed_time_at_movement_area" />
+				<columnExists tableName="derived_extension"
+					columnName="departure_stand_undelayed_time_at_out" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="derived_extension">
+			<column name="departure_stand_actual_time_derived_received_timestamp"
+				type="timestamp" />
+			<column name="arrival_fix_undelayed_time_at_arrival_fix" type="timestamp" />
+			<column name="arrival_movement_area_undelayed_time_at_on"
+				type="timestamp" />
+			<column name="arrival_runway_undelayed_time_at_arrival_fix"
+				type="timestamp" />
+			<column name="arrival_stand_time_undelayed_at_movement_area"
+				type="timestamp" />
+			<column name="departure_fix_undelayed_time_at_off" type="timestamp" />
+			<column name="departure_movement_area_undelayed_time_at_out"
+				type="timestamp" />
+			<column name="departure_runway_undelayed_time_at_movement_area"
+				type="timestamp" />
+			<column name="departure_stand_undelayed_time_at_out" type="timestamp" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180104-2" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="derived_extension_all" />
+			<not>
+				<columnExists tableName="derived_extension_all"
+					columnName="departure_stand_actual_time_derived_received_timestamp" />
+				<columnExists tableName="derived_extension_all"
+					columnName="arrival_fix_undelayed_time_at_arrival_fix" />
+				<columnExists tableName="derived_extension_all"
+					columnName="arrival_movement_area_undelayed_time_at_on" />
+				<columnExists tableName="derived_extension_all"
+					columnName="arrival_runway_undelayed_time_at_arrival_fix" />
+				<columnExists tableName="derived_extension_all"
+					columnName="arrival_stand_time_undelayed_at_movement_area" />
+				<columnExists tableName="derived_extension_all"
+					columnName="departure_fix_undelayed_time_at_off" />
+				<columnExists tableName="derived_extension_all"
+					columnName="departure_movement_area_undelayed_time_at_out" />
+				<columnExists tableName="derived_extension_all"
+					columnName="departure_runway_undelayed_time_at_movement_area" />
+				<columnExists tableName="derived_extension_all"
+					columnName="departure_stand_undelayed_time_at_out" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="derived_extension_all">
+			<column name="departure_stand_actual_time_derived_received_timestamp"
+				type="timestamp" />
+			<column name="arrival_fix_undelayed_time_at_arrival_fix" type="timestamp" />
+			<column name="arrival_movement_area_undelayed_time_at_on"
+				type="timestamp" />
+			<column name="arrival_runway_undelayed_time_at_arrival_fix"
+				type="timestamp" />
+			<column name="arrival_stand_time_undelayed_at_movement_area"
+				type="timestamp" />
+			<column name="departure_fix_undelayed_time_at_off" type="timestamp" />
+			<column name="departure_movement_area_undelayed_time_at_out"
+				type="timestamp" />
+			<column name="departure_runway_undelayed_time_at_movement_area"
+				type="timestamp" />
+			<column name="departure_stand_undelayed_time_at_out" type="timestamp" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180104-3" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+				<columnExists tableName="matm_flight" columnName="eram_gufi" />
+				<columnExists tableName="matm_flight" columnName="computer_id" />
+				<columnExists tableName="matm_flight" columnName="source_facility" />
+				<columnExists tableName="matm_flight" columnName="creation_time" />
+
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+			<column name="eram_gufi" type="varchar" />
+			<column name="computer_id" type="varchar" />
+			<column name="source_facility" type="varchar" />
+			<column name="creation_time" type="timestamp" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180104-4" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_all" />
+			<not>
+				<columnExists tableName="matm_flight_all" columnName="eram_gufi" />
+				<columnExists tableName="matm_flight_all" columnName="computer_id" />
+				<columnExists tableName="matm_flight_all" columnName="source_facility" />
+				<columnExists tableName="matm_flight_all" columnName="creation_time" />
+
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_all">
+			<column name="eram_gufi" type="varchar" />
+			<column name="computer_id" type="varchar" />
+			<column name="source_facility" type="varchar" />
+			<column name="creation_time" type="timestamp" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180104-5" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_summary" />
+			<not>
+				<columnExists tableName="matm_flight_summary"
+					columnName="eram_gufi" />
+				<columnExists tableName="matm_flight_summary"
+					columnName="computer_id" />
+				<columnExists tableName="matm_flight_summary"
+					columnName="source_facility" />
+				<columnExists tableName="matm_flight_summary"
+					columnName="creation_time" />
+
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_summary">
+			<column name="eram_gufi" type="varchar" />
+			<column name="computer_id" type="varchar" />
+			<column name="source_facility" type="varchar" />
+			<column name="creation_time" type="timestamp" />
+		</addColumn>
+	</changeSet>
+
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180123-1" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+				<columnExists tableName="matm_flight" columnName="super_stream_class_name" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+			<column name="super_stream_class_name" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180123-2" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_all" />
+			<not>
+				<columnExists tableName="matm_flight_all" columnName="super_stream_class_name" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_all">
+			<column name="super_stream_class_name" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="fuserDataCapture-v3.1.0-20180123-3" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight_summary" />
+			<not>
+				<columnExists tableName="matm_flight_summary" columnName="super_stream_class_name" />
+			</not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight_summary">
+			<column name="super_stream_class_name" type="varchar" />
+		</addColumn>
+	</changeSet>
+
+	<!-- This needs to be the last changeset in the file -->
+	<changeSet id="fuserDataCapture-v3.1.0" author="atd2"
+		runAlways="true">
+		<tagDatabase tag="3.1.0" />
+	</changeSet>
+
+</databaseChangeLog>

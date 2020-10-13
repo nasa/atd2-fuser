@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="sector.updaters.DataAdder" class="com.mosaicatm.fuser.client.api.impl.data.GenericDataAdder">
+        <constructor-arg index="0" ref="sector.core.SectorAssignmentClientStore" />
+        <property name="processedEventListener" ref="sector.events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="sector.events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="sector.updaters.DataUpdater" class="com.mosaicatm.fuser.client.api.impl.data.GenericDataUpdater">
+        <constructor-arg index="0" ref="sector.core.SectorAssignmentClientStore" />
+        <property name="processedEventListener" ref="sector.events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="sector.events.ReceivedEventManager" />
+    </bean>
+        
+    <bean id="sector.updaters.DataRemover" class="com.mosaicatm.fuser.client.api.impl.data.TimedProxyDataRemover" 
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="sector.updaters.MatmSectorAssignmentDataRemover" />
+        <property name="active" value="${fuser-client-api.remover.timed.active}" />
+        <property name="processedEventListener" ref="sector.events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="sector.events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="sector.updaters.MatmSectorAssignmentDataRemover" class="com.mosaicatm.fuser.client.api.impl.data.MatmSectorAssignmentDataRemover">
+        <constructor-arg index="0" ref="sector.core.SectorAssignmentStore" />
+        <constructor-arg index="1" ref="core.Clock" />
+    </bean>        
+        
+</beans>

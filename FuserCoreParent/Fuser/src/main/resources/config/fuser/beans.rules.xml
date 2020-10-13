@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"> 
+
+    <bean id="fuser-rules.RuleFactory" class="com.mosaicatm.fuser.rules.RuleFactory" >
+        <property name="active" value="${fuser.rules.enable}" />
+        <property name="rules" >
+            <list>
+                <!-- Flight element rules -->
+                <ref bean="fuser-rules.StaleUpdateRule" />
+                <ref bean="fuser-rules.AcidRule" />
+                <ref bean="fuser-rules.EramIdentifierRule" />
+                <ref bean="fuser-rules.BeaconCodeRule" />                
+                <ref bean="fuser-rules.AerodromeRule" />
+                <ref bean="fuser-rules.AirlineParkingGateRule" />
+                <ref bean="fuser-rules.AircraftTypeRule" />
+                <ref bean="fuser-rules.AircraftRegistrationRule" />
+                <ref bean="fuser-rules.RouteOfFlightRule" />
+                <ref bean="fuser-rules.SensitiveDataRule" />
+                
+                <!-- Time element rules -->
+                <ref bean="fuser-rules.ArrivalRunwayEstimatedTimeRule" />                
+                <ref bean="fuser-rules.DepartureStandEstimatedTimeRule" />
+                <ref bean="fuser-rules.DepartureStandEarliestTimeRule" />
+                <ref bean="fuser-rules.StandActualTimeRule" />
+                <ref bean="fuser-rules.RunwayActualTimeRule" />  
+                <ref bean="fuser-rules.TfmTmiRule" />  
+                
+                <!-- Complicated rules involving multiple system mediation -->
+                <ref bean="fuser-rules.TmaIdacSwimSystemPriorityRule" />
+                <ref bean="fuser-rules.TmaNasaSystemPriorityRule" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="fuser-rules.StaleUpdateRule" class="com.mosaicatm.fuser.rules.StaleUpdateRule" >
+        <property name="active" value="${fuser.rules.StaleUpdateRule.enable}" />
+        <property name="priority" value="${fuser.rules.StaleUpdateRule.priority}" />
+        <property name="name" value="${fuser.rules.StaleUpdateRule.name}" />
+        <property name="sameSourcesAllowableStalenessMillis" 
+                  value="${fuser.rules.StaleUpdateRule.sameSourcesAllowableStalenessMillis}" />
+        <property name="differentSourcesAllowableStalenessMillis" 
+                  value="${fuser.rules.StaleUpdateRule.differentSourcesAllowableStalenessMillis}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+    </bean>     
+            
+    <!-- Give priority in the ACID value to FAA systems -->
+    <bean id="fuser-rules.AcidRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.AcidRule.enable}" />
+        <property name="priority" value="${fuser.rules.AcidRule.priority}" />
+        <property name="name" value="${fuser.rules.AcidRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <!-- 
+                    Preference is ATC systems. Note, we've found ASDEX to be less reliable.
+                -->
+                <value>TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION,TMA</value>
+                <value>TFM</value>                
+                <value>ASDEX,IDAC</value>
+                <value>TFM_TFDM</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>acid</value>
+                <value>carrier</value>
+            </list>
+        </property>
+    </bean>    
+
+    <!-- Priority for the real ERAM system,then TFMS -->
+    <bean id="fuser-rules.EramIdentifierRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.EramIdentifierRule.enable}" />
+        <property name="priority" value="${fuser.rules.EramIdentifierRule.priority}" />
+        <property name="name" value="${fuser.rules.EramIdentifierRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <!-- 
+                    This should basically match flight plan sources in PreDepartureFlightPlanUpdater. Along 
+                    with any additional, reliable sources for setting these values from ERAM. We
+                    have logic that relies on the sourceFacility/computerId being set to match the 
+                    current, best ERAM values. Definitely intentionally filtering out the values
+                    from TFM_FLIGHT_PLAN_CANCELLATION messages. Some day, this could be changed to SFDPS.
+                -->
+                <value>FUSER,SFDPS,TFM_BEACON_CODE_INFORMATION,TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION,TFM_TRACK_INFORMATION,TFM_OCEANIC_REPORT,TFM_DEPARTURE_INFORMATION,TFM_ARRIVAL_INFORMATION</value>
+                <value>IDAC</value>
+                <value>TFM</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>computerId</value>
+                <value>eramGufi</value>
+                <value>sourceFacility</value>
+            </list>
+        </property>
+    </bean> 
+    
+    <!-- Priority for the beacon code -->
+    <bean id="fuser-rules.BeaconCodeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.BeaconCodeRule.enable}" />
+        <property name="priority" value="${fuser.rules.BeaconCodeRule.priority}" />
+        <property name="name" value="${fuser.rules.BeaconCodeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>ASDEX,FUSER,SFDPS,TFM_BEACON_CODE_INFORMATION,TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION,TFM_TRACK_INFORMATION,TFM_OCEANIC_REPORT,TFM_DEPARTURE_INFORMATION,TFM_ARRIVAL_INFORMATION</value>
+                <value>IDAC,FLIGHTHUB_POSITION</value>
+                <value>TFM</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>beaconCode</value>
+            </list>
+        </property>
+    </bean>     
+
+    <!-- Give priority in the Aerodrome values to filed flight plans -->
+    <bean id="fuser-rules.AerodromeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.AerodromeRule.enable}" />
+        <property name="priority" value="${fuser.rules.AerodromeRule.priority}" />
+        <property name="name" value="${fuser.rules.AerodromeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION,TMA,SFDPS_FH,SFDPS_AH,FUSER</value>
+                <value>TFM_FLIGHT_SCHEDULE_ACTIVATE,TFM_FLIGHT_CREATE,TFM_FLIGHT_MODIFY,TFM_TFDM</value>
+                <value>SFDPS</value>
+                <value>AIRLINE_FLIGHTHUB</value>
+                <value>AIRLINE_FLIGHTSTATS</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>arrivalAerodrome.iataName</value>
+                <value>arrivalAerodrome.icaoName</value>
+                <value>arrivalAerodrome.faaLid</value>
+                <value>departureAerodrome.iataName</value>
+                <value>departureAerodrome.icaoName</value>
+                <value>departureAerodrome.faaLid</value>
+                <value>internalDeparture</value>
+            </list>
+        </property>
+    </bean>    
+            
+    <bean id="fuser-rules.ArrivalRunwayEstimatedTimeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.ArrivalRunwayEstimatedTimeRule.enable}" />
+        <property name="priority" value="${fuser.rules.ArrivalRunwayEstimatedTimeRule.priority}" />
+        <property name="name" value="${fuser.rules.ArrivalRunwayEstimatedTimeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>TFM</value>
+                <value>TMA</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>arrivalRunwayEstimatedTime</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.DepartureStandEarliestTimeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.DepartureStandEarliestTimeRule.enable}" />
+        <property name="priority" value="${fuser.rules.DepartureStandEarliestTimeRule.priority}" />
+        <property name="name" value="${fuser.rules.DepartureStandEarliestTimeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>TFM_TFDM</value>
+                <value>AIRLINE</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>departureStandEarliestTime</value>
+            </list>
+        </property>
+    </bean>
+        
+    <bean id="fuser-rules.AirlineParkingGateRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.AirlineParkingGateRule.enable}" />
+        <property name="priority" value="${fuser.rules.AirlineParkingGateRule.priority}" />
+        <property name="name" value="${fuser.rules.AirlineParkingGateRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>AIRLINE_FLIGHTHUB</value>
+                <value>TFM_TFDM</value>
+                <value>AIRLINE_FLIGHTSTATS</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>departureStandAirline</value>
+                <value>arrivalStandAirline</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.AircraftTypeRule" class="com.mosaicatm.fuser.rules.AircraftTypeRule " >
+        <property name="active" value="${fuser.rules.AircraftTypeRule.enable}" />
+        <property name="priority" value="${fuser.rules.AircraftTypeRule.priority}" />
+        <property name="name" value="${fuser.rules.AircraftTypeRule.name}" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>IDAC,SFDPS,TFM,TFM_TFDM,TMA</value>
+                <value>AIRLINE_FLIGHTHUB,AIRLINE_FLIGHTSTATS,ASDEX</value>
+                <value>FMC</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>aircraftType</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.DepartureStandEstimatedTimeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.DepartureStandEstimatedTimeRule.enable}" />
+        <property name="priority" value="${fuser.rules.DepartureStandEstimatedTimeRule.priority}" />
+        <property name="name" value="${fuser.rules.DepartureStandEstimatedTimeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>AIRLINE_FLIGHTSTATS</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>departureStandEstimatedTime</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.AircraftRegistrationRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.AircraftRegistrationRule.enable}" />
+        <property name="priority" value="${fuser.rules.AircraftRegistrationRule.priority}" />
+        <property name="name" value="${fuser.rules.AircraftRegistrationRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>TFM_TFDM,AIRLINE_FLIGHTHUB,ASDEX</value>
+                <value>FLIGHTHUB_POSITION</value>
+                <value>AIRLINE_FLIGHTSTATS</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>aircraftAddress</value>                
+                <value>aircraftRegistration</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.StandActualTimeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.StandActualTimeRule.enable}" />
+        <property name="priority" value="${fuser.rules.StandActualTimeRule.priority}" />
+        <property name="name" value="${fuser.rules.StandActualTimeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>AIRLINE_FLIGHTHUB</value>
+                <value>TFM_TFDM</value>
+                <value>TFM</value>
+                <value>FMC</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>departureStandActualTime.value</value>
+                <value>arrivalStandActualTime</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.RunwayActualTimeRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.RunwayActualTimeRule.enable}" />
+        <property name="priority" value="${fuser.rules.RunwayActualTimeRule.priority}" />
+        <property name="name" value="${fuser.rules.RunwayActualTimeRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="sourcePriorityListFromCsv" value="${fuser.rules.RunwayActualTimeRule.sourceList}" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="includes" >
+            <list>
+                <value>departureRunwayActualTime.value</value>
+                <value>arrivalRunwayActualTime</value>
+            </list>
+        </property>
+    </bean>          
+    
+    <bean id="fuser-rules.TmaIdacSwimSystemPriorityRule" class="com.mosaicatm.fuser.rules.SourceSystemPriorityMediationRule" >
+        <property name="active" value="${fuser.rules.TmaIdacSwimSystemPriorityRule.enable}" />
+        <property name="priority" value="${fuser.rules.TmaIdacSwimSystemPriorityRule.priority}" />
+        <property name="name" value="${fuser.rules.TmaIdacSwimSystemPriorityRule.name}" />
+        <property name="favorSystemIdSuffix" value="-SWIM" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="updateSources">
+            <list>
+                <value>TMA</value>
+            </list>
+        </property>        
+        <property name="excludes" >
+            <list>
+                <value>acid</value>
+                <value>arrivalRunwayAssigned</value>
+                <value>arrivalRunwayScratchpad</value>
+                <value>arrivalRunwayEstimatedTime</value>
+                <value>arrivalRunwayMeteredTime.frozen</value>
+                <value>arrivalRunwayMeteredTime.value</value>
+                <value>arrivalAerodrome.iataName</value>
+                <value>arrivalAerodrome.icaoName</value>
+                <value>arrivalAerodrome.faaLid</value>
+                <value>departureAerodrome.iataName</value>
+                <value>departureAerodrome.icaoName</value>
+                <value>departureAerodrome.faaLid</value>
+                <value>extensions.tbfmExtension.arrivalRunway</value>
+                <value>extensions.tbfmExtension.arrivalRunwayEta</value>
+                <value>extensions.tbfmExtension.arrivalRunwaySta</value>
+                <value>extensions.tbfmExtension.arrivalRunwayTraconAssigned</value>
+                <value>extensions.tbfmExtension.arrivalRunwayAssignmentFrozen</value>
+                <value>timestamp</value>
+                <value>timestampFuserProcessed</value>
+                <value>timestampFuserReceived</value>
+                <value>timestampSource</value>
+                <value>timestampSourceProcessed</value>
+                <value>timestampSourceReceived</value>  
+            </list>
+        </property>
+        <property name="excludesRegex" value="extensions.idacExtension.*" />
+    </bean> 
+    
+    <bean id="fuser-rules.TmaNasaSystemPriorityRule" class="com.mosaicatm.fuser.rules.SourceSystemPriorityMediationRule" >
+        <property name="active" value="${fuser.rules.TmaNasaSystemPriorityRule.enable}" />
+        <property name="priority" value="${fuser.rules.TmaNasaSystemPriorityRule.priority}" />
+        <property name="name" value="${fuser.rules.TmaNasaSystemPriorityRule.name}" />
+        <property name="favorSystemIdSuffix" value="-NASA" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="updateSources">
+            <list>
+                <value>TMA</value>
+            </list>
+        </property>        
+        <property name="includes" >
+            <list>
+                <value>arrivalRunwayAssigned</value>
+                <value>arrivalRunwayScratchpad</value>
+                <value>arrivalRunwayEstimatedTime</value>
+                <value>arrivalRunwayMeteredTime.frozen</value>
+                <value>arrivalRunwayMeteredTime.value</value>
+                <value>extensions.tbfmExtension.arrivalRunway</value>
+                <value>extensions.tbfmExtension.arrivalRunwayEta</value>
+                <value>extensions.tbfmExtension.arrivalRunwaySta</value>
+                <value>extensions.tbfmExtension.arrivalRunwayTraconAssigned</value>
+                <value>extensions.tbfmExtension.arrivalRunwayAssignmentFrozen</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="fuser-rules.TfmTmiRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.TfmTmiRule.enable}" />
+        <property name="priority" value="${fuser.rules.TfmTmiRule.priority}" />
+        <property name="name" value="${fuser.rules.TfmTmiRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>TFM,TMA</value>
+                <value>IDAC</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>estimatedDepartureClearanceTime.value</value>
+                <value>arrivalRunwayControlledTime.value</value>
+            </list>
+        </property>
+    </bean>     
+    
+    <bean id="fuser-rules.RouteOfFlightRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.RouteOfFlightRule.enable}" />
+        <property name="priority" value="${fuser.rules.RouteOfFlightRule.priority}" />
+        <property name="name" value="${fuser.rules.RouteOfFlightRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>FUSER,TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION,TFM_FLIGHT_ROUTE</value>
+                <value>SFDPS</value>
+                <value>TMA</value>
+                <value>TFM</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>routeText</value>
+                <value>departureFixSourceData</value>
+                <value>arrivalFixSourceData</value>
+                <value>departureFixEstimatedTime</value>
+                <value>arrivalFixEstimatedTime</value>
+            </list>
+        </property>
+    </bean>     
+    
+    <!-- Give priority to non-track TFM sources, SFDPS, and ASDEX -->
+    <bean id="fuser-rules.SensitiveDataRule" class="com.mosaicatm.fuser.rules.MultiplePriorityMediationRule" >
+        <property name="active" value="${fuser.rules.SensitiveDataRule.enable}" />
+        <property name="priority" value="${fuser.rules.SensitiveDataRule.priority}" />
+        <property name="name" value="${fuser.rules.SensitiveDataRule.name}" />
+        <property name="idLookup" ref="fuser.core.MatmIdLookup" />
+        <property name="ruleClassType" value="com.mosaicatm.matmdata.flight.MatmFlight" />
+        <property name="sourcePriorityListFromString">
+            <list>
+                <value>TFM_FLIGHT_SCHEDULE_ACTIVATE,TFM_FLIGHT_PLAN_INFORMATION,TFM_FLIGHT_PLAN_AMENDMENT_INFORMATION,TFM_FLIGHT_CREATE,TFM_FLIGHT_MODIFY,TFM_DEPARTURE_INFORMATION,TFM_ARRIVAL_INFORMATION,TFM_FLIGHT_CONTROL,TFM_FLIGHT_PLAN_CANCELLATION,TFM_FLIGHT_ROUTE,TFM_FLIGHT_TIMES,TFM_TFDM,SFDPS</value>
+                <value>TFM_TRACK_INFORMATION,TFM_OCEANIC_REPORT,ASDEX</value>
+                <value>TMA</value>
+            </list>
+        </property>
+        <property name="includes" >
+            <list>
+                <value>sensitiveDataExternal</value>
+            </list>
+        </property>
+    </bean>       
+    
+</beans>

@@ -1,0 +1,14 @@
+#!/bin/bash
+# 
+
+SCRIPT_DIR=$(dirname $(readlink -f $0))
+LIB_DIR="$SCRIPT_DIR/lib"
+CONFIG_DIR="$SCRIPT_DIR/config"
+
+LOG4J="-Dlog4j.configuration=file:$CONFIG_DIR/fuser/log4j-redis-util.xml"
+
+if [ -z $COMMANDER_ID ]; then
+    COMMANDER_ID="redis-cli"
+fi
+
+java -Dproc.name=redis-cli -Dcommander.id=$COMMANDER_ID -classpath ".:$CONFIG_DIR:$LIB_DIR/*" $LOG4J com.mosaicatm.fuser.store.redis.util.RedisDbUtilitiesMain $@

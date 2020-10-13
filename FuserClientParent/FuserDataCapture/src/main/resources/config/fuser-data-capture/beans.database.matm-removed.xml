@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <!-- flight removal -->
+    <bean id="db.removed.FlightRemovedMapperWrapper" class = "com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="matm_flight_removed" />
+        <property name ="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"     value="com.mosaicatm.fuser.datacapture.db.dao.FlightRemovedMapper" />
+                <property name="sqlSessionFactory"     ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="db.removed.WriterClientFactory" class="com.mosaicatm.fuser.datacapture.io.batch.WriterClientFactory">
+        <property name="delimitedFactory"    ref="database.MatmFlightDelimitedObjectFactory" /> 
+        <property name="flatFactory"         ref="capture.FlatFactory" />
+        <property name="clock"                ref="core.Clock" />
+        <property name="bulkDriver"            ref="db.removed.IbatisBulkDriver" />
+    </bean>
+
+    <bean id="db.removed.FlightRemovedWriterClient" factory-bean="db.removed.WriterClientFactory" factory-method="getClientInstance">
+        <constructor-arg name="captureType" value="MATM_FLIGHT_REMOVED" />
+        <constructor-arg name="parentTable" value="matm_flight_removed" />
+        <constructor-arg name="active" value="${fuser-capture.capture.database.removed.enabled}" />
+    </bean>
+    
+    <bean id="db.removed.AircraftRemovedWriterClient" factory-bean="db.removed.WriterClientFactory" factory-method="getAircraftClientInstance">
+        <constructor-arg name="captureType" value="MATM_AIRCRAFT_REMOVED" />
+        <constructor-arg name="parentTable" value="matm_aircraft_removed" />
+        <constructor-arg name="active" value="${fuser-capture.capture.database.removed.enabled}" />
+    </bean>
+    
+    <!-- mapping cores -->
+    <bean id="db.removed.mapperFactory" class="com.mosaicatm.lib.database.ibatis.mapper.TableMapperFactoryImpl">
+        <property name="tableMappers" >
+            <list>
+                <ref bean="db.removed.FlightRemovedMapperWrapper" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="db.removed.IbatisBulkDriver" class="com.mosaicatm.lib.database.ibatis.IBatisBulkDriver" destroy-method="close">
+        <constructor-arg ref="db.dataSource" />
+        <constructor-arg ref="db.DatabaseMapper" />
+        <constructor-arg ref="db.removed.mapperFactory" />
+    </bean>
+    
+    <bean id="db.removed.BulkLoader" class="com.mosaicatm.lib.database.ibatis.IBatisBulkLoader" init-method="start" >
+        <property name="active"                 value="${fuser-capture.capture.database.removed.enabled}" />
+        <property name="bulkDriver"                ref="db.removed.IbatisBulkDriver" />
+        <property name="batchName"                value="MatmFlightRemovedBatch" />
+        <property name="batchReportName"        value="MatmFlightRemovedBatch" />
+        <property name="timestampColumnName"    value="${fuser-capture.database.removed.timestampColumnName}"/>
+        <property name="timedBatchPeriod"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedBatchDelay"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedReportPeriod"         value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportDelay"         value="${fuser-capture.database.batch.report.interval}" />        
+        <property name="timedReportEnabled"        value="${fuser-capture.database.batch.report.enabled}" />
+        <property name="daysToKeep"             value="${fuser-capture.database.daysToKeep}" />
+        <property name="createTable"             value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable"             value="${fuser-capture.database.dropTables}" />
+        <property name="blockingQueueMaxSize"  value="${fuser-capture.database.blockingQueueMaxSize}" />
+        <property name="clients">
+            <list>
+                <ref bean="db.removed.FlightRemovedWriterClient" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="db.removed.AircraftBulkLoader" class="com.mosaicatm.lib.database.ibatis.IBatisBulkLoader" init-method="start" >
+        <property name="active"                 value="${fuser-capture.capture.database.removed.enabled}" />
+        <property name="bulkDriver"                ref="db.removed.IbatisBulkDriver" />
+        <property name="batchName"                value="MatmAircraftRemovedBatch" />
+        <property name="batchReportName"        value="MatmAircraftRemovedBatch" />
+        <property name="timestampColumnName"    value="${fuser-capture.database.removed.timestampColumnName}"/>
+        <property name="timedBatchPeriod"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedBatchDelay"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedReportPeriod"         value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportDelay"         value="${fuser-capture.database.batch.report.interval}" />        
+        <property name="timedReportEnabled"        value="${fuser-capture.database.batch.report.enabled}" />
+        <property name="daysToKeep"             value="${fuser-capture.database.daysToKeep}" />
+        <property name="createTable"             value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable"             value="${fuser-capture.database.dropTables}" />
+        <property name="blockingQueueMaxSize"  value="${fuser-capture.database.blockingQueueMaxSize}" />
+        <property name="clients">
+            <list>
+                <ref bean="db.removed.AircraftRemovedWriterClient" />
+            </list>
+        </property>
+    </bean>
+
+    <bean factory-bean="core.MetricProxyFactory" factory-method="monitorProcessTime" >
+        <constructor-arg index="0" ref="db.removed.BulkLoader" />
+        <constructor-arg index="1" value="MatmFlightRemoved.totalProcessTime" />
+    </bean>
+    
+    <bean factory-bean="core.MetricProxyFactory" factory-method="monitorSize" >
+        <constructor-arg  index="0" >
+            <ref bean="db.removed.BulkLoader" />
+        </constructor-arg>
+        <constructor-arg index="1" value="MatmFlightRemovedBatch" />
+    </bean>
+    
+</beans>

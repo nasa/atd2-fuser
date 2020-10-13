@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    
+    <changeSet id="fuserDataCapture-v5.9.0-20200310-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>                
+                <columnExists tableName="tbfm_extension" columnName="system_id"/>
+                
+                <columnExists tableName="tbfm_extension" columnName="departure_tracon"/>
+                <columnExists tableName="tbfm_extension" columnName="departure_gate"/>
+                <columnExists tableName="tbfm_extension" columnName="departure_configuration"/>
+                <columnExists tableName="tbfm_extension" columnName="departure_stream_class"/>                
+                
+                <columnExists tableName="tbfm_extension" columnName="arrival_tracon"/>
+                <columnExists tableName="tbfm_extension" columnName="arrival_gate"/>
+                <columnExists tableName="tbfm_extension" columnName="arrival_configuration"/>
+                <columnExists tableName="tbfm_extension" columnName="arrival_stream_class"/>
+                
+                <columnExists tableName="tbfm_extension" columnName="meter_reference_point_count"/>
+                <columnExists tableName="tbfm_extension" columnName="meter_reference_points"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="system_id" type="varchar" />
+            
+            <column name="departure_tracon" type="varchar" />
+            <column name="departure_gate" type="varchar" />
+            <column name="departure_configuration" type="varchar" />
+            <column name="departure_stream_class" type="varchar" />            
+            
+            <column name="arrival_tracon" type="varchar" />
+            <column name="arrival_gate" type="varchar" />
+            <column name="arrival_configuration" type="varchar" />
+            <column name="arrival_stream_class" type="varchar" />
+            
+            <column name="meter_reference_point_count" type="integer" />
+            <column name="meter_reference_points" type="jsonb" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v5.9.0-20200310-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>                
+                <columnExists tableName="tbfm_extension_all" columnName="system_id"/>
+                
+                <columnExists tableName="tbfm_extension_all" columnName="departure_tracon"/>
+                <columnExists tableName="tbfm_extension_all" columnName="departure_gate"/>
+                <columnExists tableName="tbfm_extension_all" columnName="departure_configuration"/>
+                <columnExists tableName="tbfm_extension_all" columnName="departure_stream_class"/>                
+                
+                <columnExists tableName="tbfm_extension_all" columnName="arrival_tracon"/>
+                <columnExists tableName="tbfm_extension_all" columnName="arrival_gate"/>
+                <columnExists tableName="tbfm_extension_all" columnName="arrival_configuration"/>
+                <columnExists tableName="tbfm_extension_all" columnName="arrival_stream_class"/>
+                
+                <columnExists tableName="tbfm_extension_all" columnName="meter_reference_point_count"/>
+                <columnExists tableName="tbfm_extension_all" columnName="meter_reference_points"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="system_id" type="varchar" />
+
+            <column name="departure_tracon" type="varchar" />
+            <column name="departure_gate" type="varchar" />
+            <column name="departure_configuration" type="varchar" />
+            <column name="departure_stream_class" type="varchar" />            
+            
+            <column name="arrival_tracon" type="varchar" />
+            <column name="arrival_gate" type="varchar" />
+            <column name="arrival_configuration" type="varchar" />
+            <column name="arrival_stream_class" type="varchar" />
+            
+            <column name="meter_reference_point_count" type="integer" />
+            <column name="meter_reference_points" type="jsonb" />
+        </addColumn>
+    </changeSet>
+
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v5.9.0" author="atd2" runAlways="true">
+        <tagDatabase tag="5.9.0" />
+    </changeSet>
+
+</databaseChangeLog>

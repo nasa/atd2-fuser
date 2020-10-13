@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.MatmAircraftMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            address varchar,
+            creation_time timestamp,
+            at_operating_airport boolean,
+            at_operating_airport_source varchar,
+            at_gate varchar,
+            equipment_qualifier varchar,
+            faa_engine_class varchar,
+            last_known_gate varchar,
+            last_known_gufi varchar,
+            last_known_surface_flight_state varchar,
+            last_update_source varchar,
+            recat_engine_class varchar,
+            record_identifier varchar,
+            registration varchar,
+            repositioned boolean,
+            reposition_destination varchar,
+            system_id varchar,
+            timestamp_source timestamp,
+            timestamp_source_processed timestamp,
+            timestamp_source_received timestamp,
+            timestamp timestamp,
+            timestamp_fuser_processed timestamp,
+            timestamp_fuser_received timestamp,
+            type varchar,
+            sequence_id serial
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+
+    <update id="createView">
+        DROP VIEW IF EXISTS ${tableName}_view CASCADE;
+        CREATE OR REPLACE VIEW ${tableName}_view AS
+        (
+            SELECT * FROM ${tableName}
+        );
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_registration_${tableName} on ${tableName} (registration);
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+    </update>
+
+</mapper>

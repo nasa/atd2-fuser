@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file defines the Camel routes that connect the applications to 
+    the TIB bus for testing/demo. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+    <!-- Camel Routes -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="routes.fuser.CamelContext" 
+                  autoStartup="true" allowUseOriginalMessage="false" >
+        <jmxAgent id="agent" disabled="true"/>
+        
+        <endpoint id="endpoint.fuser.clockSync" uri="${fuser.endpoint.clock.source}" />
+        <endpoint id="endpoint.fuser.clockSync.process" uri="${fuser.endpoint.clock.process}" />
+
+        <endpoint id="endpoint.fuser.toFuser" uri="${fuser.endpoint.toFuser}" />
+        <endpoint id="endpoint.fuser.toFuser.sync" uri="${fuser.endpoint.toFuser.sync}" />
+        <endpoint id="endpoint.fuser.toFuser.receive" uri="${fuser.endpoint.toFuser.receive}" />
+        <endpoint id="endpoint.fuser.internal.toFuser.receive" uri="${fuser.endpoint.internal.toFuser.receive}" />
+        <endpoint id="endpoint.fuser.toFuser.batch" uri="${fuser.endpoint.toFuser.batch}" />
+        <endpoint id="endpoint.fuser.toFuser.process" uri="${fuser.endpoint.toFuser.process}" />
+        <endpoint id="endpoint.fuser.toFuser.process.prefuse" uri="${fuser.endpoint.toFuser.process.prefuse}" />
+        <endpoint id="endpoint.fuser.toFuser.process.gufi" uri="${fuser.endpoint.toFuser.process.gufi}" />
+        <endpoint id="endpoint.fuser.toFuser.process.fuse.filter" uri="${fuser.endpoint.toFuser.process.fuse.filter}" />
+        <endpoint id="endpoint.fuser.toFuser.process.fuse.aggregate" uri="${fuser.endpoint.toFuser.process.fuse.aggregate}" />
+        
+        <endpoint id="endpoint.fuser.toFuser.remove" uri="${fuser.endpoint.toFuser.remove}" />
+        <endpoint id="endpoint.fuser.toFuser.remove.process" uri="${fuser.endpoint.toFuser.remove.process}" />
+        
+        <endpoint id="endpoint.fuser.fromFuser.process.batch" uri="${fuser.endpoint.fromFuser.process.batch}" />
+        <endpoint id="endpoint.fuser.fromFuser.envelope.process" uri="${fuser.endpoint.fromFuser.envelope.process}" />
+        <endpoint id="endpoint.fuser.fromFuser.fused" uri="${fuser.endpoint.fromFuser.fused}" />
+        <endpoint id="endpoint.fuser.fromFuser.envelope.fused" uri="${fuser.endpoint.fromFuser.envelope.fused}" />
+
+        <endpoint id="endpoint.fuser.fromFuser.clean" uri="${fuser.endpoint.fromFuser.clean}" />
+        
+        <endpoint id="endpoint.fuser.fromFuser.remove.forward" uri="${fuser.endpoint.fromFuser.remove.forward}" />
+        <endpoint id="endpoint.fuser.fromFuser.remove" uri="${fuser.endpoint.fromFuser.remove}" />
+
+        <endpoint id="endpoint.fuser.fromFuser.prefused" uri="${fuser.endpoint.fromFuser.prefused}" />
+        <endpoint id="endpoint.fuser.fromFuser.prefused.process" uri="${fuser.endpoint.fromFuser.prefused.process}" />        
+
+        <endpoint id="endpoint.fuser.capture" uri="${fuser.endpoint.capture}" />
+
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <process ref="routes.fuser.RouteErrorHandler" />
+        </onException>
+
+        <route id="route.fuser.ClockSyncRoute">
+            <from uri="endpoint.fuser.clockSync" />
+            <bean ref="marshalling.ClockSyncMarshaller" method="unmarshall" />
+            <to uri="endpoint.fuser.clockSync.process" />
+        </route>
+
+        <route id="route.fuser.ClockSyncRoute.process">
+            <from uri="endpoint.fuser.clockSync.process" />
+            <bean ref="fuser.core.Clock" method="clockStateChanged" />
+            <bean ref="playback.DailyRepositoryCacheHandler" />
+            <bean ref="fuser.core.ClockSyncPoint" method="unlock" />            
+        </route>
+
+        <route id="route.fuser.toFuser">
+            <from uri="endpoint.fuser.toFuser" />
+            <bean ref="fuser.core.SyncPoint" method="sync" />
+            
+            <setHeader name="fuser.timestampFuserReceived" >
+                <method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            
+            <bean ref="fuser.marshall.MatmFlight" method="unmarshall" />
+            <to uri="endpoint.fuser.toFuser.receive"/>
+        </route>
+        
+        <!-- This route is intended to receive flights as the result
+             of a flight sync so that timestamp received time is
+             properly set -->
+        <route id="route.fuser.toFuser.sync">
+        	<from uri="endpoint.fuser.toFuser.sync" />
+        	<setHeader name="fuser.timestampFuserReceived" >
+                <method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            <to uri="endpoint.fuser.toFuser.receive"/>
+        </route>
+
+        <route id="route.fuser.toFuser.batch">
+            <from uri="endpoint.fuser.toFuser.batch" />
+            <bean ref="fuser.core.SyncPoint" method="sync" />
+            
+            <setHeader name="fuser.timestampFuserReceived" >
+            	<method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            
+            <bean ref="fuser.marshall.MatmTransferEnvelope" method="unmarshall" />
+            <bean ref="fuser.core.InternalFuserEnvelopeMessageSender" method="publishFlights" />
+        </route>
+        
+        <route id="route.fuser.toFuser.receive">
+          <from uri="endpoint.fuser.toFuser.receive" />
+          
+          <bean ref="fuser.core.TimestampSetter" method="setTimestampFuserReceived(${body}, ${header.fuser.timestampFuserReceived})" />
+          
+          <bean ref="monitor.endpoint.fuser.toFuser.receive" method="mark(1)" />
+          <multicast>
+              <to uri="endpoint.fuser.toFuser.process.prefuse" />
+              <to uri="endpoint.fuser.toFuser.process.gufi" />
+          </multicast>
+        </route>
+
+        <!-- Separate route for internal messages back to start (see PreDepartureFlightPlanUpdater) -->
+        <!-- In playback mode we need a separate route so we don't deadlock the aggregator when the -->
+        <!-- endpoint.fuser.toFuser.receive seda queue is full (and we have blockWhenFull set to true) -->
+        <route id="route.fuser.internal.toFuser.receive">
+          <from uri="endpoint.fuser.internal.toFuser.receive" />
+          
+          <bean ref="fuser.core.TimestampSetter" method="setTimestampFuserReceived(${body}, ${header.fuser.timestampFuserReceived})" />
+          
+          <bean ref="monitor.endpoint.fuser.toFuser.receive" method="mark(1)" />
+          <multicast>
+              <to uri="endpoint.fuser.toFuser.process.prefuse" />
+              <to uri="endpoint.fuser.toFuser.process.gufi" />
+          </multicast>
+        </route>
+        
+        <route id="route.fuser.toFuser.process.gufi">
+            <from uri="endpoint.fuser.toFuser.process.gufi" />
+            <bean ref="fuser.core.GufiAssigner" method="assignGufi" />
+            <to uri="endpoint.fuser.toFuser.process.fuse.filter" />
+        </route>
+
+        <route id="route.fuser.toFuser.process.fuse.filter">
+            <from uri="endpoint.fuser.toFuser.process.fuse.filter" />
+            <bean ref="monitor.endpoint.fuser.toFuser.process.fuse.filter" method="mark(1)" />
+            <bean ref="fuser.filter.FuserFilterProxy" method="filter" />
+            <bean ref="core.DataFeederSignaler" method="messageReceived" />
+            <bean ref="fuser.core.AggregateFuserMessageSender" method="publish" />
+        </route> 
+                        
+        <route id="route.fuser.toFuser.process.fuse.aggregate">
+            <from uri="endpoint.fuser.toFuser.process.fuse.aggregate" />
+            <bean ref="monitor.endpoint.fuser.toFuser.process.fuse.aggregate" method="mark(1)" />
+            <bean ref="fuser-aggregator.core.MatmAggregatorProxy" method="aggregate" />
+            <bean ref="core.DataFeederSignaler" method="messageProcessed" />
+            <bean ref="playback.DataSignaler" method="messageProcessed( ${headers} )" />
+        </route>
+        
+        <route id="route.fuser.toFuser.process.fuse.batch">
+            <from uri="endpoint.fuser.fromFuser.process.batch" />
+            <bean ref="fuser-aggregator.core.Batcher" method="batch" />                 
+        </route>        
+        
+        <route id="route.fuser.toFuser.process.prefuse">
+            <from uri="endpoint.fuser.toFuser.process.prefuse" />
+            <bean ref="fuser.core.prefused.clone" method="cloneFlight" />
+            <to uri="endpoint.fuser.fromFuser.prefused.process" />
+        </route>
+
+        <route id="route.fuser.fromFuser.prefused.process">
+            <from uri="endpoint.fuser.fromFuser.prefused.process" />
+            <bean ref="fuser.filter.GufiFilter" method="filter" />
+            <bean ref="fuser.core.PreFusedMessageSender" method="publish" />  
+        </route>
+
+
+        <route id="route.fuser.toFuser.processBatch">
+            <from uri="endpoint.fuser.fromFuser.envelope.process" />
+            <bean ref="fuser.marshall.MatmTransferEnvelope" method="marshall" />
+            <to uri="endpoint.fuser.fromFuser.envelope.fused" />
+        </route>
+
+        <!-- A flight remove will trigger a listener to determine whether
+            to publish the removed message  -->
+        <route id="route.fuser.source.remove">
+            <from uri="endpoint.fuser.toFuser.remove" />
+            <bean ref="fuser.core.SyncPoint" method="sync" />
+            <to uri="endpoint.fuser.toFuser.remove.process"/>
+        </route>
+        
+        <route id="route.fuser.toFuser.remove.process">
+            <from uri="endpoint.fuser.toFuser.remove.process" />
+            <bean ref="fuser.marshall.MatmFlight" method="unmarshall" />
+            <bean ref="fuser.core.FuserStoreProxy" method="remove" />
+        </route>
+        
+        <!-- Here is the location where a remove message will be published -->
+        <route id="route.fuser.source.remove.forward">
+            <from uri="endpoint.fuser.fromFuser.remove.forward" />
+            <bean ref="fuser.marshall.MatmFlight" method="marshall" />
+            <to uri="endpoint.fuser.fromFuser.remove" />
+        </route>        
+
+        <route id="route.fuser.capture">
+            <from uri="endpoint.fuser.capture" />
+
+            <bean ref="capture.FuserCapture" method="setCaptureTimestamp( ${headers} )" />
+
+            <choice>
+                <when>
+                    <simple>${bean:playback.DailyRepositoryCacheHandler?method=isRequiredProcessingTimeMet}</simple>
+                    <bean ref="capture.FuserCapture" method="capture" />
+                </when>                
+            </choice>
+            
+        </route>
+
+        <!-- Not sure I want to keep this. Use of wiretap seems like it has potential memory and performance
+        issues
+        <route id="route.router.fuserTransfer.log">
+            <from uri="endpoint.router.fuserTransfer.log" />
+            <bean ref="fuser.logging.FuserTransferCapture" method="capture" />
+        </route> -->
+    </camelContext>
+
+    <bean id="routes.fuser.RouteErrorHandler" class="com.mosaicatm.lib.camel.RouteErrorHandler" />
+
+    <bean id="routes.fuser.MessageProducer" class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="routes.fuser.CamelContext" />
+    </bean>
+
+    <bean id="monitor.endpoint.fuser.toFuser.receive" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.fuser.toFuser.receive" />
+        <constructor-arg index="1" value="endpoint.fuser.toFuser.receive" />
+    </bean>
+    
+    <bean id="monitor.endpoint.fuser.toFuser.process.fuse.filter" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.fuser.toFuser.process.fuse.filter" />
+        <constructor-arg index="1" value="endpoint.fuser.toFuser.process.fuse.filter" />
+    </bean>
+    
+    <bean id="monitor.endpoint.fuser.toFuser.process.fuse.aggregate" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.fuser.toFuser.process.fuse.aggregate" />
+        <constructor-arg index="1" value="endpoint.fuser.toFuser.process.fuse.aggregate" />
+    </bean>
+    
+    <bean id="routes.fuser.MessageProducerOwnerInitializer" class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="routes.fuser.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="fuser.core.FuserReceiveForwardingHandler" />
+                <ref bean="fuser.core.PreFusedMessageSender" />
+                <ref bean="fuser.core.InternalFuserMessageSender" />                
+                <ref bean="fuser-aggregator.core.Batcher" />
+                <ref bean="fuser.core.MatmFlightStoreListener" />
+                <ref bean="fuser-metrics.core.MetricsReporter" />
+                <ref bean="core.DataFeederSignaler" />
+                <ref bean="fuser-aggregator.core.MatmAggregatorThreaded" />
+                <ref bean="playback.MultiplexPublisher" />
+                <ref bean="fuser.core.AggregateFuserMessageSender" />
+                <ref bean="fuser.core.ProcessFuserMessageMultiSender" />
+                <ref bean="fuser.core.InternalFuserEnvelopeMessageSender" />
+            </list>
+        </property>
+    </bean>
+    
+    <!-- <bean id="capture" class="com.mosaicatm.fuser.router.Capture" /> -->
+
+</beans>

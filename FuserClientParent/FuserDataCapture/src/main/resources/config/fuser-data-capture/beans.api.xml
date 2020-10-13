@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+
+    <bean id="api.FuserClientApiConfiguration" class="com.mosaicatm.fuser.client.api.FuserClientApiConfiguration">
+        <property name="jmsUrl" value="${fuser-client-api.jms.url}"/>
+        <property name="jmsUsername" value="${fuser-client-api.jms.username}" />
+        <property name="jmsPassword" value="${fuser-client-api.jms.password}" />
+        <property name="matmTransferEnvelopeUri" value="${fuser-client-api.uri.matmTransferEnvelope.source}"/>
+        <property name="matmFlightUri" value="${fuser-client-api.uri.matmFlight.source}"/>
+        <property name="syncServiceUrl" value="${fuser-client-api.service.sync.url}"/>
+        <property name="syncEnabled" value="${fuser-client-api.service.sync.enabled}"/>
+        <property name="aircraftSyncEnabled" value="${fuser-client-api.service.sync.aircraft.enabled}"/>
+        <property name="syncServiceOverrideDataSource" value="FUSER_CLIENT_SYNC"/>
+        <property name="clockSyncEnabled" value="${fuser-client-api.clocksync.active}" />
+        <property name="clockSyncUri" value="${fuser-client-api.uri.clock.source}" />
+        <property name="removeAfterHours" value="${fuser-client-api.remover.window.hours}"/>
+        <property name="timedRemoverActive" value="${fuser-client-api.remover.timed.active}"/>
+        <property name="airportFilterActive" value="${fuser-client-api.filter.airport.active}"/>
+        <property name="surfaceAirportFilterActive" value="${fuser-client-api.filter.asdex.airport.active}"/>
+        <property name="airportsOfInterest" value="${fuser-client-api.airportsOfInterest}"/>
+        <property name="disableCNCheck" value="${fuser-client-api.security.disableCNCheck}" />
+        <property name="keystoreLocation" value="${fuser-client-api.keystore.location}" />
+        <property name="keystoreType" value="${fuser-client-api.keystore.type}" />
+        <property name="keystorePassword" value="${fuser-client-api.keystore.password}" />
+        <property name="trustStoreLocation" value="${fuser-client-api.truststore.location}" />
+        <property name="trustStoreType" value="${fuser-client-api.truststore.type}" />
+        <property name="trustStorePassword" value="${fuser-client-api.truststore.password}" />
+        <property name="receiverQueueSize" value="${fuser-client-api.receiver.queue.size}" />
+    </bean>
+    
+    <bean id="api.FuserClientApiLoader" 
+        class="com.mosaicatm.fuser.client.api.impl.FuserClientApiSpringLoader"
+        init-method="load">
+        <property name="apiConfiguration" ref="api.FuserClientApiConfiguration"/>
+        <property name="loadSecureSync" value="${fuser-client-api.security.useSecureSync}" />
+    </bean>
+    
+    
+    <bean id="api.FuserClientApi" factory-bean="api.FuserClientApiLoader" factory-method="getApi"/>
+    <bean id="api.AircraftFuserClientApi" factory-bean="api.FuserClientApiLoader" factory-method="getAircraftApi"/>
+    <bean id="api.Clock" factory-bean="api.FuserClientApi" factory-method="getClock"/>
+    
+    <bean id="api.MatmFlightCaptureEvaluator" class="com.mosaicatm.fuser.datacapture.MatmFlightCaptureEvaluator">
+    	<property name="loadMatmFlightAllJoin" value="${fuser-capture.load.matmFlightAllJoin}" />
+    </bean>
+    
+    <bean id="api.MatmAircraftCaptureEvaluator" class="com.mosaicatm.fuser.datacapture.MatmAircraftCaptureEvaluator" />
+    
+    <bean id="api.FuserDataReceivingListener" class="com.mosaicatm.fuser.datacapture.FuserDataReceivingListener">
+        <property name="updateDataReceiver" ref="api.FuserDataProcessedReceiver" />
+        <property name="fullDataPostUpdateReceiver" ref="api.FuserAllDataProcessedReceiver" />
+        <property name="dataRemovalReceiver" ref="api.FuserDataRemovedReceiver" />
+        <property name="captureEvaluator" ref="api.MatmFlightCaptureEvaluator" />
+        <property name="matmIdLookup" ref="core.MatmFlightIdLookup" />
+    </bean>
+    
+    <bean id="api.AircraftFuserDataReceivingListener" class="com.mosaicatm.fuser.datacapture.FuserDataReceivingListener">
+        <property name="updateDataReceiver" ref="api.AircraftFuserDataProcessedReceiver" />
+        <property name="fullDataPostUpdateReceiver" ref="api.AircraftFuserAllDataProcessedReceiver" />
+        <property name="dataRemovalReceiver" ref="api.AircraftFuserDataRemovedReceiver" />
+        <property name="captureEvaluator" ref="api.MatmAircraftCaptureEvaluator" />
+        <property name="matmIdLookup" ref="core.MatmAircraftIdLookup" />
+        <property name="filter" ref="api.AircraftUpdateFilter" />
+    </bean>
+    
+    <bean id="api.AircraftUpdateFilter" class="com.mosaicatm.fuser.datacapture.filter.AircraftUpdateFilter" >
+        <property name="uninterestedFields">
+            <set>
+                <value>lastKnownPosition</value>
+                <value>changes</value>
+                <value>creationTime</value>
+                <value>lastUpdateSource</value>
+                <value>systemId</value>
+                <value>timestampSource</value>
+                <value>timestampSourceProcessed</value>
+                <value>timestampSourceReceived</value>
+                <value>timestamp</value>
+                <value>timestampFuserProcessed</value>
+                <value>timestampFuserReceived</value>
+                <value>updateSources</value>
+            </set>
+        </property>        
+    </bean>
+    
+    <bean id="api.FuserDataProcessedReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmFlightProcessedReceiver" />
+        <constructor-arg index="1" ref="api.CaptureHandler" />
+        <constructor-arg index="2" value="${fuser-capture.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>
+    
+    <bean id="api.AircraftFuserDataProcessedReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmAircraftProcessedReceiver" />
+        <constructor-arg index="1" ref="api.AircraftCaptureHandler" />
+        <constructor-arg index="2" value="${fuser-capture.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>
+    
+    <bean id="api.FuserAllDataProcessedReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmAllFlightProcessedReceiver" />
+        <constructor-arg index="1" ref="api.CaptureAllHandler" />
+        <constructor-arg index="2" value="${fuser-capture.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>
+    
+    <bean id="api.AircraftFuserAllDataProcessedReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmAllAircraftProcessedReceiver" />
+        <constructor-arg index="1" ref="api.AircraftCaptureAllHandler" />
+        <constructor-arg index="2" value="${fuser-capture.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>    
+    
+    <bean id="api.FuserDataRemovedReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmFlightRemovedReceiver" />
+        <constructor-arg index="1" ref="api.RemovedHandler" />
+        <constructor-arg index="2" value="${fuser-capture.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>
+    
+    <bean id="api.AircraftFuserDataRemovedReceiver" class="com.mosaicatm.lib.messaging.GenericReceiver"
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" value="MatmAircraftRemovedReceiver" />
+        <constructor-arg index="1" ref="api.AircraftRemovedHandler" />
+        <constructor-arg index="2" value="${fuser-capture.receiver.queue.size}" />
+        <property name="reportEnabled" value="${fuser-client-api.receiver.report.enabled}" />
+    </bean>
+    
+    <bean id="api.CaptureHandler" class="com.mosaicatm.fuser.datacapture.handle.CaptureHandler">
+        <constructor-arg value="CaptureHandler" />
+        <property name="ignoreLastUpdateSource" value="FUSER_CLIENT_SYNC"/>        
+    </bean>
+    
+    <bean id="api.AircraftCaptureHandler" class="com.mosaicatm.fuser.datacapture.handle.CaptureHandler">
+        <constructor-arg value="AircraftCaptureHandler" />
+        <property name="ignoreLastUpdateSource" value="FUSER_CLIENT_SYNC"/>
+    </bean>
+    
+    <bean id="api.CaptureAllHandler" class="com.mosaicatm.fuser.datacapture.handle.CaptureHandler">
+        <constructor-arg value="CaptureAllHandler" />
+    </bean>
+    
+    <bean id="api.AircraftCaptureAllHandler" class="com.mosaicatm.fuser.datacapture.handle.CaptureHandler">
+        <constructor-arg value="AircraftCaptureAllHandler" />
+    </bean>    
+    
+    <bean id="api.RemovedHandler" class="com.mosaicatm.fuser.datacapture.handle.CaptureHandler">
+        <constructor-arg value="RemovedHandler" />
+    </bean>
+    
+    <bean id="api.AircraftRemovedHandler" class="com.mosaicatm.fuser.datacapture.handle.CaptureHandler">
+        <constructor-arg value="AircraftRemovedHandler" />
+    </bean>
+    
+    <!-- Register for data update events. These are after the data is processed and applied to the flight manager -->       
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="api.FuserClientApi" />
+        <property name="targetMethod" value="registerProcessedEventListener" />
+        <property name="arguments">
+            <list>
+                <ref bean="api.FuserDataReceivingListener" />
+            </list>
+        </property>
+    </bean>
+    
+    <!-- Register for aicraft update events.  These are after the data is processed and applied to the aircraft manager -->
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="api.AircraftFuserClientApi" />
+        <property name="targetMethod" value="registerProcessedEventListener" />
+        <property name="arguments">
+            <list>
+                <ref bean="api.AircraftFuserDataReceivingListener" />
+            </list>
+        </property>
+    </bean>
+        
+</beans>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema 
+	targetNamespace="http://www.mosaicatm.com/matmdata/flightComposite"
+   version="1.0"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:fxc="http://www.mosaicatm.com/matmdata/flightComposite"
+   xmlns:fx="http://www.mosaicatm.com/matmdata/flight"
+   xmlns:mc="http://www.mosaicatm.com/matmdata/common"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+    <import namespace="http://www.mosaicatm.com/matmdata/flight" schemaLocation="./MatmFlight.xsd" />
+    <import namespace="http://www.mosaicatm.com/matmdata/common" schemaLocation="./MatmCommon.xsd" />
+
+    <xs:element name="matmFlightComposite" type="fxc:matmFlightComposite" />  
+    
+    <xs:complexType name="matmFlightComposite">
+        <xs:sequence>
+            <xs:element name="flight" type="fx:matmFlight" minOccurs="1" maxOccurs="1" />
+            <xs:element name="metaData" type="mc:metaData" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+  
+</xs:schema>
+

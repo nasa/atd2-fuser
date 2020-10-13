@@ -1,0 +1,25 @@
+<!--
+   Copyright (c), 2013 by Mosaic ATM.  All Rights Reserved.
+   This file has been developed by Mosaic ATM for the United States Government
+   under NASA contract NNA11AC17C. The US federal government
+   has a world-wide, royalty-free and irrevocable license to use this file for any
+   government purpose.
+-->
+
+<assembly xsi:schemaLocation="http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>swim</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <componentDescriptors>
+        <componentDescriptor>src/main/assembly/component-fuser.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-asdex-transform-plugin.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-sfdps-transform-plugin.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-smes-transform-plugin.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-tfm-tfdm-transform-plugin.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-tfm-transform-plugin.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-tma-transform-plugin.xml</componentDescriptor>
+        <componentDescriptor>src/main/assembly/component-ttp-transform-plugin.xml</componentDescriptor>        
+    </componentDescriptors>
+</assembly>

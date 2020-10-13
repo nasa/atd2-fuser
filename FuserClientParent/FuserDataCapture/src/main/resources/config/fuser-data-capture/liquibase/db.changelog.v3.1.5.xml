@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+<!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="adsb_extension"/>
+            <not>
+                <columnExists tableName="adsb_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="adsb_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="adsb_extension_all"/>
+            <not>
+                <columnExists tableName="adsb_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="adsb_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="asdex_extension"/>
+            <not>
+                <columnExists tableName="asdex_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="asdex_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="asdex_extension_all"/>
+            <not>
+                <columnExists tableName="asdex_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="asdex_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-5" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="cat11_extension"/>
+            <not>
+                <columnExists tableName="cat11_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="cat11_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-6" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="cat11_extension_all"/>
+            <not>
+                <columnExists tableName="cat11_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="cat11_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-7" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="cat62_extension"/>
+            <not>
+                <columnExists tableName="cat62_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="cat62_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-8" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="cat62_extension_all"/>
+            <not>
+                <columnExists tableName="cat62_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="cat62_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-9" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension"/>
+            <not>
+                <columnExists tableName="derived_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-10" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all"/>
+            <not>
+                <columnExists tableName="derived_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-11" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="idac_extension"/>
+            <not>
+                <columnExists tableName="idac_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="idac_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-12" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="idac_extension_all"/>
+            <not>
+                <columnExists tableName="idac_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="idac_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-13" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_airline_message_extension"/>
+            <not>
+                <columnExists tableName="matm_airline_message_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_airline_message_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-14" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_airline_message_extension_all"/>
+            <not>
+                <columnExists tableName="matm_airline_message_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_airline_message_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-15" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="odb_extension"/>
+            <not>
+                <columnExists tableName="odb_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="odb_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-16" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="odb_extension_all"/>
+            <not>
+                <columnExists tableName="odb_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="odb_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-17" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension"/>
+            <not>
+                <columnExists tableName="surface_model_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="surface_model_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-18" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension_all"/>
+            <not>
+                <columnExists tableName="surface_model_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="surface_model_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-19" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-20" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>
+                <columnExists tableName="tbfm_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-21" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension"/>
+            <not>
+                <columnExists tableName="tfm_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-22" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-23" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_tfdm_extension"/>
+            <not>
+                <columnExists tableName="tfm_tfdm_extension" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_tfdm_extension">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-24" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_tfdm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_tfdm_extension_all" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_tfdm_extension_all">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.5-20190725-25" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="position"/>
+            <not>
+                <columnExists tableName="position" columnName="surface_airport_name"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="position">
+            <column name="surface_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v3.1.5" author="atd2" runAlways="true">
+        <tagDatabase tag="3.1.5" />
+    </changeSet>
+
+</databaseChangeLog>

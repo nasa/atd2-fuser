@@ -1,0 +1,10 @@
+fuser.endpoint.toFuser.sectorAssignment.sync=seda:fuser.toFuser.sectorAssignment.sync?size=1000000
+fuser.endpoint.toFuser.sectorAssignment.receive=vm-status-logging:fuser.toFuser.sectorAssignment.receive?name=FuserSectorAssignmentReceiver&loggingPeriod=10000&size=1000&discardIfNoConsumers=true
+fuser.endpoint.toFuser.sectorAssignment.process=seda-status-logging:fuser.toFuser.sectorAssignment.process?name=FuserSectorAssignmentProcess&loggingPeriod=10000&size=1000000
+
+fuser.endpoint.fromFuser.sectorAssignment.batch=seda:fuser.fromFuser.sectorAssignment.batch?size=1000000
+fuser.endpoint.fromFuser.sectorAssignment.envelope.process=seda:fuser.fromFuser.sectorAssignment.process.envelope?size=1000000
+fuser.endpoint.fromFuser.sectorAssignment.envelope=jms:topic:fuser.fromFuser.sectorAssignment.envelope
+fuser.endpoint.fromFuser.sectorAssignment.remove.forward=direct:fuser.fromFuser.sectorAssignment.remove
+fuser.endpoint.fromFuser.sectorAssignment.remove=jms:topic:fuser.fromFuser.sectorAssignment.remove
+

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+    <xs:complexType name="derivedExtension">
+        <xs:sequence>
+            <xs:element name="smoothedTrajectory" type="mc:smoothedPosition"
+                nillable="true" maxOccurs="unbounded" />
+            <xs:element name="matmProcessingTrigger" type="mc:matmProcessingTrigger" minOccurs="0"/>
+            <xs:element name="arrivalStandDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalRunwayDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalSpotDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureStandDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureRunwayDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureSpotDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalFixDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalFixUndelayedTimeAtArrivalFix" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalMovementAreaDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalMovementAreaUndelayedTimeAtOn" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRunwayDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRunwayUndelayedTimeAtArrivalFix" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalStandDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalStandTimeUndelayedAtMovementArea" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureFixDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureFixUndelayedTimeAtOff" type="xs:dateTime" minOccurs="0" nillable="true"/>
+            <xs:element name="departureFixUndelayedTimeAtPushback" type="xs:dateTime" minOccurs="0" nillable="true" />
+            <xs:element name="departureMovementAreaDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureMovementAreaUndelayedTimeAtOut" type="xs:dateTime" minOccurs="0" nillable="true"/>
+            <xs:element name="departureRunwayDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRunwayUndelayedTimeAtMovementArea" type="xs:dateTime" minOccurs="0" nillable="true"/>
+            <xs:element name="departureRunwayUndelayedTimeAtPushback" type="xs:dateTime" minOccurs="0" nillable="true" />
+            <xs:element name="departureStandDerivedTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureStandUndelayedTimeAtOut" type="xs:dateTime" minOccurs="0" nillable="true"/>
+            <xs:element name="departureRunwayCrossedDuration" type="xs:duration" minOccurs="0"/>            
+            <xs:element name="departureFirstPositionTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRampAreaEntries" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureRampAreaEntryTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRampAreaDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureRampAreaStops" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureRampAreaStopDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureMovementAreaEntries" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureMovementAreaDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureMovementAreaStops" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureMovementAreaStopDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureRunwayCrossings" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureRunwayCrossingsDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureRunwayCrossed" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureQueueLength" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureQueueStops" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureTaxiwayRouteDetail" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureTaxiwayRoute" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureTaxiDerivedDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureRunwayTaxiwayEntry" type="xs:string" minOccurs="0"/>
+            <xs:element name="departureRunwayHoldlineCrossTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRunwayEntryTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRunwayStartOfRollTime" type="xs:dateTime" minOccurs="0"/>            
+            <xs:element name="departureRunwayExitTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureRunwayExitAltitude" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureRunwayOccupancyDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureRunwaySeparationDistance" type="xs:double" minOccurs="0"/>
+            <xs:element name="departureRunwaySeparationDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureFixAltitudeDerived" type="xs:int" minOccurs="0"/>
+            <xs:element name="departureFixDerived" type="xs:string" minOccurs="0"/>    
+            <xs:element name="departureDetectedInMovementArea" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="departureAdaptationId" type="xs:string" minOccurs="0"/>  
+            <xs:element name="departureTaxiDelayDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureAirborneCrossingTimeActual" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureAirborneCrossingDurationUndelayed" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureAirborneDelayDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="departureStandAirlineDerivedActualTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureStandPositionDerivedActualTime" nillable="true" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureStandControllerDerivedActualTime" nillable="true" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="departureStandActualTimeDerivedReceivedTimestamp" type="xs:dateTime" minOccurs="0" nillable="true"/>
+            <xs:element name="arrivalFixAltitudeDerived" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalFixDerived" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalMissedApproach" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="arrivalRunwaySeparationDistance" type="xs:double" minOccurs="0"/>
+            <xs:element name="arrivalRunwaySeparationDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalRunwayEntryTime" type="xs:dateTime" minOccurs="0"/>            
+            <xs:element name="arrivalRunwayEntryAltitude" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalRunwayTouchdownDistance" type="xs:double" minOccurs="0"/>
+            <xs:element name="arrivalRunwayExitTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRunwayTaxiwayExit" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalRunwayClearTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRunwayClearHoldlineTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRunwayOccupancyDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalMovementAreaStops" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalMovementAreaStopDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalRunwayCrossings" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalRunwayCrossingsDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalRunwayCrossed" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalRampAreaEntries" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalRampAreaEntryTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalRampAreaDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalRampAreaStops" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalRampAreaStopDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalLastPositionTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalTaxiwayRouteDetail" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalTaxiwayRoute" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalTaxiUndelayedDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalTaxiEstimatedDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalTaxiActualDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalTaxiDerivedDuration" type="xs:duration" minOccurs="0"/>            
+            <xs:element name="arrivalMovementAreaDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalMovementAreaEntries" type="xs:int" minOccurs="0"/>
+            <xs:element name="arrivalAdaptationId" type="xs:string" minOccurs="0"/>
+            <xs:element name="arrivalAirborneCrossingTimeActual" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="arrivalAirborneCrossingDurationUndelayed" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalAirborneCrossingDelayDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="arrivalTaxiDelayDuration" type="xs:duration" minOccurs="0"/>
+            <xs:element name="airborneHolding" type="boolean" minOccurs="0" />
+            <xs:element name="tosId" type="xs:string" minOccurs="0" nillable="true"/>
+            <xs:element name="arrivalMovementAreaEstimatedDuration" type="xs:duration" minOccurs="0" />
+            <xs:element name="arrivalMovementAreaUndelayedDuration" type="xs:duration" minOccurs="0" />
+            <xs:element name="arrivalRampAreaEstimatedDuration" type="xs:duration" minOccurs="0" />
+            <xs:element name="arrivalRampAreaUndelayedDuration" type="xs:duration" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

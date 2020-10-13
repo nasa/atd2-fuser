@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"> 
+        
+    <bean id="sector.core.FuserStoreLoader" class="com.mosaicatm.fuser.store.matm.MatmSectorAssignmentFuserStoreLoader">
+        <property name="idLookup" ref="fuser.core.MatmSectorAssignmentIdLookup" />
+        <property name="numberOfThreads" value="${fuser.aggregator.thread.count}" />
+    </bean>
+
+    <bean id="sector.core.FuserStore" factory-bean="sector.core.FuserStoreLoader" factory-method="loadStore" />
+    
+    <bean id="sector.core.SectorAssignmentStoreProxy" class="com.mosaicatm.fuser.store.SectorAssignmentStoreProxy">
+        <constructor-arg index="0" ref="sector.core.FuserStore" />
+    </bean>
+
+    <!-- This is only used to register the store to report size for performance monitor, not currently used for any other purposes -->
+    <bean id="sector.core.MetricFuserStoreRegister" factory-bean="fuser-metrics.core.MetricProxyFactory" factory-method="registerFuserStore">
+        <constructor-arg index="0" ref="sector.core.SectorAssignmentStoreProxy" />
+        <constructor-arg index="1" value="sector" />
+    </bean>    
+
+    <bean id="sector.core.FuserReceiveForwardingHandler" class="com.mosaicatm.lib.messaging.ForwardingMessageHandler">
+        <constructor-arg index="0" value="${fuser.endpoint.toFuser.sectorAssignment.sync}" />
+    </bean>
+
+    <bean id="sector.core.SectorAssignmentUpdater" class="com.mosaicatm.fuser.sector.SectorAssignmentUpdater" >
+        <property name="sectorAssignmentDataStore" ref="sector.core.SectorAssignmentStoreProxy"/>
+    </bean>    
+        
+    <bean id="sector.core.SectorAssignmentBatcher" class="com.mosaicatm.fuser.batch.SectorAssignmentBatcher" init-method="init">
+        <property name="destination" value="${fuser.endpoint.fromFuser.sectorAssignment.envelope.process}" />
+    </bean>                
+    
+    <bean id="sector.core.MatmSectorAssignmentStoreListener" class="com.mosaicatm.fuser.store.listener.MatmSectorAssignmentStoreListener"
+        init-method="start" destroy-method="stop" >
+        <property name="active"            value="${fuser.fromFuser.sectorAssignment.remove.publish.active}" />
+        <property name="store"            ref="sector.core.SectorAssignmentStoreProxy" />
+        <property name="removeTopicUrl"    value="${fuser.endpoint.fromFuser.sectorAssignment.remove.forward}" />
+        <property name="checkInterval"    value="${fuser.fromFuser.sectorAssignment.remove.publish.interval}" />
+        <property name="clock"            ref="fuser.core.Clock" />
+    </bean>
+    
+    <bean id="sector.core.FuserStoreTimedRemover" class="com.mosaicatm.fuser.store.matm.MatmSectorAssignmentFuserStoreTimedRemover"
+        destroy-method="stop">
+        <constructor-arg index="0" ref="sector.core.SectorAssignmentStoreProxy" />
+        <property name="active" value="${fuser.store.remove.active}" />        
+        <property name="checkIntervalMinutes" value="${fuser.store.remove.check.minutes}" />
+        <property name="clock" ref="fuser.core.Clock" />
+        <property name="expirationTimeMillis" value="${fuser.store.sector.expiration.millis}" />
+    </bean>            
+        
+    <bean id="sector.core.AdaptationModelFactory" class="com.mosaicatm.sector.geometry.model.ModelFactory">
+        <property name="active" value="${fuser.updater.sector.active}" />
+        <property name="modelFactoryType" value="ZIP_ARCHIVE"/>
+    </bean>    
+    
+    <bean id="sector.core.AdaptationGeometryModel" factory-bean="sector.core.AdaptationModelFactory" factory-method="createGeometryModel"/>
+    
+    <bean id="sector.core.TreeModuleFinderFactory" class="com.mosaicatm.sector.geometry.model.TreeModuleFinderFactory">
+        <property name="adaptationGeometryModel" ref="sector.core.AdaptationGeometryModel"/>
+        <property name="enrouteFavsIncluded" value="true" />
+        <property name="approachFavsIncluded" value="true" />
+        <property name="oceanicFavsIncluded" value="true" />          
+    </bean>    
+    
+    <bean id="sector.core.SectorModuleFinder" factory-bean="sector.core.TreeModuleFinderFactory" factory-method="createInstance"/>    
+    
+</beans>

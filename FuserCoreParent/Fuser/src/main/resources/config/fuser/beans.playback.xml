@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="playback.GufiPlaybackSettings" class="com.mosaicatm.lib.playback.PlaybackSettings" >
+        <property name="active" value="${fuser.playback.gufi.enabled}" />
+        <property name="playbackDir" value="${fuser.playback.gufi.dir}" />
+        <property name="start" value="${fuser.playback.gufi.start}" />
+        <property name="end" value="${fuser.playback.gufi.end}" />
+        <property name="id" value="${fuser.playback.gufi.id}" />
+        <property name="fileType" value="${fuser.playback.gufi.fileType}" />
+        <property name="headerTimestampName" value="${fuser.playback.headerTimestampName}" />
+        <property name="dynamicScan" value="${fuser.playback.dynamicScan}" />
+    </bean>
+
+    <bean id="playback.GufiRollingFileConsumer"
+            class="com.mosaicatm.lib.playback.RollingFileConsumer"
+            init-method="init">
+        <property name="settings" ref="playback.GufiPlaybackSettings" />
+    </bean>
+    
+    <bean id="playback.SfdpsSectorAssignmentPlaybackSettings" class="com.mosaicatm.lib.playback.PlaybackSettings" >
+        <property name="active" value="${fuser.playback.sfdps.sectorAssignment.enabled}" />
+        <property name="playbackDir" value="${fuser.playback.sfdps.sectorAssignment.dir}" />
+        <property name="start" value="${fuser.playback.sfdps.sectorAssignment.start}" />
+        <property name="end" value="${fuser.playback.sfdps.sectorAssignment.end}" />
+        <property name="id" value="${fuser.playback.sfdps.sectorAssignment.id}" />
+        <property name="fileType" value="${fuser.playback.sfdps.sectorAssignment.fileType}" />
+        <property name="headerTimestampName" value="${fuser.playback.headerTimestampName}" />
+        <property name="dynamicScan" value="${fuser.playback.dynamicScan}" />
+    </bean>
+
+    <bean id="playback.SfdpsSectorAssignmentRollingFileConsumer"
+            class="com.mosaicatm.lib.playback.RollingFileConsumer"
+            init-method="init">
+        <property name="settings" ref="playback.SfdpsSectorAssignmentPlaybackSettings" />
+    </bean>    
+        
+    <bean id="playback.FuserRollingFileConsumerMultiplex"
+            class="com.mosaicatm.lib.playback.XmlCaptureConsumerMultiplex">
+        <constructor-arg index="0">
+            <list>
+                <ref bean="playback.GufiRollingFileConsumer" />
+                <ref bean="playback.SfdpsSectorAssignmentRollingFileConsumer" />
+            </list>
+        </constructor-arg>
+    </bean>     
+    
+    <bean id="playback.MultiplexPublisher" class="com.mosaicatm.lib.playback.MultiplexPublisher">
+        <property name="typeToDestination">
+            <map>
+                <entry key="${fuser.playback.asdex.id}"
+                       value="${fuser.playback.asdex.destination}" />
+                <entry key="${fuser.playback.sfdps.id}"
+                       value="${fuser.playback.sfdps.destination}" />
+                <entry key="${fuser.playback.sfdps.sectorAssignment.id}"
+                       value="${fuser.playback.sfdps.sectorAssignment.destination}" />                
+                <entry key="${fuser.playback.tfdm.id}"
+                       value="${fuser.playback.tfdm.destination}" />
+                <entry key="${fuser.playback.tfm.id}"
+                       value="${fuser.playback.tfm.destination}" />
+                <entry key="${fuser.playback.tma.id}"
+                       value="${fuser.playback.tma.destination}" />
+                <entry key="${fuser.playback.smes.id}"
+                       value="${fuser.playback.smes.destination}" />
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="playback.HeaderTypeInspector" class="com.mosaicatm.lib.playback.HeaderTypeInspector">
+        <property name="typeToHeaderValues">
+            <map>
+                <entry key="${fuser.playback.asdex.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.asdex.typeHeader}" />
+                        <property name="value" value="${fuser.playback.asdex.typeHeaderValue}" />
+                    </bean>
+                </entry>
+                <entry key="${fuser.playback.sfdps.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.sfdps.typeHeader}" />
+                        <property name="value" value="${fuser.playback.sfdps.typeHeaderValue}" />
+                    </bean>
+                </entry>
+                <entry key="${fuser.playback.sfdps.sectorAssignment.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.sfdps.sectorAssignment.typeHeader}" />
+                        <property name="value" value="${fuser.playback.sfdps.sectorAssignment.typeHeaderValue}" />
+                    </bean>
+                </entry>                
+                <entry key="${fuser.playback.tfdm.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.tfdm.typeHeader}" />
+                        <property name="value" value="${fuser.playback.tfdm.typeHeaderValue}" />
+                    </bean>
+                </entry>
+                <entry key="${fuser.playback.tfm.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.tfm.typeHeader}" />
+                        <property name="value" value="${fuser.playback.tfm.typeHeaderValue}" />
+                    </bean>
+                </entry>
+                <entry key="${fuser.playback.tma.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.tma.typeHeader}" />
+                        <property name="value" value="${fuser.playback.tma.typeHeaderValue}" />
+                    </bean>
+                </entry>
+                <entry key="${fuser.playback.smes.id}">
+                    <bean class="com.mosaicatm.lib.playback.KeyValuePair">
+                        <property name="key" value="${fuser.playback.smes.typeHeader}" />
+                        <property name="value" value="${fuser.playback.smes.typeHeaderValue}" />
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="playback.HeaderUtil" class="com.mosaicatm.lib.playback.util.HeaderUtil">
+        <property name="headerInspector" ref="playback.HeaderTypeInspector" />
+        <property name="headerTimestampName" value="${fuser.playback.headerTimestampName}" />
+    </bean>
+
+    <bean id="playback.DataSignaler" class="com.mosaicatm.lib.playback.util.DataSignaler">
+        <property name="active" value="${fuser.internal.playback.enabled}" />
+        <property name="timeThresholdMillis" value="${fuser.playback.signalerTimeThreshold}" />
+        <property name="waitTimeoutSeconds" value="${fuser.playback.signalWaitTimeout}" />
+        <property name="headerUtil" ref="playback.HeaderUtil" />
+        <property name="sourceThresholds">
+            <map>
+                <entry key="${fuser.playback.tfdm.id}"
+                    value="${fuser.playback.tfdm.signalerTimeThreshold}" />          
+            </map>
+        </property>
+    </bean>   
+
+    <bean id="playback.FuserPlayback" class="com.mosaicatm.lib.playback.Playback" >
+        <property name="active" value="${fuser.internal.playback.enabled}" />
+        <property name="clockSyncMarshaller" ref="marshalling.ClockSyncMarshaller" />
+        <property name="clockSyncUri" value="${fuser.clock.sync.uri}" />
+        <property name="consumer" ref="playback.FuserRollingFileConsumerMultiplex" />
+        <property name="dataSignaler" ref="playback.DataSignaler" />
+        <property name="headerUtil" ref="playback.HeaderUtil" />
+        <property name="multiplexPublisher" ref="playback.MultiplexPublisher" />
+        <property name="startTime" value="${fuser.playback.start}" />
+    </bean>
+    
+    <bean id="playback.DailyRepositoryCacheHandler" class="com.mosaicatm.fuser.playback.DailyFuserRepositoryCacheHandler" >
+        <property name="active" value="${fuser.internal.playback.enabled}" />
+        <property name="clock" ref="fuser.core.Clock" />        
+        <property name="fuserStore" ref="fuser.core.FuserStoreProxy" />
+        <property name="archiveRootFolder" value="${fuser.capture.filepath}" />
+        <property name="archiveDatePathString" value="${fuser.capture.archive.path}" />
+        <property name="processHoursBeforeWriteIfNoCache" value="${fuser.capture.processHoursBeforeWriteIfNoCache}" />
+        <property name="initializeFromRepositoryCacheFile" value="${fuser.playback.initializeFromRepositoryCacheFile}" />
+    </bean>      
+</beans>

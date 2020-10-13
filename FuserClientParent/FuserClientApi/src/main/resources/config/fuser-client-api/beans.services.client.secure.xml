@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:cxf="http://cxf.apache.org/core"
+    xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+    xmlns:sec="http://cxf.apache.org/configuration/security"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://cxf.apache.org/jaxws 
+       http://cxf.apache.org/schemas/jaxws.xsd
+       http://cxf.apache.org/transports/http/configuration
+       http://cxf.apache.org/schemas/configuration/http-conf.xsd
+       http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+       http://cxf.apache.org/configuration/security
+       http://cxf.apache.org/schemas/configuration/security.xsd
+    ">
+
+    <cxf:bus>
+       <cxf:properties>
+            <entry key="org.apache.cxf.stax.maxChildElements" value="250000" />
+       </cxf:properties>
+    </cxf:bus>
+
+    <jaxws:client id="services.FuserSyncService"
+                serviceClass="com.mosaicatm.fuser.services.client.FuserSyncService"
+                address="${fuser-client-api.service.sync.url}">
+        <jaxws:outInterceptors>
+            <bean class="com.mosaicatm.fuser.services.util.FuserSyncServiceInterceptor" />
+        </jaxws:outInterceptors>
+        <jaxws:properties>
+            <entry key="jaxb-validation-event-handler" value-ref="services.ValidationEventHandler" />
+            <entry key="mtom-enabled" value="true" />
+        </jaxws:properties>
+    </jaxws:client>
+
+    <bean id="services.ValidationEventHandler" class="com.mosaicatm.fuser.services.util.IgnoreUnexpectedElementsHandler" />
+
+    <http-conf:conduit name="*.http-conduit">
+        <http-conf:client ReceiveTimeout="0" />
+        <http-conf:tlsClientParameters disableCNCheck="${fuser-client-api.security.disableCNCheck}">
+            <sec:keyManagers keyPassword="${fuser-client-api.keystore.password}">
+                <sec:keyStore type="${fuser-client-api.keystore.type}"
+                    password="${fuser-client-api.keystore.password}"
+                    file="${fuser-client-api.keystore.location}" />
+            </sec:keyManagers>
+            <sec:trustManagers>
+                <sec:keyStore type="${fuser-client-api.truststore.type}"
+                    password="${fuser-client-api.truststore.password}"
+                    file="${fuser-client-api.truststore.location}" />
+            </sec:trustManagers>
+        </http-conf:tlsClientParameters>
+    </http-conf:conduit>
+
+</beans>

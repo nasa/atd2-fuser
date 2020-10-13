@@ -1,0 +1,13 @@
+<component>
+    <dependencySets>
+        <dependencySet>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>./plugins/</outputDirectory>
+            <includes>
+                <include>com.mosaicatm:SfdpsTransformPlugin:zip:*</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</component>

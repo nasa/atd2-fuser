@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+           version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+           xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+           xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+            schemaLocation="../MatmCommon.xsd"/>
+
+    <xs:complexType name="smesExtension">
+        <xs:sequence>
+            <xs:element name="airport" type="xs:string" minOccurs="0"/>
+            <xs:element name="stid" type="xs:long" minOccurs="0"/>
+            <xs:element name="onTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="offTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="spotInTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="spotOutTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="lastSmesPosition" type="mc:position" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

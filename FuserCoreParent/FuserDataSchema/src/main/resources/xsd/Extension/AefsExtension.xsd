@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+    version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+    xmlns:mc="http://www.mosaicatm.com/matmdata/common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <import namespace="http://www.mosaicatm.com/matmdata/common"
+        schemaLocation="../MatmCommon.xsd" />
+
+    <xs:simpleType name="aefsRestrictionState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NONE" />
+            <xs:enumeration value="AFFECTED" />
+            <xs:enumeration value="COORDINATED" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="aefsPositionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CLEARANCE_DELIVERY" />
+            <xs:enumeration value="GATE_HOLD" />
+            <xs:enumeration value="GROUND_CONTROL" />
+            <xs:enumeration value="LOCAL_CONTROL" />
+            <xs:enumeration value="TRAFFIC_MANAGEMENT" />
+            <xs:enumeration value="ARRIVAL_METERING" />
+            <xs:enumeration value="UNASSIGNED" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="aefsState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NONE" />
+            <xs:enumeration value="LINE_UP_AND_WAIT" />
+            <xs:enumeration value="CLEARED_FOR_TAKEOFF" />
+            <xs:enumeration value="DEPARTED" />
+            <xs:enumeration value="ARCHIVE" />
+            <xs:enumeration value="REVERT" />
+            <xs:enumeration value="ABORTED" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="aefsExtension">
+        <xs:sequence>
+            <xs:element name="sourceFacility" type="xs:string"
+                minOccurs="0" />
+            <xs:element name="computerId" type="xs:string" 
+                minOccurs="0"/>                       
+            <xs:element name="positionType" type="mfe:aefsPositionType"
+                minOccurs="0" />
+            <xs:element name="taxiState" type="xs:boolean"
+                minOccurs="0" />
+            <xs:element name="currentState" type="mfe:aefsState"
+                minOccurs="0" />
+            <xs:element name="discardFlag" type="xs:boolean"
+                minOccurs="0" />
+            <xs:element name="removeStripFlag" type="xs:boolean"
+                minOccurs="0" />            
+            <xs:element name="apreqState" type="mfe:aefsRestrictionState"
+                minOccurs="0" />
+            <xs:element name="fixSwapState" type="mfe:aefsRestrictionState"
+                minOccurs="0" />
+            <xs:element name="groundStopState" type="mfe:aefsRestrictionState"
+                minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

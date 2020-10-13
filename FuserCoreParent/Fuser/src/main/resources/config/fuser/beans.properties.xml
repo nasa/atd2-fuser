@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+        
+    <bean id="fuser.propertyConfigurer"
+        class="com.mosaicatm.lib.spring.RuntimeConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:/config/fuser/topics.properties.props</value>
+                <value>classpath:/config/fuser/properties.props</value>
+                <value>classpath:/config/fuser/topics.aircraft.props</value>
+                <value>classpath:/config/fuser/topics.sector.props</value>
+                <value>classpath:/config/fuser/rules.properties.props</value>
+                <!-- <value>${fmc.override.config}</value> -->
+            </list>
+        </property>
+         <property name="systemPropertiesModeName">
+            <value>SYSTEM_PROPERTIES_MODE_OVERRIDE</value>
+        </property>
+    </bean>
+        
+</beans>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This file defines the Camel routes that connect the applications to 
+    the TIB bus for testing/demo. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+
+    <!-- Camel Routes -->
+    <camelContext xmlns="http://camel.apache.org/schema/spring" id="routes.aircraft.CamelContext" 
+                  autoStartup="true" allowUseOriginalMessage="false" >
+        <jmxAgent id="agent" disabled="true"/>
+        
+        <endpoint id="endpoint.fuser.toFuser.aircraft" uri="${fuser.endpoint.toFuser.aircraft}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.sync" uri="${fuser.endpoint.toFuser.aircraft.sync}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.batch" uri="${fuser.endpoint.toFuser.aircraft.batch}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.receive" uri="${fuser.endpoint.toFuser.aircraft.receive}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.remove" uri="${fuser.endpoint.toFuser.aircraft.remove}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.process" uri="${fuser.endpoint.toFuser.aircraft.process}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.process.match" uri="${fuser.endpoint.toFuser.aircraft.process.match}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.process.prefuse" uri="${fuser.endpoint.toFuser.aircraft.process.prefuse}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.process.fuse.filter" uri="${fuser.endpoint.toFuser.aircraft.process.fuse.filter}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.process.fuse.aggregate" uri="${fuser.endpoint.toFuser.aircraft.process.fuse.aggregate}" />
+        <endpoint id="endpoint.fuser.toFuser.aircraft.remove.process" uri="${fuser.endpoint.toFuser.aircraft.remove.process}" />
+        
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.prefused.process" uri="${fuser.endpoint.fromFuser.aircraft.prefused.process}" />
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.prefused" uri="${fuser.endpoint.fromFuser.aircraft.prefused}" />
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.process.batch" uri="${fuser.endpoint.fromFuser.aircraft.process.batch}" />
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.envelope.process" uri="${fuser.endpoint.fromFuser.aircraft.envelope.process}" />
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.envelope.fused" uri="${fuser.endpoint.fromFuser.aircraft.envelope.fused}" />
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.remove.forward" uri="${fuser.endpoint.fromFuser.aircraft.remove.forward}" />
+        <endpoint id="endpoint.fuser.fromFuser.aircraft.remove" uri="${fuser.endpoint.fromFuser.aircraft.remove}" />
+
+        <onException>
+            <exception>java.lang.Throwable</exception>
+            <handled>
+                <constant>true</constant>
+            </handled>
+            <process ref="routes.aircraft.RouteErrorHandler" />
+        </onException>
+        
+        <route id="route.fuser.toFuser.aircraft">
+            <from uri="endpoint.fuser.toFuser.aircraft" />
+            <bean ref="fuser.core.SyncPoint" method="sync" />
+            
+            <setHeader name="fuser.timestampFuserReceived" >
+                <method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            
+            <bean ref="fuser.marshall.MatmAircraft" method="unmarshall" />
+            <to uri="endpoint.fuser.toFuser.aircraft.receive"/>
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.batch">
+            <from uri="endpoint.fuser.toFuser.aircraft.batch" />
+            <bean ref="fuser.core.SyncPoint" method="sync" />
+            
+            <setHeader name="fuser.timestampFuserReceived" >
+                <method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            
+            <bean ref="fuser.marshall.MatmTransferEnvelope" method="unmarshall" />
+            <bean ref="aircraft.core.InternalAircraftMessageSender" method="publishAircraft" />
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.receive">
+          <from uri="endpoint.fuser.toFuser.aircraft.receive" />
+          
+          <bean ref="fuser.core.TimestampSetter" method="setTimestampFuserReceived(${body}, ${header.fuser.timestampFuserReceived})" />
+          
+          <bean ref="monitor.aircraft.endpoint.fuser.toFuser.aircraft.receive" method="mark(1)" />
+          <to uri="endpoint.fuser.toFuser.aircraft.process" />
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.process">
+            <from uri="endpoint.fuser.toFuser.aircraft.process" />
+            <bean ref="aircraft.core.ProcessAircraftMessageMultiSender" method="publish"/>
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.process.match">
+            <from uri="endpoint.fuser.toFuser.aircraft.process.match" />
+            <bean ref="aircraft.core.MatmAircraftMatcher" method="assignRegistration" />
+            <to uri="endpoint.fuser.toFuser.aircraft.process.fuse.filter" />
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.process.fuse.filter">
+            <from uri="endpoint.fuser.toFuser.aircraft.process.fuse.filter" />
+            <bean ref="monitor.aircraft.endpoint.fuser.toFuser.aircraft.process.fuse.filter" method="mark(1)" />
+            <bean ref="aircraft.filter.FuserFilterProxy" method="filter" />
+            <bean ref="aircraft.core.AggregateAircraftMessageSender" method="publish" />
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.process.fuse.aggregate">
+            <from uri="endpoint.fuser.toFuser.aircraft.process.fuse.aggregate" />
+            <bean ref="monitor.aircraft.endpoint.fuser.toFuser.aircraft.process.fuse.aggregate" method="mark(1)" />
+            <bean ref="aircraft.aggregator.MatmAggregatorProxy" method="aggregate" />
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.process.fuse.batch">
+            <from uri="endpoint.fuser.fromFuser.aircraft.process.batch" />
+            <bean ref="aircraft.aggregator.Batcher" method="batch" />                 
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.processBatch">
+            <from uri="endpoint.fuser.fromFuser.aircraft.envelope.process" />
+            <bean ref="fuser.marshall.MatmTransferEnvelope" method="marshall" />
+            <to uri="endpoint.fuser.fromFuser.aircraft.envelope.fused" />
+        </route>   
+        
+        <route id="route.fuser.toFuser.aircraft.process.prefuse">
+            <from uri="endpoint.fuser.toFuser.aircraft.process.prefuse" />
+            <bean ref="fuser.core.prefused.clone" method="cloneAircraft" />
+            <to uri="endpoint.fuser.fromFuser.aircraft.prefused.process" />
+        </route>
+        
+        <route id="route.fuser.fromFuser.aircraft.prefused.process">
+            <from uri="endpoint.fuser.fromFuser.aircraft.prefused.process" />
+            <bean ref="aircraft.core.PreFusedMessageSender" method="publish" />
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.sync">
+            <from uri="endpoint.fuser.toFuser.aircraft.sync" />
+            <setHeader name="fuser.timestampFuserReceived" >
+                <method ref="fuser.core.Clock" method="getTimeInMillis" />
+            </setHeader>
+            <to uri="endpoint.fuser.toFuser.aircraft.receive"/>
+        </route>
+        
+        <route id="route.fuser.source.aircraft.remove">
+            <from uri="endpoint.fuser.toFuser.aircraft.remove" />
+            <bean ref="fuser.core.SyncPoint" method="sync" />
+            <to uri="endpoint.fuser.toFuser.aircraft.remove.process"/>
+        </route>
+        
+        <route id="route.fuser.toFuser.aircraft.remove.process">
+            <from uri="endpoint.fuser.toFuser.aircraft.remove.process" />
+            <bean ref="fuser.marshall.MatmAircraft" method="unmarshall" />
+            <bean ref="aircraft.core.FuserStoreProxy" method="remove" />
+        </route>
+        
+        <route id="route.fuser.source.aircraft.remove.forward">
+            <from uri="endpoint.fuser.fromFuser.aircraft.remove.forward" />
+            <bean ref="fuser.marshall.MatmAircraft" method="marshall" />
+            <to uri="endpoint.fuser.fromFuser.aircraft.remove" />
+        </route>   
+
+    </camelContext>
+
+    <bean id="routes.aircraft.RouteErrorHandler" class="com.mosaicatm.lib.camel.RouteErrorHandler" />
+
+    <bean id="routes.aircraft.MessageProducer" class="com.mosaicatm.lib.CamelMessageProducer">
+        <property name="producerTemplate" ref="routes.aircraft.CamelContext" />
+    </bean>
+
+    <bean id="monitor.aircraft.endpoint.fuser.toFuser.aircraft.receive" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.fuser.toFuser.aircraft.receive" />
+        <constructor-arg index="1" value="endpoint.fuser.toFuser.aircraft.receive" />
+    </bean>
+    
+    <bean id="monitor.aircraft.endpoint.fuser.toFuser.aircraft.process.fuse.filter" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.fuser.toFuser.aircraft.process.fuse.filter" />
+        <constructor-arg index="1" value="endpoint.fuser.toFuser.aircraft.process.fuse.filter" />
+    </bean>
+    
+    <bean id="monitor.aircraft.endpoint.fuser.toFuser.aircraft.process.fuse.aggregate" factory-bean="fuser-metrics.core.MetricProxyFactory" 
+          factory-method="registerEndpoint">
+        <constructor-arg index="0" ref="endpoint.fuser.toFuser.aircraft.process.fuse.aggregate" />
+        <constructor-arg index="1" value="endpoint.fuser.toFuser.aircraft.process.fuse.aggregate" />
+    </bean>
+    
+    <bean id="routes.aircraft.fuser.MessageProducerOwnerInitializer" class="com.mosaicatm.lib.messaging.MessageProducerOwnerInitializer"
+        init-method="initialize">
+        <constructor-arg index="0" ref="routes.aircraft.MessageProducer" />
+        <property name="messageProducerOwners">
+            <list>
+                <ref bean="aircraft.core.PreFusedMessageSender" />
+                <ref bean="aircraft.core.MatmAircraftStoreListener" />
+                <ref bean="aircraft.aggregator.Batcher" />
+                <ref bean="aircraft.aggregator.MatmAggregatorThreaded" />
+                <ref bean="aircraft.core.InternalAircraftMessageSender" />
+                <ref bean="aircraft.core.AggregateAircraftMessageSender" />
+                <ref bean="aircraft.core.ProcessAircraftMessageMultiSender" />
+            </list>
+        </property>
+    </bean>
+    
+    <!-- <bean id="capture" class="com.mosaicatm.fuser.router.Capture" /> -->
+
+</beans>

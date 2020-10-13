@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="slice.TimeSlicer" class="com.mosaicatm.lib.database.slice.TimeSlicer" init-method="start" >
+        <property name="inputDb" ref="db.dataSource" />
+        <property name="clock" ref="core.Clock" />
+        <property name="bulkLoader" ref="db.slicer.BulkLoader" />
+        <property name="slicerEnabled" value="${fuser-capture.database.slices.enabled}" />
+        <property name="timeSpanGapLimit" value="${fuser-capture.database.slices.max.gap.between.slices.millis}" />
+        <property name="sliceWaitTime" value="${fuser-capture.database.slices.slicer.wait.time.minutes}" />
+        <property name="sourceTableName" value="${fuser-capture.database.slices.source.table.name}" />
+        <property name="destTableName" value="${fuser-capture.database.slices.dest.table.name}" />
+    </bean>
+
+</beans>

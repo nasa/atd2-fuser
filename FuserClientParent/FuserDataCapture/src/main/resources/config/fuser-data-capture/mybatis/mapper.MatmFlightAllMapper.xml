@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.MatmFlightAllMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            acid varchar,
+            aircraft_address varchar,
+            aircraft_engine_class varchar,
+            aircraft_equipment_qualifier varchar,
+            aircraft_registration varchar,
+            aircraft_type varchar,
+            altitude_assigned double precision,
+            altitude_filed double precision,
+            altitude_requested double precision,
+            apreq_restriction_ids varchar,
+            arrival_aerodrome_iata_name varchar,
+            arrival_aerodrome_icao_name varchar,
+            arrival_fix_actual varchar,
+            arrival_fix_actual_time timestamp,
+            arrival_fix_decision_tree varchar,
+            arrival_fix_estimated_time timestamp,
+            arrival_fix_model varchar,
+            arrival_fix_position_derived varchar,
+            arrival_fix_scheduled_time timestamp,
+            arrival_fix_source_data varchar,
+            arrival_fix_targeted_time timestamp,
+            arrival_fix_undelayed_time timestamp,
+            arrival_fix_user varchar,
+            arrival_landing_clearance_issued_time timestamp,
+            arrival_movement_area_actual_time timestamp,
+            arrival_movement_area_targeted_time timestamp,
+            arrival_movement_area_undelayed_time timestamp,
+            arrival_runway_actual varchar,
+            arrival_runway_actual_time timestamp,
+            arrival_runway_airline varchar,
+            arrival_runway_assigned varchar,
+            arrival_runway_controlled_time timestamp,
+            arrival_runway_crossing_clearance_issued_time timestamp,
+            arrival_runway_decision_tree varchar,
+            arrival_runway_estimated_time timestamp,
+            arrival_runway_metered_time_is_frozen boolean,
+            arrival_runway_metered_time_value timestamp,
+            arrival_runway_model varchar,
+            arrival_runway_position_derived varchar,
+            arrival_runway_proposed_time timestamp,
+            arrival_runway_scheduled_time timestamp,
+            arrival_runway_targeted_time timestamp,
+            arrival_runway_undelayed_time timestamp,
+            arrival_runway_user varchar,
+            arrival_spot_actual varchar,
+            arrival_spot_airline varchar,
+            arrival_spot_decision_tree varchar,
+            arrival_spot_model varchar,
+            arrival_spot_position_derived varchar,
+            arrival_spot_user varchar,
+            arrival_stand_actual varchar,
+            arrival_stand_actual_time timestamp,
+            arrival_stand_airline varchar,
+            arrival_stand_airline_time timestamp,
+            arrival_stand_controlled_time timestamp,
+            arrival_stand_decision_tree varchar,
+            arrival_stand_estimated_time timestamp,
+            arrival_stand_initial_time timestamp,
+            arrival_stand_model varchar,
+            arrival_stand_position_derived varchar,
+            arrival_stand_proposed_time timestamp,
+            arrival_stand_scheduled_time timestamp,
+            arrival_stand_targeted_time timestamp,
+            arrival_stand_undelayed_time timestamp,
+            arrival_stand_user varchar,
+            arrival_taxi_clearance_issued_time timestamp,
+            beacon_code varchar,
+            cancelled varchar,
+            cancelled_time timestamp,
+            carrier varchar,
+            center_list_values varchar,
+            departure_aerodrome_iata_name varchar,
+            departure_aerodrome_icao_name varchar,
+            departure_fix_actual varchar,
+            departure_fix_actual_time timestamp,
+            departure_fix_decision_tree varchar,
+            departure_fix_estimated_time timestamp,
+            departure_fix_model varchar,
+            departure_fix_position_derived varchar,
+            departure_fix_scheduled_time timestamp,
+            departure_fix_source_data varchar,
+            departure_fix_targeted_time timestamp,
+            departure_fix_undelayed_time timestamp,
+            departure_fix_user varchar,
+            departure_movement_area_actual_time timestamp,
+            departure_movement_area_targeted_time timestamp,
+            departure_movement_area_undelayed_time timestamp,
+            departure_pushback_clearance_issued_time timestamp,
+            departure_queue_duration_value bigint,
+            departure_queue_entry_actual_time timestamp,
+            departure_queue_entry_targeted_time timestamp,
+            departure_queue_entry_undelayed_time timestamp,
+            departure_runway_actual varchar,
+            departure_runway_actual_time timestamp,
+            departure_runway_airline varchar,
+            departure_runway_assigned varchar,
+            departure_runway_controlled_time timestamp,
+            departure_runway_crossing_clearance_issued_time timestamp,
+            departure_runway_decision_tree varchar,
+            departure_runway_estimated_time timestamp,
+            departure_runway_metered_time_is_frozen boolean,
+            departure_runway_metered_time_value timestamp,
+            departure_runway_model varchar,
+            departure_runway_position_derived varchar,
+            departure_runway_proposed_time timestamp,
+            departure_runway_scheduled_time timestamp,
+            departure_runway_targeted_time timestamp,
+            departure_runway_undelayed_time timestamp,
+            departure_runway_user varchar,
+            departure_spot_actual varchar,
+            departure_spot_airline varchar,
+            departure_spot_decision_tree varchar,
+            departure_spot_model varchar,
+            departure_spot_position_derived varchar,
+            departure_spot_user varchar,
+            departure_stand_actual varchar,
+            departure_stand_actual_time timestamp,
+            departure_stand_airline varchar,
+            departure_stand_airline_time timestamp,
+            departure_stand_decision_tree varchar,
+            departure_stand_earliest_time timestamp,
+            departure_stand_estimated_time timestamp,
+            departure_stand_initial_time timestamp,
+            departure_stand_model varchar,
+            departure_stand_position_derived varchar,
+            departure_stand_intended_time timestamp,
+            departure_stand_proposed_time timestamp,
+            departure_stand_ready_actual_time timestamp,
+            departure_stand_scheduled_time timestamp,
+            departure_stand_target_time timestamp,
+            departure_stand_targeted_time timestamp,
+            departure_stand_undelayed_time timestamp,
+            departure_stand_user varchar,
+            departure_startup_approval_actual_time timestamp,
+            departure_startup_approval_target_time timestamp,
+            departure_startup_request_actual_time timestamp,
+            departure_takeoff_clearance_issued_time timestamp,
+            departure_taxi_actual_duration_value bigint,
+            departure_taxi_clearance_issued_time timestamp,
+            departure_taxi_estimated_duration_value bigint,
+            departure_taxi_undelayed_duration_value bigint,
+            estimated_departure_clearance_time timestamp,
+            fix_closure_ids varchar,
+            fix_list_values varchar,
+            flight_rules varchar,
+            flight_type varchar,
+            gate_conflict_values jsonb,
+            ground_stop_restriction_ids varchar,
+            gufi varchar,
+            last_update_source varchar,
+            long_on_board_duration_value bigint,
+            mit_restriction_ids varchar,
+            position_altitude double precision,
+            position_heading double precision,
+            position_latitude double precision,
+            position_longitude double precision,
+            position_source varchar,
+            position_speed double precision,
+            position_timestamp timestamp,
+            priority_status varchar,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            release_acknowledge_required boolean,
+            release_forced boolean,
+            release_mode varchar,
+            release_request_allowed boolean,
+            release_requested_roll_time timestamp,
+            release_scheduled_roll_earliest_time timestamp,
+            release_scheduled_roll_latest_time timestamp,
+            release_scheduled_roll_time timestamp,
+            release_scheduled_wheels_off_time timestamp,
+            release_state varchar,
+            release_update_source varchar,
+            route_text varchar,
+            runway_operational_necessity boolean,
+            runway_rate_restriction_ids varchar,
+            sector_list_values varchar,
+            sequence_id serial,
+            speed_filed double precision,
+            standard_instrument_arrival varchar,
+            standard_instrument_departure varchar,
+            surface_airport_name varchar,
+            surface_flight_state varchar,
+            system_id varchar,
+            timestamp timestamp,
+            timestamp_fuser_processed timestamp,
+            timestamp_fuser_received timestamp,
+            timestamp_source timestamp,
+            timestamp_source_processed timestamp,
+            timestamp_source_received timestamp,
+            update_sources_values varchar,
+            wake_turbulence_category varchar
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createView">
+        DROP VIEW IF EXISTS ${tableName}_view CASCADE;
+        CREATE OR REPLACE VIEW ${tableName}_view AS
+        (
+            SELECT *,
+               COALESCE
+               (
+                   departure_stand_actual_time,
+                   departure_stand_intended_time,
+                   departure_stand_earliest_time,
+                   departure_stand_airline_time,
+                   departure_stand_estimated_time,
+                   departure_stand_proposed_time,
+                   departure_stand_scheduled_time,
+                   departure_stand_initial_time
+               )
+               AS departure_stand_best_time,
+               COALESCE
+               (
+                   departure_runway_actual_time,
+                   departure_runway_estimated_time,
+                   departure_runway_scheduled_time
+               )
+               AS departure_runway_best_time,
+               COALESCE
+               (
+                   arrival_runway_actual_time,
+                   arrival_runway_metered_time_value,
+                   arrival_runway_estimated_time,
+                   arrival_runway_scheduled_time
+               )
+               AS arrival_runway_best_time,
+               COALESCE
+               (
+                   arrival_stand_actual_time,
+                   arrival_stand_airline_time,
+                   arrival_stand_estimated_time,
+                   arrival_stand_proposed_time,
+                   arrival_stand_scheduled_time
+               )
+               AS arrival_stand_best_time
+            FROM ${tableName}
+        );
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+        create index concurrently idx_acid_${tableName} on ${tableName} (acid);
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+    </update>
+
+</mapper>

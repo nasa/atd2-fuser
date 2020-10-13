@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>com.mosaicatm</groupId>
+        <artifactId>FuserPluginParent</artifactId>
+        <version>5.0.25-NASA-OPENSOURCE-1.0.0-SNAPSHOT</version>
+    </parent>
+    
+	<artifactId>TmaTransformPlugin</artifactId>
+	<name>TMA Transform Plugin</name>
+	<description>TMA Transform Plugin for the FuserTransform</description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven-assembly-plugin.version}</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/assembly.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<id>tma-transform-plugin-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+	
+        <dependency>
+            <groupId>com.mosaicatm.common</groupId>
+            <artifactId>AirportCodeTranslator</artifactId>
+            <version>${airport-code-translator.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.mosaicatm.tma</groupId>
+            <artifactId>TmaCommon</artifactId>
+            <version>${tma.version}</version>
+        </dependency>
+
+	</dependencies>
+
+</project>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema 
+    targetNamespace="http://www.mosaicatm.com/matmdata/sectorenvelope"
+    version="1.0"
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:sae="http://www.mosaicatm.com/matmdata/sectorenvelope"
+    xmlns:sa="http://www.mosaicatm.com/matmdata/sector"  
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+    <import namespace="http://www.mosaicatm.com/matmdata/sector" schemaLocation="./MatmSectorAssignment.xsd" />
+
+    <xs:element name="matmSectorAssignmentEnvelope" type="sae:matmSectorAssignmentEnvelope"/>
+
+    <xs:complexType name="dataSourceProperties">
+        <xs:sequence>
+            <xs:element name="property" type="sae:dataSourceProperty" maxOccurs="5000"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="dataSourceProperty">
+        <xs:sequence/>
+        <xs:attribute name="name" type="xs:string"/>
+        <xs:attribute name="value" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:complexType name="matmSectorAssignmentEnvelope">
+        <xs:sequence>
+            <xs:element name="header" type="sae:matmSectorAssignmentEnvelopeHeader" minOccurs="0"/>
+            <xs:element name="sectorAssignment" type="sa:matmSectorAssignment" maxOccurs="5000"/>
+        </xs:sequence>
+        <xs:attribute name="source" type="xs:string"/>
+        <xs:attribute name="destination" type="xs:string"/>
+        <xs:attribute name="timestamp" type="xs:dateTime"/>
+    </xs:complexType>
+
+    <xs:complexType name="matmSectorAssignmentEnvelopeHeader">
+        <xs:sequence>
+            <xs:element name="properties" type="sae:dataSourceProperties" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+

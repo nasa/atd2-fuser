@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="aircraft.aggregator.Batcher" class="com.mosaicatm.fuser.batch.AircraftBatcher" init-method="init">
+        <property name="destination" value="${fuser.endpoint.fromFuser.aircraft.envelope.process}" />
+    </bean>
+
+	<bean id="aircraft.aggregator.MatmAggregatorProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+		factory-method="proxyAggregator">
+		<constructor-arg index="0" ref="aircraft.aggregator.MatmAggregatorThreaded" />
+	</bean>
+	
+	<bean id="aircraft.aggregator.MatmAggregatorThreaded"
+            class="com.mosaicatm.fuser.aggregator.MatmAggregatorThreaded"
+            init-method="init" >
+        <constructor-arg index="0" value="${fuser.aggregator.thread.count}" />
+        <constructor-arg index="1" value="MatmAircraft" />
+        <property name="metaDataManager" ref="aircraft.core.MetaDataManagerProxy" />
+        <property name="fuserStore" ref="aircraft.core.FuserStoreProxy" />
+        <property name="flightPreUpdater" ref="aircraft.aggregator.AircraftPreUpdaterFactoryProxy" />
+        <property name="flightPostUpdater" ref="aircraft.aggregator.AircraftPostUpdaterFactoryProxy" />
+        <property name="destinationQueue" value="${fuser.endpoint.fromFuser.aircraft.process.batch}" />
+        <property name="reportingTimeMillis" value="${fuser.aggregator.thread.queue.size.report.interval.millis}" />
+        <property name="blockingQueueCapacity" value="${fuser.aggregator.thread.queue.capacity}" />
+    </bean>
+    
+    
+    <bean id="aircraft.aggregator.AircraftPreUpdaterFactoryProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+        factory-method="proxyUpdater">
+        <constructor-arg index="0" ref="aircraft.aggregator.AircraftPreUpdaterFactory" />   
+    </bean>
+    
+    <bean id="aircraft.aggregator.AircraftPreUpdaterFactory" class="com.mosaicatm.fuser.updaters.UpdaterFactory">
+        <property name="updaters">
+            <list>
+                <ref bean="fuser-aggregator.core.SystemIdUpdater" />
+                <ref bean="fuser-aggregator.core.CreationTimeUpdater" />
+                <ref bean="fuser-aggregator.core.SourceUpdater" />
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="aircraft.aggregator.AircraftPostUpdaterFactoryProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+        factory-method="proxyUpdater">
+        <constructor-arg index="0" ref="aircraft.aggregator.FlightPostUpdaterFactory" />  
+    </bean>
+    
+    <bean id="aircraft.aggregator.FlightPostUpdaterFactory" class="com.mosaicatm.fuser.updaters.UpdaterFactory">
+         <property name="updaters">
+            <list>
+                <ref bean="aircraft.aggregator.CommonFieldUpdater" />
+            </list>
+        </property>
+    </bean>
+    
+	<bean id="aircraft.aggregator.CommonFieldUpdater" class="com.mosaicatm.fuser.updaters.post.CommonAircraftFieldUpdater">
+        <property name="active" value="${fuser.updater.commonAircraftField.active}" />
+    </bean>
+    
+</beans>

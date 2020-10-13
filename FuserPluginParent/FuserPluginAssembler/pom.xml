@@ -1,0 +1,124 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.mosaicatm</groupId>
+        <artifactId>FuserPluginParent</artifactId>
+        <version>5.0.25-NASA-OPENSOURCE-1.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <artifactId>FuserPluginAssembler</artifactId>
+    <name>FuserPluginAssembler</name>
+
+    <properties>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                        <descriptor>src/main/assembly/assembly-swim.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <!-- binds the assembled project to the artifact -->
+                    <execution>
+                        <id>fuser-plugin-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>Fuser</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MatmTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>AsdexTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>SfdpsTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>SmesTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>SurveillanceTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>TfmTfdmTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>TfmTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>TmaTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>TtpTransformPlugin</artifactId>
+            <version>${project.version}</version>
+            <classifier>bin</classifier>
+            <type>zip</type>
+        </dependency>
+
+    </dependencies>
+
+</project>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+    <changeSet id="fuserDataCapture-2020_08-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="position_fav_type"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="position_fav_type" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_08-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="position_fav_type"/>                         
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="position_fav_type" type="varchar" />                      
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_08-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="position_fav_type"/> 
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="position_fav_type" type="varchar" />
+        </addColumn>
+    </changeSet>    
+    
+    <changeSet id="fuserDataCapture-2020_08-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_position_all"/>
+            <not>
+                <columnExists tableName="matm_position_all" columnName="position_fav_type"/>    
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_position_all">
+            <column name="position_fav_type" type="varchar" />
+        </addColumn>
+    </changeSet>      
+
+    <changeSet id="fuserDataCapture-2020_08-5" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension"/>
+            <not>
+                <columnExists tableName="derived_extension" columnName="arrival_movement_area_estimated_duration_value"/>
+                <columnExists tableName="derived_extension" columnName="arrival_movement_area_undelayed_duration_value"/>
+                <columnExists tableName="derived_extension" columnName="arrival_ramp_area_estimated_duration_value"/>
+                <columnExists tableName="derived_extension" columnName="arrival_ramp_area_undelayed_duration_value"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="derived_extension">
+            <column name="arrival_movement_area_estimated_duration_value" type="bigint" />
+            <column name="arrival_movement_area_undelayed_duration_value" type="bigint" />
+            <column name="arrival_ramp_area_estimated_duration_value" type="bigint" />
+            <column name="arrival_ramp_area_undelayed_duration_value" type="bigint" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-2020_08-6" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all"/>
+            <not>
+                <columnExists tableName="derived_extension_all" columnName="arrival_movement_area_estimated_duration_value"/>
+                <columnExists tableName="derived_extension_all" columnName="arrival_movement_area_undelayed_duration_value"/>
+                <columnExists tableName="derived_extension_all" columnName="arrival_ramp_area_estimated_duration_value"/>
+                <columnExists tableName="derived_extension_all" columnName="arrival_ramp_area_undelayed_duration_value"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="derived_extension_all">
+            <column name="arrival_movement_area_estimated_duration_value" type="bigint" />
+            <column name="arrival_movement_area_undelayed_duration_value" type="bigint" />
+            <column name="arrival_ramp_area_estimated_duration_value" type="bigint" />
+            <column name="arrival_ramp_area_undelayed_duration_value" type="bigint" />
+        </addColumn>
+    </changeSet>
+
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-2020_08" author="atd2" runAlways="true">
+        <tagDatabase tag="2020_08" />
+    </changeSet>
+
+</databaseChangeLog>

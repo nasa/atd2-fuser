@@ -1,0 +1,34 @@
+#!/bin/csh -f
+# 
+
+if ( ! $?OUTFILE_DIR ) then
+    setenv OUTFILE_DIR "log"
+endif
+# quietly create a logs directory if it doesn't already exist
+mkdir -p $OUTFILE_DIR
+set outfile = $OUTFILE_DIR/fuser.out
+set log4jname = $OUTFILE_DIR/fuser.log
+
+set DTS=`date +%Y%m%d.%H%M%S`
+if ( -e $outfile ) then
+    mv $outfile $outfile-backup.$DTS
+    nice bzip2 $outfile-backup.$DTS &
+endif
+
+if ( $?FUSER_LOG4J ) then
+    set log4jxml = $FUSER_LOG4J
+else
+    set log4jxml = config/fuser/log4j.xml
+endif
+set LOG4J = "-Dlogfile.name=$log4jname -Dlog4j.configuration=file:$log4jxml"
+
+# Set default memory options if not already defined
+if ( ! $?FUSER_MEMORY_OPTS ) then
+    set FUSER_MEMORY_OPTS = "-Xms448m -Xmx768m"
+endif
+
+if ( ! $?COMMANDER_ID ) then
+    set COMMANDER_ID = "fuser"
+endif
+
+java -Dproc.name=Fuser -Dcommander.id=$COMMANDER_ID -server $FUSER_MEMORY_OPTS -Duser.timezone=UTC -classpath ".:config:./lib/*" $LOG4J com.mosaicatm.fuser.FuserMain $* >>& $outfile &

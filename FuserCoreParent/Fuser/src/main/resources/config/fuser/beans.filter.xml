@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="fuser.filter.FuserFilterProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+    	factory-method="proxyFilter">
+    	<constructor-arg index="0" ref="fuser.filter.FuserFilter" />
+    </bean>
+    
+	<bean id="fuser.filter.FuserFilter" class="com.mosaicatm.fuser.filter.FuserFilter">
+		<property name="filters">
+			<list>
+				<ref bean="fuser.filter.LocationFilter" />
+				<ref bean="fuser.filter.GufiFilter" />
+				<ref bean="fuser.filter.AttributeFilter" />
+				<ref bean="fuser.filter.NasaTmaArrivalPredictionFilter" />
+				<ref bean="fuser.filter.FlightPositionFilter" />
+			</list>
+		</property>
+		<property name="active" value="${fuser.filter.active}" />
+	</bean>
+
+	<bean id="fuser.filter.LocationFilter" class="com.mosaicatm.fuser.filter.LocationFilter">
+		<property name="airports" value="${fuser.filter.location.airports}" />
+		<property name="active" value="${fuser.filter.location.active}" />
+	</bean>
+	
+	<bean id="fuser.filter.GufiFilter" class="com.mosaicatm.fuser.filter.GufiFilter" >
+		<property name="active" value="${fuser.filter.gufi.active}" />
+		<property name="filterNullGufi" value="${fuser.core.filterNullGufi}" />
+	</bean>
+
+    <bean id="fuser.filter.AttributeFilter" class="com.mosaicatm.fuser.filter.AttributeFilter"
+        init-method="init">
+        <property name="active" value="${fuser.filter.attribute.active}" />
+        <property name="defaultLocation"
+            value="${fuser.filter.attribute.location.default}" />
+        <property name="attributeMappings" value="${fuser.filter.attribute.mappings}" />
+    </bean>
+	
+	<bean id="fuser.filter.NasaTmaArrivalPredictionFilter" class="com.mosaicatm.fuser.filter.NasaTmaArrivalPredictionsFilter" >
+		<property name="active" value="${fuser.filter.nasaTmaArrivalPredictions.active}" />
+	</bean>
+	
+	<bean id="fuser.filter.FlightPositionFilter" class="com.mosaicatm.fuser.filter.FlightPositionFilter" >
+		<property name="active" value="${fuser.filter.flightPositionFilter.active}" />
+	</bean>
+
+</beans>

@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<!-- Detailed configuration can be found on Confluence under ATD-2 Database 
+		Version Control Capability -->
+
+	<changeSet id="fuserDataCapture-v5.0.0-20181116-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension"/>
+            <not>
+                <columnExists tableName="derived_extension" columnName="tos_id"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension">
+            <column name="tos_id" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181116-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all"/>
+            <not>
+                <columnExists tableName="derived_extension_all" columnName="tos_id"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension_all">
+            <column name="tos_id" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181128-1" author="atd2"
+		runAlways="true">
+		<validCheckSum>ANY</validCheckSum>
+		<preConditions onFail="MARK_RAN">
+			<tableExists tableName="matm_flight" />
+			<not>
+                <columnExists tableName="matm_flight" columnName="arrival_runway_operational_necessity"/>
+                <columnExists tableName="matm_flight" columnName="departure_runway_operational_necessity"/>
+            </not>
+		</preConditions>
+
+		<addColumn tableName="matm_flight">
+            <column name="arrival_runway_operational_necessity" type="boolean" />
+            <column name="departure_runway_operational_necessity" type="boolean" />
+        </addColumn>
+	</changeSet>
+	
+	<changeSet id="fuserDataCapture-v5.0.0-20181128-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="arrival_runway_operational_necessity"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_runway_operational_necessity"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="arrival_runway_operational_necessity" type="boolean" />
+            <column name="departure_runway_operational_necessity" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181128-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_runway_operational_necessity"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_runway_operational_necessity"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="arrival_runway_operational_necessity" type="boolean" />
+            <column name="departure_runway_operational_necessity" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+	<changeSet id="fuserDataCapture-v5.0.0-20181128-4" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="arrival_gate_conflict_values"/>
+                <columnExists tableName="matm_flight" columnName="departure_gate_conflict_values"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="arrival_gate_conflict_values" type="jsonb" />
+            <column name="departure_gate_conflict_values" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181128-5" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="arrival_gate_conflict_values"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_gate_conflict_values"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="arrival_gate_conflict_values" type="jsonb" />
+            <column name="departure_gate_conflict_values" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181128-6" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_gate_conflict_values"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_gate_conflict_values"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="arrival_gate_conflict_values" type="jsonb" />
+            <column name="departure_gate_conflict_values" type="jsonb" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v5.0.0-20181206-7" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="major_carrier"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="major_carrier" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181206-8" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="major_carrier"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="major_carrier" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20181206-9" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="major_carrier"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="major_carrier" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20180206-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="route_text_assigned"/>
+                <columnExists tableName="matm_flight" columnName="route_text_model"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="route_text_assigned" type="varchar" />
+            <column name="route_text_model" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20180206-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="route_text_assigned"/>
+                <columnExists tableName="matm_flight_all" columnName="route_text_model"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="route_text_assigned" type="varchar" />
+            <column name="route_text_model" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20180206-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="route_text_assigned"/>
+                <columnExists tableName="matm_flight_summary" columnName="route_text_model"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="route_text_assigned" type="varchar" />
+            <column name="route_text_model" type="varchar" />
+        </addColumn>
+    </changeSet>  
+
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="arrival_surface_flight_state"/>
+                <columnExists tableName="matm_flight" columnName="departure_surface_flight_state"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="arrival_surface_flight_state" type="varchar" />
+            <column name="departure_surface_flight_state" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="arrival_surface_flight_state"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_surface_flight_state"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="arrival_surface_flight_state" type="varchar" />
+            <column name="departure_surface_flight_state" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_surface_flight_state"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_surface_flight_state"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="arrival_surface_flight_state" type="varchar" />
+            <column name="departure_surface_flight_state" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-4" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="internal_departure"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="internal_departure" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-5" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="internal_departure"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="internal_departure" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-6" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="internal_departure"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="internal_departure" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190116-6" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="internal_departure"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="internal_departure" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190220-7" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="scratch_pad_values"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="scratch_pad_values" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+     <changeSet id="fuserDataCapture-v5.0.0-20190220-8" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="scratch_pad_values"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="scratch_pad_values" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190220-9" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="scratch_pad_values"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="scratch_pad_values" type="jsonb" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v5.0.0-20190227-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="departure_procedure_actual"/>
+                <columnExists tableName="matm_flight" columnName="departure_procedure_source_data"/>
+                <columnExists tableName="matm_flight" columnName="departure_procedure_user"/>
+                <columnExists tableName="matm_flight" columnName="departure_procedure_model"/>
+                <columnExists tableName="matm_flight" columnName="departure_procedure_position_derived"/>
+                <columnExists tableName="matm_flight" columnName="departure_procedure_decision_tree"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="departure_procedure_actual" type="varchar" />
+            <column name="departure_procedure_source_data" type="varchar" />
+            <column name="departure_procedure_user" type="varchar" />
+            <column name="departure_procedure_model" type="varchar" />
+            <column name="departure_procedure_position_derived" type="varchar" />
+            <column name="departure_procedure_decision_tree" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190227-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="departure_procedure_actual"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_procedure_source_data"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_procedure_user"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_procedure_model"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_procedure_position_derived"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_procedure_decision_tree"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="departure_procedure_actual" type="varchar" />
+            <column name="departure_procedure_source_data" type="varchar" />
+            <column name="departure_procedure_user" type="varchar" />
+            <column name="departure_procedure_model" type="varchar" />
+            <column name="departure_procedure_position_derived" type="varchar" />
+            <column name="departure_procedure_decision_tree" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190227-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="departure_procedure_actual"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_procedure_source_data"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_procedure_user"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_procedure_model"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_procedure_position_derived"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_procedure_decision_tree"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="departure_procedure_actual" type="varchar" />
+            <column name="departure_procedure_source_data" type="varchar" />
+            <column name="departure_procedure_user" type="varchar" />
+            <column name="departure_procedure_model" type="varchar" />
+            <column name="departure_procedure_position_derived" type="varchar" />
+            <column name="departure_procedure_decision_tree" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190314-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="facility_ids"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="facility_ids" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190314-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="facility_ids"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="facility_ids" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190314-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="facility_ids"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="facility_ids" type="jsonb" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190320-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="transit_time_source"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="transit_time_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190320-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="transit_time_source"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="transit_time_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v5.0.0-20190320-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="transit_time_source"/>
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="transit_time_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+        
+    <!-- This needs to be the last changeset in the file -->
+	<changeSet id="fuserDataCapture-v5.0.0" author="atd2"
+		runAlways="true">
+		<tagDatabase tag="5.0.0" />
+	</changeSet>
+
+</databaseChangeLog>

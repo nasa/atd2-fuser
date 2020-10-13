@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema 
+	targetNamespace="http://www.mosaicatm.com/matmdata/positionenvelope"
+   version="1.0"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:env="http://www.mosaicatm.com/matmdata/positionenvelope"
+   xmlns:fx="http://www.mosaicatm.com/matmdata/position"  
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <import namespace="http://www.mosaicatm.com/matmdata/position" schemaLocation="./MatmPositionUpdate.xsd" />
+
+  <xs:element name="matmPositionUpdateEnvelope" type="env:matmPositionUpdateEnvelope"/>
+
+
+  <xs:complexType name="dataSourceProperties">
+    <xs:sequence>
+      <xs:element name="property" type="env:dataSourceProperty" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="dataSourceProperty">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
+  </xs:complexType>
+
+  
+  <xs:complexType name="matmPositionUpdateEnvelope">
+    <xs:sequence>
+      <xs:element name="header" type="env:matmPositionUpdateEnvelopeHeader" minOccurs="0"/>
+      <xs:element name="flights" type="fx:matmPositionUpdate" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="source" type="xs:string"/>
+    <xs:attribute name="destination" type="xs:string"/>
+    <xs:attribute name="timestamp" type="xs:dateTime"/>
+  </xs:complexType>
+
+  <xs:complexType name="matmPositionUpdateEnvelopeHeader">
+    <xs:sequence>
+      <xs:element name="properties" type="env:dataSourceProperties" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

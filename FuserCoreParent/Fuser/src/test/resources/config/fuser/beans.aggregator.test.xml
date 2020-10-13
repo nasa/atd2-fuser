@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">  
+       
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations">
+	        <list>
+	            <value>classpath:config/fuser/properties.props</value>
+	            <value>classpath:config/fuser/topics.properties.props</value>
+	            <value>classpath:config/fuser/rules.properties.props</value>
+	        </list>
+	    </property>
+    </bean>
+
+	<!-- Initialize beans needed by beans.aggregate.xml -->
+    <bean id="MetricRegistry" class="com.codahale.metrics.MetricRegistry"/>
+    
+    <bean id="fuser-metrics.core.MetricProxyFactory" class="com.mosaicatm.fuser.metrics.MetricProxyFactory">
+        <property name="metricRegistry" ref="MetricRegistry"/>
+        <property name="metricsActive"  value="${fuser.core.performancemonitor.active}"/>
+    </bean>
+    
+    <bean id="fuser.core.FuserStoreLoader" class="com.mosaicatm.fuser.store.matm.MatmFuserStoreLoader">
+        <property name="idLookup" ref="fuser.core.MatmFlightIdLookup" />
+    </bean>
+    
+    <bean id="fuser.core.FuserStore" factory-bean="fuser.core.FuserStoreLoader" factory-method="loadStore" />
+    
+    <bean id="fuser.core.FuserStoreProxy" class="com.mosaicatm.fuser.store.FuserStoreProxy">
+        <constructor-arg index="0" ref="fuser.core.FuserStore" />
+    </bean>
+    
+    <bean id="fuser.core.TimestampSetter" class="com.mosaicatm.fuser.util.TimestampSetter" >
+    </bean> 
+    
+    <bean id="fuser.core.Clock" class="com.mosaicatm.lib.time.SystemClock" />
+    
+    <bean id="fuser.core.InternalFuserMessageSender" class="com.mosaicatm.fuser.util.MessageSender">
+        <property name="active" value="true" />
+        <property name="destination" value="${fuser.endpoint.toFuser.receive}" />
+    </bean>      
+    
+    <bean id="fuser.core.AircraftTypeApiConfig" class="com.matm.actypelib.api.AircraftTypeApiConfig">
+        <property name="allowClassPathLoading" value="${fuser.core.aircraftType.allowClassPathLoading}" />
+        <property name="weightClassGroup" value="${fuser.core.aircraftType.weightClassGroup}" />
+    </bean>
+    
+    <bean id="fuser.core.AircraftTypeApi" class="com.matm.actypelib.api.AircraftTypeApiImpl"
+        init-method="initialize">
+        <constructor-arg index="0" ref="fuser.core.AircraftTypeApiConfig" />
+    </bean>
+    
+    <bean id="fuser.core.AircraftTypeManager" factory-bean="fuser.core.AircraftTypeApi" factory-method="getAircraftTypeManager" />
+    
+    <bean id="fuser.core.MatmFlightCarrierUtil" class="com.mosaicatm.fuser.common.matm.util.flight.MatmFlightCarrierUtil" />
+    
+    <bean id="fuser.core.MatmAircraftIdLookup" class="com.mosaicatm.fuser.common.matm.util.aircraft.MatmAircraftIdLookup" />
+    <bean id="fuser.core.MatmFlightIdLookup" class="com.mosaicatm.fuser.common.matm.util.flight.MatmFlightIdLookup" />
+    
+    <bean id="fuser.core.MatmIdLookup" class="com.mosaicatm.fuser.common.matm.util.MatmIdLookupFactory">
+        <property name="lookups">
+            <map>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.aircraft.MatmAircraft</value></key>
+                    <ref bean="fuser.core.MatmAircraftIdLookup" />
+                </entry>
+                <entry>
+                    <key><value>com.mosaicatm.matmdata.flight.MatmFlight</value></key>
+                    <ref bean="fuser.core.MatmFlightIdLookup" />
+                </entry>
+            </map>
+        </property>
+    </bean>
+    
+    <bean id="fuser-aggregator.core.MatmAggregator"
+            class="com.mosaicatm.fuser.aggregator.MatmDiffAggregator" >
+        <property name="metaDataManager" ref="fuser-aggregator.core.MetaDataManagerProxy" />
+        <property name="fuserStore" ref="fuser.core.FuserStoreProxy" />
+        <property name="flightPreUpdater" ref="fuser-aggregator.core.FlightPreUpdaterFactoryProxy" />
+        <property name="flightPostUpdater" ref="fuser-aggregator.core.FlightPostUpdaterFactoryProxy" />
+    </bean>
+    
+    <!-- Load beans.rules.xml and beans.aggregate.xml -->
+    <import resource="beans.rules.xml"/>
+    <import resource="beans.aggregate.xml"/>
+    
+</beans>

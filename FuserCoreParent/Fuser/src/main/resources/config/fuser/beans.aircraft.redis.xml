@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="aircraft.redis.RedisFuserStore" class="com.mosaicatm.fuser.store.matm.MatmAircraftFuserStoreCache">
+        <constructor-arg index="0">
+            <bean class="com.mosaicatm.fuser.store.matm.RedisAircraftFuserStore">
+                <constructor-arg index="0" value="${fuser.aggregator.thread.count}" />
+                <property name="redisHash" ref="aircraft.redis.RedisHash" />
+                <property name="matmAircraftMarshaller" ref="fuser.marshall.MatmAircraft" />
+                <property name="metaDataMarshaller" ref="fuser.marshall.MetaData" />
+                <property name="idLookup" ref="fuser.core.MatmAircraftIdLookup" />
+            </bean>            
+        </constructor-arg>
+        <constructor-arg index="1" ref="aircraft.core.FuserStore" />
+        <property name="backupFrequency" value="${fuser.redis.backupInterval}" />
+    </bean>
+
+    <bean id="aircraft.redis.RedisHash" class="com.mosaicatm.fuser.store.redis.RedisHashImpl">
+        <property name="db" ref="redis.RedisDB" />
+        <property name="keyGen" ref="aircraft.redis.KeyGenerator" />
+        <property name="bulkTask" ref="aircraft.redis.BulkTaskProxy" />
+    </bean>
+
+    <bean id="aircraft.redis.KeyGenerator" class="com.mosaicatm.fuser.store.redis.KeyGenerator">
+        <constructor-arg index="0" value="${fuser.redis.namespace}" />
+        <property name="keyType" value="${fuser.redis.aircraft.keyType}" />
+    </bean>
+    
+    <bean id="aircraft.redis.BulkTaskProxy" factory-bean="fuser-metrics.core.MetricProxyFactory"
+        factory-method="proxyRedisBulkTask">
+        <constructor-arg index="0" ref="aircraft.redis.BulkTask" />
+        <constructor-arg index="1" value="MatmAircraft" />
+    </bean>
+    
+    <bean id="aircraft.redis.BulkTask" class="com.mosaicatm.fuser.store.redis.RedisBulkTaskImpl"
+        init-method="start" destroy-method="stop">
+        <property name="db" ref="redis.RedisDB" />
+        <property name="processInterval" value="${fuser.redis.bulkProcessInterval}"/>
+        <property name="reportInterval" value="${fuser.redis.bulkReportInterval}"/>
+    </bean>
+
+</beans>

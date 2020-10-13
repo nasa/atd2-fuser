@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema 
+    targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+   version="1.0"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <include schemaLocation="./AdsbExtension.xsd"/>
+  <include schemaLocation="./AsdexExtension.xsd"/>
+  <include schemaLocation="./Cat11Extension.xsd"/>
+  <include schemaLocation="./Cat62Extension.xsd"/>
+  <include schemaLocation="./TfmExtension.xsd"/>
+  <include schemaLocation="./TfmTfdmExtension.xsd"/>
+  <include schemaLocation="./TbfmExtension.xsd"/>
+  <include schemaLocation="./DerivedExtension.xsd"/>
+  <include schemaLocation="./MatmAirlineMessageExtension.xsd"/>
+  <include schemaLocation="./TfmsFlightTraversalExtension.xsd"/>
+  <include schemaLocation="./IdacExtension.xsd"/>
+  <include schemaLocation="./SurfaceModelExtension.xsd"/>
+  <include schemaLocation="./AefsExtension.xsd"/>
+  <include schemaLocation="./SfdpsExtension.xsd"/>
+  <include schemaLocation="./SmesExtension.xsd"/>
+  <include schemaLocation="./TmiExtension.xsd"/>
+
+  <xs:complexType name="matmFlightExtensions">
+    <xs:sequence>
+      <xs:element name="adsbExtension" type="mfe:adsbExtension" minOccurs="0"/>
+      <xs:element name="asdexExtension" type="mfe:asdexExtension" minOccurs="0"/>
+      <xs:element name="cat11Extension" type="mfe:cat11Extension" minOccurs="0"/>
+      <xs:element name="cat62Extension" type="mfe:cat62Extension" minOccurs="0"/>
+      <xs:element name="derivedExtension" type="mfe:derivedExtension" minOccurs="0"/>
+      <xs:element name="tbfmExtension" type="mfe:tbfmExtension" minOccurs="0"/>
+      <xs:element name="tfmExtension" type="mfe:tfmExtension" minOccurs="0"/>
+      <xs:element name="tfmTfdmExtension" type="mfe:tfmTfdmExtension" minOccurs="0"/>
+      <xs:element name="matmAirlineMessageExtension" type="mfe:matmAirlineMessageExtension" minOccurs="0" />
+      <xs:element name="tfmsFlightTraversalExtension" type="mfe:tfmsFlightTraversalExtension" minOccurs="0"/>
+      <xs:element name="idacExtension" type="mfe:idacExtension" minOccurs="0"/>
+      <xs:element name="surfaceModelExtension" type="mfe:surfaceModelExtension" minOccurs="0" />
+      <xs:element name="aefsExtension" type="mfe:aefsExtension" minOccurs="0" />
+      <xs:element name="sfdpsExtension" type="mfe:sfdpsExtension" minOccurs="0" />
+      <xs:element name="smesExtension" type="mfe:smesExtension" minOccurs="0" />
+      <xs:element name="tmiExtension" type="mfe:tmiExtension" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v3.1.2-20180301-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="international"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="international" type="boolean" />
+        </addColumn>                 
+	</changeSet>
+	
+	<changeSet id="fuserDataCapture-v3.1.2-20180301-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="international"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="international" type="boolean" />
+        </addColumn>   
+	</changeSet>
+	
+	<changeSet id="fuserDataCapture-v3.1.2-20180301-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="international"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="international" type="boolean" />
+        </addColumn> 
+	</changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180406-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="departure_aerodrome_faa_lid"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_aerodrome_faa_lid"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="departure_aerodrome_faa_lid" type="varchar" />
+            <column name="arrival_aerodrome_faa_lid" type="varchar" />
+        </addColumn>                 
+	</changeSet>  
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180406-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="departure_aerodrome_faa_lid"/>
+                <columnExists tableName="matm_flight" columnName="arrival_aerodrome_faa_lid"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="departure_aerodrome_faa_lid" type="varchar" />
+            <column name="arrival_aerodrome_faa_lid" type="varchar" />
+        </addColumn>                 
+	</changeSet>    
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180406-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="departure_aerodrome_faa_lid"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_aerodrome_faa_lid"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="departure_aerodrome_faa_lid" type="varchar" />
+            <column name="arrival_aerodrome_faa_lid" type="varchar" />
+        </addColumn>                 
+	</changeSet>    
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180409-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="sensitive_data"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="sensitive_data" type="boolean" />
+        </addColumn>                 
+	</changeSet>  
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180409-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="sensitive_data"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="sensitive_data" type="boolean" />
+        </addColumn>                 
+	</changeSet>    
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180409-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="sensitive_data"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="sensitive_data" type="boolean" />
+        </addColumn>                 
+	</changeSet>                          
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180410-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension"/>
+            <not>
+                <columnExists tableName="tfm_extension" columnName="sensitivity"/>
+                <columnExists tableName="tfm_extension" columnName="sensitivity_reason"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension">
+            <column name="sensitivity" type="varchar" />
+            <column name="sensitivity_reason" type="varchar" />
+        </addColumn>                 
+	</changeSet>  
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180410-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_extension_all" columnName="sensitivity"/>
+                <columnExists tableName="tfm_extension_all" columnName="sensitivity_reason"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension_all">
+            <column name="sensitivity" type="varchar" />
+            <column name="sensitivity_reason" type="varchar" />
+        </addColumn>                 
+	</changeSet>   
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180410-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_tfdm_extension"/>
+            <not>
+                <columnExists tableName="tfm_tfdm_extension" columnName="sensitivity"/>
+                <columnExists tableName="tfm_tfdm_extension" columnName="sensitivity_reason"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_tfdm_extension">
+            <column name="sensitivity" type="varchar" />
+            <column name="sensitivity_reason" type="varchar" />
+        </addColumn>                 
+	</changeSet>  
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180410-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_tfdm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_tfdm_extension_all" columnName="sensitivity"/>
+                <columnExists tableName="tfm_tfdm_extension_all" columnName="sensitivity_reason"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_tfdm_extension_all">
+            <column name="sensitivity" type="varchar" />
+            <column name="sensitivity_reason" type="varchar" />
+        </addColumn>                 
+	</changeSet>          
+
+    <changeSet id="fuserDataCapture-v3.1.2-20180411-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="asdex_extension"/>
+            <not>
+                <columnExists tableName="asdex_extension" columnName="send_to"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="asdex_extension">
+            <column name="send_to" type="varchar" />
+        </addColumn>                 
+	</changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180411-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="asdex_extension_all"/>
+            <not>
+                <columnExists tableName="asdex_extension_all" columnName="send_to"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="asdex_extension_all">
+            <column name="send_to" type="varchar" />
+        </addColumn>                 
+	</changeSet> 
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180411-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension" columnName="security_level"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="security_level" type="varchar" />
+        </addColumn>                 
+	</changeSet>    
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180411-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>
+                <columnExists tableName="tbfm_extension_all" columnName="security_level"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="security_level" type="varchar" />
+        </addColumn>                 
+	</changeSet>           
+
+    <changeSet id="fuserDataCapture-v3.1.2-20180413-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension" columnName="sync_message"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="sync_message" type="boolean" />
+        </addColumn>                 
+	</changeSet>     
+            
+    <changeSet id="fuserDataCapture-v3.1.2-20180413-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>
+                <columnExists tableName="tbfm_extension_all" columnName="sync_message"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="sync_message" type="boolean" />
+        </addColumn>                 
+	</changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180505-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+            	<columnExists tableName="matm_flight" columnName="departure_stand_ready_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+        	<column name= "departure_stand_ready_time" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180505-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+            	<columnExists tableName="matm_flight_all" columnName="departure_stand_ready_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+        	<column name= "departure_stand_ready_time" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.2-20180505-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+            	<columnExists tableName="matm_flight_summary" columnName="departure_stand_ready_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+        	<column name= "departure_stand_ready_time" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+            
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v3.1.2" author="atd2" runAlways="true">
+        <tagDatabase tag="3.1.2" />
+    </changeSet>
+
+</databaseChangeLog>

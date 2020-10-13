@@ -1,0 +1,258 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.mosaicatm</groupId>
+        <artifactId>FuserClientParent</artifactId>
+        <version>5.0.25-NASA-OPENSOURCE-1.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <artifactId>FuserDataCapture</artifactId>
+    <name>Fuser Data Capture</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>fuser-data-capture-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        
+    </build>
+
+    <dependencies>
+        
+        <dependency>
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-context</artifactId>
+           <version>${spring.version}</version>
+        </dependency>
+        
+        <!-- Dependencies brought in to override the spring
+             dependencies brought in by Camel -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${camel.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.apache.camel</groupId>
+            		<artifactId>camel-xml-jaxb</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+            <version>${camel.version}</version>
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.apache.camel</groupId>
+            		<artifactId>camel-xml-jaxb</artifactId>
+            	</exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jms</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-activemq</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-xml-io</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-pool</artifactId>
+            <version>${activemq.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
+        </dependency>
+        
+        <dependency>
+           <groupId>com.mosaicatm</groupId>
+           <artifactId>BeanContainer</artifactId>
+           <version>${bean-container.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>        
+        </dependency>
+        
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMCamelLib</artifactId>
+            <version>${mosaicatm-camel-lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMLoggingLib</artifactId>
+            <version>${mosaicatm-logging-lib.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.mosaicatm.common</groupId>
+            <artifactId>RollingFile</artifactId>
+            <version>${rolling-file.version}</version>
+        </dependency>
+        
+        <dependency>
+           <groupId>com.mosaicatm</groupId>
+           <artifactId>MosaicATMLibTime</artifactId>
+           <version>${mosaicatm-lib-time.version}</version>
+        </dependency>
+    
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMLibConcurrent</artifactId>
+            <version>${mosaicatmlib-concurrent.version}</version>
+        </dependency>
+    
+        <dependency>
+           <groupId>com.mosaicatm</groupId>
+           <artifactId>MosaicATMLibFilter</artifactId>
+           <version>${mosaicatm-lib-filter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMLibJaxb</artifactId>
+            <version>${mosaicatm-lib-jaxb.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMLibMessaging</artifactId>
+            <version>${mosaicatmlib-messaging.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMSpringLib</artifactId>
+            <version>${mosaicatm-spring-lib.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>FuserClientApi</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>MosaicATMLibDatabase</artifactId>
+            <version>${mosaicatm-lib-database.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>FuserCommon</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.mosaicatm.lib</groupId>
+            <artifactId>mosaicatm-lib-playback</artifactId>
+            <version>${mosaicatm-lib-playback.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.mosaicatm.lib</groupId>
+            <artifactId>mosaicatm-lib-text</artifactId>
+            <version>${mosaicatm-lib-text.version}</version>
+        </dependency>
+        
+        <!-- ================ Logging ===================================== -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>        
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>${log4j-to-slf4j.version}</version>
+        </dependency>  
+
+        <!-- ================ Testing ===================================== -->
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>PerformanceMonitorCommon</artifactId>
+            <version>${performance-monitor.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

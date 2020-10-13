@@ -1,0 +1,52 @@
+{
+  "AttributePropertyList": [
+    {
+      "AirportName": "DAL",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "ADS",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "DTO",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "FTW",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "FWS",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "GKY",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "GPM",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "NFW",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "RBD",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "TKI",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "FWH",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    },
+    {
+      "AirportName": "AFW",
+      "Location": "config/fuser/attributes/small_airport_attributes.xml"
+    }
+  ]
+}

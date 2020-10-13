@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+<!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="asdex_extension"/>
+            <not>
+                <columnExists tableName="asdex_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="asdex_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="asdex_extension_all"/>
+            <not>
+                <columnExists tableName="asdex_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="asdex_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension"/>
+            <not>
+                <columnExists tableName="derived_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all"/>
+            <not>
+                <columnExists tableName="derived_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-5" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="idac_extension"/>
+            <not>
+                <columnExists tableName="idac_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="idac_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-6" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="idac_extension_all"/>
+            <not>
+                <columnExists tableName="idac_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="idac_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-7" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_airline_message_extension"/>
+            <not>
+                <columnExists tableName="matm_airline_message_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_airline_message_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-8" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_airline_message_extension_all"/>
+            <not>
+                <columnExists tableName="matm_airline_message_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_airline_message_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-9" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension"/>
+            <not>
+                <columnExists tableName="surface_model_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="surface_model_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-10" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="surface_model_extension_all"/>
+            <not>
+                <columnExists tableName="surface_model_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="surface_model_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-11" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-12" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension_all"/>
+            <not>
+                <columnExists tableName="tbfm_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-13" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension"/>
+            <not>
+                <columnExists tableName="tfm_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-14" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-15" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_tfdm_extension"/>
+            <not>
+                <columnExists tableName="tfm_tfdm_extension" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_tfdm_extension">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180118-16" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_tfdm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_tfdm_extension_all" columnName="gufi"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_tfdm_extension_all">
+            <column name="gufi" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180205-17" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension" />
+            <not>
+                <columnExists tableName="derived_extension" 
+                    columnName="departure_runway_undelayed_time_at_pushback" />
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension">
+            <column name="departure_runway_undelayed_time_at_pushback" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.1.1-20180205-18" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="derived_extension_all" />
+            <not>
+                <columnExists tableName="derived_extension_all" 
+                    columnName="departure_runway_undelayed_time_at_pushback" />
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="derived_extension_all">
+            <column name="departure_runway_undelayed_time_at_pushback" type="timestamp" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.1-20180209-1" author="atd2"
+	       runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+	        <tableExists tableName="matm_flight" />
+	        <not>
+	            <columnExists tableName="matm_flight" columnName="release_request_type" />
+	        </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="release_request_type" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.1-20180209-2" author="atd2"
+	       runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+	        <tableExists tableName="matm_flight_all" />
+	    <not>
+	        <columnExists tableName="matm_flight_all" columnName="release_request_type" />
+	    </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+	        <column name="release_request_type" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v3.1.1-20180209-3" author="atd2"
+	       runAlways="true">
+      <validCheckSum>ANY</validCheckSum>
+      <preConditions onFail="MARK_RAN">
+	      <tableExists tableName="matm_flight_summary" />
+	      <not>
+	          <columnExists tableName="matm_flight_summary" columnName="release_request_type" />
+	      </not>
+      </preConditions>
+
+      <addColumn tableName="matm_flight_summary">
+	      <column name="release_request_type" type="varchar" />
+      </addColumn>
+    </changeSet>
+    
+        <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v3.1.1" author="atd2" runAlways="true">
+        <tagDatabase tag="3.1.1" />
+    </changeSet>
+
+</databaseChangeLog>

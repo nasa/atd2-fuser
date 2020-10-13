@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v4.0.0-20180713-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="departure_stand_source"/>
+                <columnExists tableName="matm_flight" columnName="departure_spot_source"/>
+                <columnExists tableName="matm_flight" columnName="departure_runway_source"/>
+                <columnExists tableName="matm_flight" columnName="departure_fix_source"/>
+                <columnExists tableName="matm_flight" columnName="arrival_stand_source"/>
+                <columnExists tableName="matm_flight" columnName="arrival_spot_source"/>
+                <columnExists tableName="matm_flight" columnName="arrival_runway_source"/>
+                <columnExists tableName="matm_flight" columnName="arrival_fix_source"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="departure_stand_source" type="varchar" />
+            <column name="departure_spot_source" type="varchar" />
+            <column name="departure_runway_source" type="varchar" />
+            <column name="departure_fix_source" type="varchar" />
+            <column name="arrival_stand_source" type="varchar" />
+            <column name="arrival_spot_source" type="varchar" />
+            <column name="arrival_runway_source" type="varchar" />
+            <column name="arrival_fix_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180713-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="departure_stand_source"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_spot_source"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_runway_source"/>
+                <columnExists tableName="matm_flight_all" columnName="departure_fix_source"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_stand_source"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_spot_source"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_runway_source"/>
+                <columnExists tableName="matm_flight_all" columnName="arrival_fix_source"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="departure_stand_source" type="varchar" />
+            <column name="departure_spot_source" type="varchar" />
+            <column name="departure_runway_source" type="varchar" />
+            <column name="departure_fix_source" type="varchar" />
+            <column name="arrival_stand_source" type="varchar" />
+            <column name="arrival_spot_source" type="varchar" />
+            <column name="arrival_runway_source" type="varchar" />
+            <column name="arrival_fix_source" type="varchar" />
+        </addColumn>               
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180713-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="departure_stand_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_spot_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_runway_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="departure_fix_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_stand_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_spot_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_runway_source"/>
+                <columnExists tableName="matm_flight_summary" columnName="arrival_fix_source"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="departure_stand_source" type="varchar" />
+            <column name="departure_spot_source" type="varchar" />
+            <column name="departure_runway_source" type="varchar" />
+            <column name="departure_fix_source" type="varchar" />
+            <column name="arrival_stand_source" type="varchar" />
+            <column name="arrival_spot_source" type="varchar" />
+            <column name="arrival_runway_source" type="varchar" />
+            <column name="arrival_fix_source" type="varchar" />
+        </addColumn>               
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180808-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not><columnExists tableName="matm_flight" columnName="release_prescheduled"/></not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="release_prescheduled" type="boolean" />
+        </addColumn>               
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180808-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not><columnExists tableName="matm_flight_all" columnName="release_prescheduled"/></not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="release_prescheduled" type="boolean" />
+        </addColumn>               
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180808-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not><columnExists tableName="matm_flight_summary" columnName="release_prescheduled"/></not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="release_prescheduled" type="boolean" />
+        </addColumn>               
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="pre_departure_flight_plans"/>
+                <columnExists tableName="matm_flight" columnName="multiple_flight_plans_indicator"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="pre_departure_flight_plans" type="varchar" />
+            <column name="multiple_flight_plans_indicator" type="boolean" />
+        </addColumn>               
+    </changeSet>      
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="pre_departure_flight_plans"/>
+                <columnExists tableName="matm_flight_all" columnName="multiple_flight_plans_indicator"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="pre_departure_flight_plans" type="varchar" />
+            <column name="multiple_flight_plans_indicator" type="boolean" />
+        </addColumn>               
+    </changeSet>      
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="pre_departure_flight_plans"/>
+                <columnExists tableName="matm_flight_summary" columnName="multiple_flight_plans_indicator"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="pre_departure_flight_plans" type="varchar" />
+            <column name="multiple_flight_plans_indicator" type="boolean" />
+        </addColumn>               
+    </changeSet>   
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-4" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="aefs_extension"/>
+            <not>
+                <columnExists tableName="aefs_extension" columnName="source_facility"/>
+                <columnExists tableName="aefs_extension" columnName="computer_id"/>
+                <columnExists tableName="aefs_extension" columnName="remove_strip_flag"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="aefs_extension">
+            <column name="source_facility" type="varchar" />
+            <column name="computer_id" type="varchar" />
+            <column name="remove_strip_flag" type="boolean" />
+        </addColumn>               
+    </changeSet>   
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-5" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="aefs_extension_all"/>
+            <not>
+                <columnExists tableName="aefs_extension_all" columnName="source_facility"/>
+                <columnExists tableName="aefs_extension_all" columnName="computer_id"/>
+                <columnExists tableName="aefs_extension_all" columnName="remove_strip_flag"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="aefs_extension_all">
+            <column name="source_facility" type="varchar" />
+            <column name="computer_id" type="varchar" />
+            <column name="remove_strip_flag" type="boolean" />
+        </addColumn>               
+    </changeSet>              
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-6" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension"/>
+            <not>
+                <columnExists tableName="tfm_extension" columnName="source_facility"/>
+                <columnExists tableName="tfm_extension" columnName="computer_id"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension">
+            <column name="source_facility" type="varchar" />
+            <column name="computer_id" type="varchar" />
+        </addColumn>               
+    </changeSet>    
+    
+    <changeSet id="fuserDataCapture-v4.0.0-20180810-7" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tfm_extension_all"/>
+            <not>
+                <columnExists tableName="tfm_extension_all" columnName="source_facility"/>
+                <columnExists tableName="tfm_extension_all" columnName="computer_id"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tfm_extension_all">
+            <column name="source_facility" type="varchar" />
+            <column name="computer_id" type="varchar" />
+        </addColumn>               
+    </changeSet>         
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v4.0.0" author="atd2" runAlways="true">
+        <tagDatabase tag="4.0.0" />
+    </changeSet>
+
+</databaseChangeLog>

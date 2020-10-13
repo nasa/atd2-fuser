@@ -1,0 +1,37 @@
+#!/bin/csh -f
+#
+# Fuser Data Capture run script
+
+if ( ! $?OUTFILE_DIR ) then
+    setenv OUTFILE_DIR "logs"
+endif
+# quietly create a logs directory if it doesn't already exist
+
+mkdir -p $OUTFILE_DIR
+
+set outfile = $OUTFILE_DIR/fuser-data-capture.out
+set log4jname = $OUTFILE_DIR/fuser-data-capture.log
+
+set DTS=`date +%Y%m%d.%H%M%S`
+if ( -e $outfile ) then
+    mv $outfile $outfile-backup.$DTS
+    nice bzip2 $outfile-backup.$DTS &
+endif
+
+if ( $?FUSERDATACAPTURE_LOG4J ) then
+    set log4jxml = $FUSERDATACAPTURE_LOG4J
+else
+    set log4jxml = config/fuser-data-capture/log4j.xml
+endif
+set LOG4J = "-Dlogfile.name=$log4jname -Dlog4j.configuration=file:$log4jxml"
+
+if ( ! $?FUSER_DATA_CAPTURE_MEMORY_OPTS ) then
+    set FUSER_DATA_CAPTURE_MEMORY_OPTS = "-Xms256m -Xmx768m"
+endif
+
+if ( ! $?COMMANDER_ID ) then
+    set COMMANDER_ID = "fuser-data-capture"
+endif
+
+java -Dproc.name=Fuser-Data-Capture -Dcommander.id=$COMMANDER_ID -server $FUSER_DATA_CAPTURE_MEMORY_OPTS -Duser.timezone=UTC -classpath ".:config:./lib/*" $LOG4J com.mosaicatm.fuser.datacapture.FuserDataCaptureMain $* >>& $outfile &
+

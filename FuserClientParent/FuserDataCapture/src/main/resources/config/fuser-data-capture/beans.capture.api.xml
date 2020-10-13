@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="core.SyncPoint" class="com.mosaicatm.lib.util.concurrent.SyncPoint">	
+		<constructor-arg value="${fuser-capture.sync.active}" />
+	</bean>
+	
+	<bean id="core.Clock" class="com.mosaicatm.lib.time.SystemClock" />
+	
+	<bean id="core.Clock.ClockSyncPoint" class="com.mosaicatm.lib.util.concurrent.SyncPoint">
+   	 	<constructor-arg value="${fuser-capture.position.clocksync.enabled}" />
+    </bean>
+    
+    <bean id="core.AiportFilter" class="com.mosaicatm.fuser.datacapture.filter.AirportFilter" >
+    	<property name="active" value="${fuser-capture.position.filter.airport.active}" />
+    	<property name="airportsOfInterest" value="${fuser-capture.position.filter.airportsOfInterest}" />
+    </bean>
+    
+    <bean id="core.IdStore" class="com.mosaicatm.fuser.datacapture.store.IdStoreImpl" />
+    <bean id="core.AircraftIdStore" class="com.mosaicatm.fuser.datacapture.store.IdStoreImpl" />
+    
+    <bean id="core.MatmFlightIdLookup" class="com.mosaicatm.fuser.common.matm.util.flight.MatmFlightIdLookup" />
+    
+    <bean id="core.MatmAircraftIdLookup" class="com.mosaicatm.fuser.common.matm.util.aircraft.MatmAircraftIdLookup" />
+    
+</beans>

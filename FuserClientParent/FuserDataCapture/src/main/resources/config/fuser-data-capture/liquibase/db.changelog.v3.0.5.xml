@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- All changes related to the 3.0.5 version should be included in this
+         changeset.  Each new commit will require a new changeset be created. 
+         Changesets are read in order of definition, so any new changesets
+         should be placed at the bottom of the file but before the changeset
+         defining the database tag-->
+
+    <changeSet id="fuserDataCapture-v3.0.5-20170912-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension" columnName="canceled_swim_release_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension">
+            <column name="canceled_swim_release_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.5-20170912-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        
+        <preConditions onFail="MARK_RAN" >
+            <tableExists tableName="tbfm_extension"/>
+            <not>
+                <columnExists tableName="tbfm_extension_all" columnName="canceled_swim_release_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="tbfm_extension_all">
+            <column name="canceled_swim_release_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.5-20170913-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN" >
+            <tableExists tableName="matm_flight"/>
+            <not>
+                <columnExists tableName="matm_flight" columnName="previous_controller_clearance"/>
+                <columnExists tableName="matm_flight" columnName="controller_clearance"/>
+                <columnExists tableName="matm_flight" columnName="controller_clearance_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight">
+            <column name="previous_controller_clearance" type="varchar" />
+            <column name="controller_clearance" type="varchar" />
+            <column name="controller_clearance_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.5-20170913-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN" >
+            <tableExists tableName="matm_flight_all"/>
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="previous_controller_clearance"/>
+                <columnExists tableName="matm_flight_all" columnName="controller_clearance"/>
+                <columnExists tableName="matm_flight_all" columnName="controller_clearance_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all">
+            <column name="previous_controller_clearance" type="varchar" />
+            <column name="controller_clearance" type="varchar" />
+            <column name="controller_clearance_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v3.0.5-20170913" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN" >
+            <tableExists tableName="matm_flight_summary"/>
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="previous_controller_clearance"/>
+                <columnExists tableName="matm_flight_summary" columnName="controller_clearance"/>
+                <columnExists tableName="matm_flight_summary" columnName="controller_clearance_time"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_summary">
+            <column name="previous_controller_clearance" type="varchar" />
+            <column name="controller_clearance" type="varchar" />
+            <column name="controller_clearance_time" type="timestamp" />
+        </addColumn>
+    </changeSet>
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v3.0.5" author="atd2" runAlways="true">
+        <tagDatabase tag="3.0.5" />
+    </changeSet>
+
+</databaseChangeLog>

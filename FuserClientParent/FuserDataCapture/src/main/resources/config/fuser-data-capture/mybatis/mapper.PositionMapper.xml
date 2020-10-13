@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.PositionMapper">
+	
+	<update id="createTable">
+		CREATE TABLE IF NOT EXISTS ${tableName}
+		(
+		    acid varchar,
+		    arrival_aerodrome_iata_name varchar,
+		    departure_aerodrome_iata_name varchar,
+		    gufi varchar,
+		    last_update_source varchar,
+		    position_altitude double precision,
+		    position_latitude double precision,
+		    position_longitude double precision,
+		    position_timestamp timestamp with time zone,
+		    record_identifier varchar,
+		    record_timestamp timestamp with time zone,
+		    timestamp timestamp with time zone
+		)
+		WITH 
+		(
+		  OIDS=FALSE
+		)	
+	</update>
+	
+    <update id="createIndex">
+	    create index concurrently idx_${tableName} on ${tableName} (arrival_aerodrome_iata_name, departure_aerodrome_iata_name, position_timestamp);
+	    create index concurrently idx_arrival_${tableName} on ${tableName} (arrival_aerodrome_iata_name, position_timestamp);
+	    create index concurrently idx_departure_${tableName} on ${tableName} (departure_aerodrome_iata_name, position_timestamp);
+	</update>
+
+</mapper>

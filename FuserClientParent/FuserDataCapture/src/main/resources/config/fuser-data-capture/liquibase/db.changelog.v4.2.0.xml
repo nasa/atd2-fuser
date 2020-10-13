@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181015-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all_join"/>
+            <not>
+                <columnExists tableName="matm_flight_all_join" columnName="sequence_id"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all_join">
+            <column name="sequence_id" type="bigserial" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181016-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all_join"/>
+            <not>
+                <columnExists tableName="matm_flight_all_join" columnName="timestamp_fuser_processed"/>
+                <columnExists tableName="matm_flight_all_join" columnName="timestamp_fuser_received"/>
+                <columnExists tableName="matm_flight_all_join" columnName="timestamp_source"/>
+                <columnExists tableName="matm_flight_all_join" columnName="timestamp_source_processed"/>
+                <columnExists tableName="matm_flight_all_join" columnName="timestamp_source_received"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_flight_all_join">
+            <column name="timestamp_fuser_processed" type="timestamp" />
+            <column name="timestamp_fuser_received" type="timestamp" />
+            <column name="timestamp_source" type="timestamp" />
+            <column name="timestamp_source_processed" type="timestamp" />
+            <column name="timestamp_source_received" type="timestamp" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181025-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft"/>
+            <not>
+                <columnExists tableName="matm_aircraft" columnName="hidden"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft">
+            <column name="hidden" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181025-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_all"/>
+            <not>
+                <columnExists tableName="matm_aircraft_all" columnName="hidden"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft_all">
+            <column name="hidden" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181025-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_summary"/>
+            <not>
+                <columnExists tableName="matm_aircraft_summary" columnName="hidden"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft_summary">
+            <column name="hidden" type="boolean" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181029-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft"/>
+            <not>
+                <columnExists tableName="matm_aircraft" columnName="gate_status_source"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft">
+            <column name="gate_status_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181029-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_all"/>
+            <not>
+                <columnExists tableName="matm_aircraft_all" columnName="gate_status_source"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft_all">
+            <column name="gate_status_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="fuserDataCapture-v4.2.0-20181029-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_summary"/>
+            <not>
+                <columnExists tableName="matm_aircraft_summary" columnName="gate_status_source"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft_summary">
+            <column name="gate_status_source" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v4.2.0" author="atd2" runAlways="true">
+        <tagDatabase tag="4.2.0" />
+    </changeSet>
+
+</databaseChangeLog>

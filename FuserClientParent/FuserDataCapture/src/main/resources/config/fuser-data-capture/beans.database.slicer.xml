@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="db.slicer.MatmFlightSlicerWrapper" class="com.mosaicatm.lib.database.ibatis.mapper.TableMapperWrapper" >
+        <property name="tableName" value="matm_flight_slice" />
+        <property name="mapper" >
+            <bean class="org.mybatis.spring.mapper.MapperFactoryBean" >
+                <property name="mapperInterface"     value="com.mosaicatm.lib.database.slice.TimeSliceMapper" />
+                <property name="sqlSessionFactory"    ref="db.SqlSessionFactory" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="db.slicer.MatmFlightSlicerClient" class="com.mosaicatm.lib.database.slice.TimeSliceBulkLoaderClient" >
+        <property name="parentTable"    value="matm_flight_slice" />
+    </bean>
+
+    <bean id="db.slicer.mapperFactory" class="com.mosaicatm.lib.database.ibatis.mapper.TableMapperFactoryImpl">
+        <property name="tableMappers" >
+            <list>
+                <ref bean="db.slicer.MatmFlightSlicerWrapper" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="db.slicer.IbatisBulkDriver" class="com.mosaicatm.lib.database.ibatis.IBatisBulkDriver" destroy-method="close">
+        <constructor-arg ref="db.dataSource" />
+        <constructor-arg ref="db.DatabaseMapper" />
+        <constructor-arg ref="db.slicer.mapperFactory" />
+    </bean>
+
+    <bean id="db.slicer.BulkLoader" class="com.mosaicatm.lib.database.ibatis.IBatisBulkLoader" init-method="start">
+        <property name="active"                 value="${fuser-capture.database.slices.enabled}" />
+        <property name="bulkDriver"                ref="db.slicer.IbatisBulkDriver" />
+        <property name="batchName"                value="MatmSliceBatch" />
+        <property name="batchReportName"        value="MatmSliceBatch" />
+        <property name="timestampColumnName"    value="${fuser-capture.database.slices.timestampColumnName}"/>
+        <property name="timedBatchPeriod"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedBatchDelay"         value="${fuser-capture.database.batch.interval}" />
+        <property name="timedReportPeriod"         value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportDelay"         value="${fuser-capture.database.batch.report.interval}" />
+        <property name="timedReportEnabled"        value="${fuser-capture.database.batch.report.enabled}" />
+        <property name="daysToKeep"             value="${fuser-capture.database.daysToKeep}" />
+        <property name="createTable"             value="${fuser-capture.database.createTables}" />
+        <property name="cleanTable"             value="${fuser-capture.database.dropTables}" />
+        
+        <property name="clients">
+            <list>
+                <ref bean="db.slicer.MatmFlightSlicerClient" />
+            </list>
+        </property>
+    </bean>
+</beans>

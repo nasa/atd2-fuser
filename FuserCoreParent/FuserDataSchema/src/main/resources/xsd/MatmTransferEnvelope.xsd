@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema 
+	targetNamespace="http://www.mosaicatm.com/matmdata/envelope"
+   version="1.0"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:env="http://www.mosaicatm.com/matmdata/envelope"
+   xmlns:fx="http://www.mosaicatm.com/matmdata/flight"
+   xmlns:ax="http://www.mosaicatm.com/matmdata/aircraft"   
+   xmlns:sa="http://www.mosaicatm.com/matmdata/sector"  
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <import namespace="http://www.mosaicatm.com/matmdata/flight" schemaLocation="./MatmFlight.xsd" />
+  <import namespace="http://www.mosaicatm.com/matmdata/aircraft" schemaLocation="./MatmAircraft.xsd" />
+  <import namespace="http://www.mosaicatm.com/matmdata/sector" schemaLocation="./MatmSectorAssignment.xsd" />
+
+  <xs:element name="matmTransferEnvelope" type="env:matmTransferEnvelope"/>
+
+
+  <xs:complexType name="dataSourceProperties">
+    <xs:sequence>
+      <xs:element name="property" type="env:dataSourceProperty" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="dataSourceProperty">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="value" type="xs:string"/>
+  </xs:complexType>
+
+  
+  <xs:complexType name="matmTransferEnvelope">
+    <xs:sequence>
+      <xs:element name="header" type="env:matmTransferEnvelopeHeader" minOccurs="0"/>
+      <xs:element name="flights" type="fx:matmFlight" maxOccurs="unbounded"/>
+      <xs:element name="aircraft" type="ax:matmAircraft" maxOccurs="unbounded"/>
+      <xs:element name="sectorAssignments" type="sa:matmSectorAssignment" maxOccurs="5000"/>
+    </xs:sequence>
+    <xs:attribute name="source" type="xs:string"/>
+    <xs:attribute name="destination" type="xs:string"/>
+    <xs:attribute name="timestamp" type="xs:dateTime"/>
+  </xs:complexType>
+
+  <xs:complexType name="matmTransferEnvelopeHeader">
+    <xs:sequence>
+      <xs:element name="properties" type="env:dataSourceProperties" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/flight/extension"
+           version="1.0" xmlns="http://www.w3.org/2001/XMLSchema"
+           xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+           xmlns:tc="http://www.mosaicatm.com/matmdata/flight/extension/tfmcomm"  
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
+    <import namespace="http://www.mosaicatm.com/matmdata/flight/extension/tfmcomm"
+            schemaLocation="TfmCommon.xsd" />
+    
+    <xs:complexType name="tfmTfdmExtension">
+        <xs:sequence>
+            <xs:element name="messageType" type="mfe:tfmTfdmMessageTypeType" minOccurs="0"/>
+            <xs:element name="sensitivity" type="tc:tfmSensitivityType" minOccurs="0"/>
+            <xs:element name="sensitivityReason" type="tc:tfmSensitivityReasonType" minOccurs="0"/>
+            
+            <xs:element name="arrIntentToHoldInMove" type="xs:boolean" minOccurs="0" />
+            <xs:element name="arrIntentToHoldNonMove" type="xs:boolean" minOccurs="0" />
+            <xs:element name="arrStandAvailable" type="xs:boolean" minOccurs="0" />
+            <xs:element name="cancelled" type="xs:boolean" minOccurs="0" />
+            <xs:element name="cdmParticipant" type="xs:boolean" minOccurs="0" />
+            <xs:element name="depIntentToHoldInMove" type="xs:boolean" minOccurs="0" />
+            <xs:element name="depIntentToHoldNonMove" type="xs:boolean" minOccurs="0" />
+            <xs:element name="depReadiness" type="xs:boolean" minOccurs="0" />
+            <xs:element name="flightRef" type="xs:string" minOccurs="0" />            
+            <xs:element name="intentReturnToGate" type="xs:boolean" minOccurs="0" />
+            <xs:element name="intentToBeDeiced" type="xs:boolean" minOccurs="0" />
+            <xs:element name="source" type="xs:string" minOccurs="0" />
+            <xs:element name="sourceFacility" type="xs:string" minOccurs="0" />
+            <xs:element name="tmatMarkedForSub" type="xs:boolean" minOccurs="0" />
+            <xs:element name="tmatRelinquish" type="xs:boolean" minOccurs="0" />
+
+            <xs:element name="arrStandAssignment" type="xs:string" minOccurs="0" />
+            <xs:element name="depStandAssignment" type="xs:string" minOccurs="0" />                        
+            <xs:element name="intendedArrSpot" type="xs:string" minOccurs="0" />
+            <xs:element name="intendedDeiceLocation" type="xs:string" minOccurs="0" />
+            <xs:element name="intendedDepSpot" type="xs:string" minOccurs="0" />
+            <xs:element name="majorCarrier" type="xs:string" minOccurs="0" />            
+            
+            <xs:element name="accDepRwyList" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="unaccDepRwyList" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            
+            <xs:element name="actualInBlockTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="actualLandingTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="actualOffBlockTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="actualTakeOffTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="earliestOffBlockTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="initialOffBlockTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="projectedWheelsUpTime" type="xs:dateTime" minOccurs="0" />            
+            <xs:element name="targetMAEntryTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="targetOffBlockTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="targetTakeOffTime" type="xs:dateTime" minOccurs="0" />
+        </xs:sequence>                                                                                                      
+    </xs:complexType>
+        
+    <xs:simpleType name="tfmTfdmMessageTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FLTU" />            
+            <xs:enumeration value="FLTC" />
+        </xs:restriction>
+    </xs:simpleType>        
+
+</xs:schema>
+

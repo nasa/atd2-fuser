@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+                            
+    <!-- Detailed configuration can be found on Confluence under ATD-2 Database Version Control Capability -->
+
+    <changeSet id="fuserDataCapture-v4.3.0-20181108-1" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft"/>
+            <not>
+                <columnExists tableName="matm_aircraft" columnName="operating_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft">
+            <column name="operating_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.3.0-20181108-2" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_all"/>
+            <not>
+                <columnExists tableName="matm_aircraft_all" columnName="operating_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft_all">
+            <column name="operating_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.3.0-20181108-3" author="atd2" runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_aircraft_summary"/>
+            <not>
+                <columnExists tableName="matm_aircraft_summary" columnName="operating_airport_name"/>
+            </not>
+        </preConditions>
+        
+        <addColumn tableName="matm_aircraft_summary">
+            <column name="operating_airport_name" type="varchar" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.3.0-20190401-1" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight" />
+            <not>
+                <columnExists tableName="matm_flight" columnName="sensitive_data_cycle"/>
+                <columnExists tableName="matm_flight" columnName="sensitive_data_external"/>                
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight">
+            <column name="sensitive_data_cycle" type="varchar" />
+            <column name="sensitive_data_external" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.3.0-20190401-2" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_all" />
+            <not>
+                <columnExists tableName="matm_flight_all" columnName="sensitive_data_cycle"/>
+                <columnExists tableName="matm_flight_all" columnName="sensitive_data_external"/>   
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_all">
+            <column name="sensitive_data_cycle" type="varchar" />
+            <column name="sensitive_data_external" type="boolean" />
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="fuserDataCapture-v4.3.0-20190401-3" author="atd2"
+        runAlways="true">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="matm_flight_summary" />
+            <not>
+                <columnExists tableName="matm_flight_summary" columnName="sensitive_data_cycle"/>
+                <columnExists tableName="matm_flight_summary" columnName="sensitive_data_external"/>   
+            </not>
+        </preConditions>
+
+        <addColumn tableName="matm_flight_summary">
+            <column name="sensitive_data_cycle" type="varchar" />
+            <column name="sensitive_data_external" type="boolean" />
+        </addColumn>
+    </changeSet>        
+    
+    <!-- This needs to be the last changeset in the file -->
+    <changeSet id="fuserDataCapture-v4.3.0" author="atd2" runAlways="true">
+        <tagDatabase tag="4.3.0" />
+    </changeSet>
+
+</databaseChangeLog>

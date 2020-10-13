@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema targetNamespace="http://www.mosaicatm.com/matmdata/common"
+           version="1.0" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:mc="http://www.mosaicatm.com/matmdata/common"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:complexType name="matmObject">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Common data structure for all MATM objects
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="changes" type="xs:string" nillable="true" maxOccurs="unbounded"/>
+            <xs:element name="creationTime" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="lastUpdateSource" type="xs:string" minOccurs="0" />
+            <xs:element name="systemId" type="xs:string" minOccurs="0"/>
+            <xs:element name="timestampSource" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="timestampSourceProcessed" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="timestampSourceReceived" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="timestamp" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="timestampFuserProcessed" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="timestampFuserReceived" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="updateSources" type="mc:metaData" maxOccurs="unbounded"/>
+            <xs:element name="surfaceAirport" type="mc:aerodrome" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="aerodrome">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                The iataName is not always the IATA airport code. It is IATA if available, otherwise it is the FAA LID.
+                The icaoName is the ICAO airport code if it exists.
+                The faaLid is the FAA Location Identifier code if it exists.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="iataName" type="xs:string" minOccurs="0" />
+            <xs:element name="icaoName" type="xs:string" minOccurs="0" />
+            <xs:element name="faaLid" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="position">
+        <xs:sequence>
+            <xs:element name="altitude" type="xs:double" minOccurs="0" />
+            <xs:element name="heading" type="xs:double" minOccurs="0" />
+            <xs:element name="latitude" type="xs:double" minOccurs="0" />
+            <xs:element name="longitude" type="xs:double" minOccurs="0" />
+            <xs:element name="source" type="xs:string" minOccurs="0" />
+            <xs:element name="speed" type="xs:double" minOccurs="0" />
+            <xs:element name="timestamp" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="atcSector" type="xs:string" nillable="true" minOccurs="0" />
+            <xs:element name="staticSector" type="xs:string" nillable="true" minOccurs="0" />
+            <xs:element name="dynamicSector" type="xs:string" nillable="true" minOccurs="0" />
+            <xs:element name="fav" type="xs:string" nillable="true" minOccurs="0" />      
+            <xs:element name="favType" type="mc:favType" nillable="true" minOccurs="0" />      
+            <xs:element name="favModule" type="xs:string" nillable="true" minOccurs="0" />
+            <xs:element name="distanceTotal" type="xs:double" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="smoothedPosition">
+        <xs:complexContent>
+            <xs:extension base="mc:position">
+                <xs:sequence>
+                    <xs:element name="positionsReplaced" type="xs:int" minOccurs="0"/>
+                    <xs:element name="durationReplaced" type="xs:duration" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="meteredTime">
+        <xs:simpleContent>
+            <xs:extension base="xs:dateTime">
+                <xs:attribute name="frozen" type="xs:boolean" /> 
+            </xs:extension>     
+        </xs:simpleContent>   
+    </xs:complexType>
+
+    <xs:simpleType name="wakeTurbulenceCategory">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SUPER" />
+            <xs:enumeration value="D" />
+            <xs:enumeration value="C" />
+            <xs:enumeration value="E" />
+            <xs:enumeration value="HEAVY" />
+            <xs:enumeration value="F" />
+            <xs:enumeration value="LARGE" />
+            <xs:enumeration value="SMALL" />
+            <xs:enumeration value="A" />
+            <xs:enumeration value="WC_757" />
+            <xs:enumeration value="B" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="engineClass">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="JET" />
+            <xs:enumeration value="PISTON" />
+            <xs:enumeration value="TURBO" />
+            <xs:enumeration value="OTHER" />
+        </xs:restriction>
+    </xs:simpleType>    
+
+    <xs:simpleType name="flightRules">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="IFR" />
+            <xs:enumeration value="VFR" />
+            <xs:enumeration value="IFR_CHANGING_TO_VFR" />
+            <xs:enumeration value="VFR_CHANGING_TO_IFR" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="flightType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SCHEDULED_AIR_TRANSPORT" />
+            <xs:enumeration value="GENERAL_AVIATION" />
+            <xs:enumeration value="NON_SCHEDULED_AIR_TRANSPORT" />
+            <xs:enumeration value="MILITARY" />
+            <xs:enumeration value="OTHER" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="matmProcessingTrigger">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OFF_PROPERTY" />
+            <xs:enumeration value="OUTSIDE_FIX" />
+            <xs:enumeration value="INSIDE_FIX" />
+            <xs:enumeration value="ON_PROPERTY" />
+            <xs:enumeration value="COMPLETE" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="fuserSource">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ASDEX" />
+            <xs:enumeration value="AIRLINE" />
+            <xs:enumeration value="FIXM" />
+            <xs:enumeration value="FLIGHTHUB_POSITION" />
+            <xs:enumeration value="FMC" />
+            <xs:enumeration value="FUSER" />
+            <xs:enumeration value="IDAC" />
+            <xs:enumeration value="OTA" />
+            <xs:enumeration value="STARS" />
+            <xs:enumeration value="SFDPS" />
+            <xs:enumeration value="TFM" />
+            <xs:enumeration value="TFM_TFDM" />
+            <xs:enumeration value="TMA" />
+            <xs:enumeration value="SYNC" />
+            <xs:enumeration value="AMS" />
+  			<xs:enumeration value="FOXS" />
+            <xs:enumeration value="AEFS" />
+            <xs:enumeration value="ADSB" />
+            <xs:enumeration value="CAT11" />
+            <xs:enumeration value="CAT33" />
+            <xs:enumeration value="CAT62" />
+            <xs:enumeration value="FLIGHT_AWARE_GROUND_ADSB" />
+            <xs:enumeration value="FLIGHT_AWARE_AIRBORNE_ADSB" />
+            <xs:enumeration value="TTP" />
+            <xs:enumeration value="SMES" />
+            <xs:enumeration value="TMI" />
+            <xs:enumeration value="UNKNOWN" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- These mostly map to the ModelFlightState in STBO -->
+    <xs:simpleType name="surfaceFlightState">
+        <xs:restriction base="xs:string">
+            <!-- Scheduled is used for departure and arrival Status -->
+            <xs:enumeration value="UNKNOWN" />
+            <xs:enumeration value="SCHEDULED" />
+            <xs:enumeration value="FILED" /> <!-- Not in STBO --> 
+            <!-- Departure Status -->
+            <xs:enumeration value="PUSHBACK" />
+            <xs:enumeration value="RAMP_TAXI_OUT" />
+            <xs:enumeration value="TAXI_OUT" />
+            <xs:enumeration value="RETURN_TO_GATE" />
+            <xs:enumeration value="IN_QUEUE" />
+            <xs:enumeration value="OFF" />
+            <!-- Arrival Status -->
+            <xs:enumeration value="ENROUTE" />
+            <xs:enumeration value="TERMINAL_AIRSPACE" />
+            <xs:enumeration value="ON_FINAL" />
+            <xs:enumeration value="AIRBORNE_DROPPED_TRACK" /> <!-- Not in STBO --> 
+            <xs:enumeration value="TAXI_IN" />
+            <xs:enumeration value="RAMP_TAXI_IN" />
+            <xs:enumeration value="IN_GATE" />
+            <!-- Either Status -->
+            <xs:enumeration value="SUSPENDED" />
+            <xs:enumeration value="CANCELLED" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="releaseState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NULL" />
+            <xs:enumeration value="UNSCHEDULED" />
+            <xs:enumeration value="PENDING_SCHEDULE" />
+            <xs:enumeration value="SCHEDULED" />
+            <xs:enumeration value="PENDING_ACCEPT" />
+            <xs:enumeration value="ACCEPTED" />
+            <xs:enumeration value="PENDING_REJECT" />
+            <xs:enumeration value="REJECTED" />
+            <xs:enumeration value="RELEASED" />
+            <xs:enumeration value="PENDING_CANCEL" />
+            <xs:enumeration value="PENDING_SWAP" />
+            <xs:enumeration value="PENDING_SWAP_CANCEL" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="releaseMode">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="UNDETERMINED" />
+        <xs:enumeration value="MANUAL" />
+        <xs:enumeration value="SEMI" />
+        <xs:enumeration value="AUTO" />
+        <xs:enumeration value="OFF" />
+      </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="releaseRequestType">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="NULL" /> <!-- Default -->
+        <xs:enumeration value="MANUAL" /> <!-- Set Release Time -->
+        <xs:enumeration value="RRT" /> <!-- Request Release Time -->
+        <xs:enumeration value="SSOT" /> <!-- Set Slot on Timeline -->
+        <xs:enumeration value="SWIM" /> <!-- Initiate by SWIM feed -->
+        <xs:enumeration value="RELEASE" /> <!-- Free Release Request -->
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="aircraftStatus">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="PROPOSED"/>
+        <xs:enumeration value="ACTIVE"/>
+        <xs:enumeration value="TRACKED"/>
+        <xs:enumeration value="LOST"/>
+        <xs:enumeration value="DROPPED"/>
+        <xs:enumeration value="INACTIVE"/>
+        <xs:enumeration value="LANDED"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="priorityStatusType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UNSET" />            
+            <xs:enumeration value="HIGH" />
+            <xs:enumeration value="EMERGENCY_MEDICAL" />
+            <xs:enumeration value="EMERGENCY_OTHER" />
+        </xs:restriction>
+    </xs:simpleType>   
+    
+    <xs:simpleType name="cancelledType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CANCELLED" />
+            <xs:enumeration value="NOT_CANCELLED" />
+            <xs:enumeration value="UNCANCELLED" />
+        </xs:restriction>
+    </xs:simpleType>       
+
+    <xs:complexType name="metaData">
+        <xs:sequence>
+            <element name="source" type="xs:string" minOccurs="0" />
+            <element name="timestamp" type="xs:dateTime" minOccurs="0" />
+            <element name="systemType" type="xs:string" minOccurs="0" />
+            <element name="fieldName" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="gateConflict">
+        <xs:sequence>
+            <element name="gateConflictFlights" type="mc:gateConflictFlight" nillable="true" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="gateConflictFlight">
+        <xs:sequence>
+            <element name="flightKey" type="xs:string" minOccurs="0" />
+            <element name="gateConflictType" type="mc:gateConflictType" minOccurs="0" />
+            <element name="conflictWindow" type="mc:timeWindow" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="gateConflictType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AIRCRAFT" />
+            <xs:enumeration value="ARRIVAL" />
+            <xs:enumeration value="DEPARTURE" />
+            <xs:enumeration value="NEIGHBORING_ARRIVAL" />
+            <xs:enumeration value="NEIGHBORING_DEPARTURE" />
+            <xs:enumeration value="NEIGHBORING_AIRCRAFT" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:complexType name="controllerClearanceData">
+        <xs:sequence>
+            <xs:element name="controllerClearance" type="xs:string" minOccurs="0" />
+            <xs:element name="previousControllerClearance" type="xs:string" minOccurs="0" />
+            <xs:element name="controllerClearanceTime" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="pushbackClearanceUndone" type="xs:boolean" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="flightRestrictions">
+        <xs:sequence>
+            <element name="apreqRestrictionIds" type="mc:flightRestrictionEntry" nillable="true" maxOccurs="unbounded" />
+            <element name="mitRestrictionIds" type="mc:mitRestrictionEntry" nillable="true" maxOccurs="unbounded" />
+            <element name="groundStopRestrictionIds" type="mc:flightRestrictionEntry" nillable="true" maxOccurs="unbounded" />
+            <element name="runwayRateRestrictionIds" type="mc:flightRestrictionEntry" nillable="true" maxOccurs="unbounded" />
+            <element name="fixClosureIds" type="mc:fixClosureEntry" nillable="true" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="flightRestrictionEntry">
+        <xs:sequence>
+            <element name="restrictionId" type="xs:string" minOccurs="0" />
+            <element name="referenceTime" type="xs:dateTime" minOccurs="0" />
+            <element name="updateId" type="xs:string" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="mitRestrictionEntry">
+        <xs:complexContent>
+            <xs:extension base="mc:flightRestrictionEntry">
+                <xs:sequence>
+                    <element name="mitValue" type="xs:int" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="fixClosureEntry">
+        <xs:complexContent>
+            <xs:extension base="mc:flightRestrictionEntry">
+                <xs:sequence>
+                    <element name="alternative" type="xs:string" minOccurs="0" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="timeWindow">
+        <xs:sequence>
+            <element name="startTime" type="xs:dateTime" minOccurs="0" />
+            <element name="endTime" type="xs:dateTime" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+   
+    <xs:complexType name="flightDelays">
+        <xs:sequence>
+            <xs:element name="chargeTo" type="xs:string" minOccurs="0" />
+            <xs:element name="impactingConditionPrimary" type="mc:delayImpactingConditionType" minOccurs="0" />
+            <xs:element name="impactingConditionSecondary" type="xs:string" minOccurs="0" />
+            <xs:element name="remarks" type="xs:string" minOccurs="0" />
+            <xs:element name="tmiType" type="mc:delayTmiType" minOccurs="0" />
+            <xs:element name="reportRequired" type="xs:boolean" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="scratchPad">
+		<xs:sequence>
+            <xs:element name="entries" type="mc:scratchPadEntry" maxOccurs="unbounded"/>
+	   </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="scratchPadEntry">
+        <xs:sequence>
+            <xs:element name="userType" type="mc:scratchPadUserType" minOccurs="0"/>
+            <xs:element name="timestamp" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="userName" type="xs:string" minOccurs="0"/>
+            <xs:element name="message" type="xs:string" minOccurs="0"/>
+	    </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="scratchPadUserType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ATC_ARTCC" />            
+            <xs:enumeration value="ATC_TRACON" />
+            <xs:enumeration value="ATC_TOWER" />
+            <xs:enumeration value="FOC" />
+            <xs:enumeration value="RAMP" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="delayTmiType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="DSP" />            
+            <xs:enumeration value="ESP" />
+            <xs:enumeration value="ASP" />
+            <xs:enumeration value="MIT" />
+            <xs:enumeration value="MINIT" />
+            <xs:enumeration value="SWAP" />
+            <xs:enumeration value="DEPARTURE_STOP" />
+            <xs:enumeration value="METERING" /> 
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="delayImpactingConditionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="EQUIPMENT" />            
+            <xs:enumeration value="RUNWAY_TAXIWAY" />
+            <xs:enumeration value="VOLUME" />
+            <xs:enumeration value="WEATHER" />
+            <xs:enumeration value="OTHER" /> 
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="facilityIdType">
+        <xs:sequence> 
+            <xs:element name="timestamp" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="systemId" type="xs:string" minOccurs="0"/>
+            <xs:element name="sourceFacility" type="xs:string" minOccurs="0"/>              
+            <xs:element name="computerId" type="xs:string" minOccurs="0"/>     
+            <xs:element name="eramGufi" type="xs:string" minOccurs="0"/>      
+            <xs:element name="beaconCode" type="xs:string" minOccurs="0"/>                        
+        </xs:sequence>
+    </xs:complexType>    
+            
+    <xs:complexType name="facilityIdListType">
+        <xs:sequence>
+            <element name="facilityIds" type="mc:facilityIdType" minOccurs="1" maxOccurs="100" />
+        </xs:sequence>    
+    </xs:complexType>
+    
+    <xs:complexType name="flightPlanListType">
+        <xs:sequence>
+            <element name="flightPlans" type="mc:flightPlanType" minOccurs="1" maxOccurs="50" />
+        </xs:sequence>    
+    </xs:complexType>    
+    
+    <xs:complexType name="flightPlanType">
+        <xs:sequence>       
+            <xs:element name="timestampSource" type="xs:dateTime" minOccurs="0" />
+            <xs:element name="lastUpdateSource" type="xs:string" minOccurs="0"/>
+            <xs:element name="systemId" type="xs:string" minOccurs="0"/>
+            <xs:element name="sourceFacility" type="xs:string" minOccurs="0"/>  
+            <xs:element name="computerId" type="xs:string" minOccurs="0"/>     
+            <xs:element name="eramGufi" type="xs:string" minOccurs="0"/>                 
+            <xs:element name="flightPlanCanceled" type="xs:boolean" minOccurs="0"/>              
+            <xs:element name="aircraftRegistration" type="xs:string" minOccurs="0"/>            
+            <xs:element name="beaconCode" type="xs:string" minOccurs="0"/>              
+            <xs:element name="flightRules" type="mc:flightRules" minOccurs="0"/>
+            <xs:element name="flightType" type="mc:flightType" minOccurs="0"/>
+            <xs:element name="aircraftType" type="xs:string" minOccurs="0"/>
+            <xs:element name="aircraftEngineClass" type="mc:engineClass" minOccurs="0"/>
+            <xs:element name="aircraftEquipmentQualifier" type="xs:string" minOccurs="0"/>
+            <xs:element name="wakeTurbulenceCategory" type="mc:wakeTurbulenceCategory" minOccurs="0"/>
+            <xs:element name="departureStandProposedTime" type="xs:dateTime" minOccurs="0"/>               
+            <xs:element name="departureAerodrome" type="mc:aerodrome" minOccurs="0"/>
+            <xs:element name="arrivalAerodrome" type="mc:aerodrome" minOccurs="0"/>
+            <xs:element name="routeText" type="xs:string" minOccurs="0"/>     
+            <xs:element name="standardInstrumentDeparture" type="xs:string" minOccurs="0"/>
+            <xs:element name="standardInstrumentArrival" type="xs:string" minOccurs="0"/>  
+            <xs:element name="departureFixSourceData" type="xs:string" minOccurs="0"/> 
+            <xs:element name="arrivalFixSourceData" type="xs:string" minOccurs="0"/>   
+            <xs:element name="altitudeAssigned" type="xs:double" minOccurs="0"/> 
+            <xs:element name="altitudeRequested" type="xs:double" minOccurs="0"/>    
+            <xs:element name="altitudeFiled" type="xs:double" minOccurs="0"/>    
+            <xs:element name="speedFiled" type="xs:double" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>    
+    
+    <xs:simpleType name="transitTimeSource">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TBFM" />
+            <xs:enumeration value="LOOK_UP" />
+            <xs:enumeration value="DEFAULT" />
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="favType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ENROUTE" />
+            <xs:enumeration value="APPROACH" />
+            <xs:enumeration value="OCEANIC" />
+        </xs:restriction>
+    </xs:simpleType>    
+</xs:schema>
+

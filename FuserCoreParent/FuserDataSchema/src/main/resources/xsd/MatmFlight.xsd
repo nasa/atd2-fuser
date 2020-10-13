@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema
+    targetNamespace="http://www.mosaicatm.com/matmdata/flight"
+   version="1.0"
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:fx="http://www.mosaicatm.com/matmdata/flight"
+   xmlns:mc="http://www.mosaicatm.com/matmdata/common"
+   xmlns:mfe="http://www.mosaicatm.com/matmdata/flight/extension"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <import namespace="http://www.mosaicatm.com/matmdata/common" schemaLocation="./MatmCommon.xsd" />
+  <import namespace="http://www.mosaicatm.com/matmdata/flight/extension" schemaLocation="./Extension/MatmExtensions.xsd" />
+
+  <xs:element name="matmFlight" type="fx:matmFlight"/>
+
+  <xs:complexType name="matmFlight">
+    <xs:complexContent>
+        <xs:extension base="mc:matmObject">
+            <xs:sequence>
+              <xs:element name="sensitiveData" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="sensitiveDataCycle" type="xs:string" minOccurs="0"/>
+              <xs:element name="sensitiveDataExternal" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="blockAtIndustry" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="trajectory" type="mc:position" maxOccurs="unbounded"/>      
+              <xs:element name="wakeTurbulenceCategory" type="mc:wakeTurbulenceCategory" minOccurs="0"/>
+              <xs:element name="priorityStatus" type="mc:priorityStatusType" minOccurs="0"/>
+              <xs:element name="manuallyFrozen" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="flightRules" type="mc:flightRules" minOccurs="0"/>
+              <xs:element name="flightType" type="mc:flightType" minOccurs="0"/>
+              <xs:element name="extensions" type="mfe:matmFlightExtensions" minOccurs="0"/>
+              <xs:element name="fixList" type="xs:string" nillable="true" maxOccurs="unbounded"/>
+              <xs:element name="gufi" type="xs:string" minOccurs="0"/>
+              <xs:element name="lastUpdateGufi" type="xs:string" minOccurs="0" />
+              <xs:element name="eramGufi" type="xs:string" minOccurs="0"/>
+              <xs:element name="computerId" type="xs:string" minOccurs="0"/>
+              <xs:element name="sourceFacility" type="xs:string" minOccurs="0"/>
+              <xs:element name="position" type="mc:position" minOccurs="0"/>
+              <xs:element name="routeText" type="xs:string" minOccurs="0"/>
+              <xs:element name="routeTextModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="routeTextAssigned" type="xs:string" nillable="true" minOccurs="0"/>
+              <xs:element name="routeTextFiled" type="xs:string" minOccurs="0"/>              
+              <xs:element name="routeTextLocalIntended" type="xs:string" minOccurs="0"/>
+              <xs:element name="sectorList" type="xs:string" nillable="true" maxOccurs="unbounded"/>
+              <xs:element name="centerList" type="xs:string" nillable="true" maxOccurs="unbounded"/>
+              <xs:element name="beaconCode" type="xs:string" minOccurs="0"/>
+              <xs:element name="carrier" type="xs:string" minOccurs="0"/>
+              <xs:element name="international" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="filedFlight" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="scheduledFlight" type="xs:boolean" minOccurs="0"/>
+              <xs:element name="standardInstrumentDeparture" type="xs:string" minOccurs="0"/>
+              <xs:element name="standardInstrumentArrival" type="xs:string" minOccurs="0"/>        
+              <xs:element name="acid" type="xs:string" minOccurs="0"/>
+              <xs:element name="aircraftAddress" type="xs:string" minOccurs="0"/>
+              <xs:element name="aircraftRegistration" type="xs:string" minOccurs="0"/>
+              <xs:element name="aircraftType" type="xs:string" minOccurs="0"/>
+              <xs:element name="aircraftEngineClass" type="mc:engineClass" minOccurs="0"/>
+              <xs:element name="aircraftEquipmentQualifier" type="xs:string" minOccurs="0"/>
+              <xs:element name="altitudeAssigned" type="xs:double" minOccurs="0"/> 
+              <xs:element name="altitudeRequested" type="xs:double" minOccurs="0"/>    
+              <xs:element name="altitudeFiled" type="xs:double" minOccurs="0"/>    
+              <xs:element name="speedFiled" type="xs:double" minOccurs="0"/>       
+              <xs:element name="arrivalAerodrome" type="mc:aerodrome" minOccurs="0"/>
+              <xs:element name="arrivalFixActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixSourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixPositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixSource" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandAirline" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandPositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandSource" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalStandSourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayAirline" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayScratchpad" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayPositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayAssigned" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwayDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwaySource" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalRunwaySourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotAirline" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotPositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotSource" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalSpotSourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalFixActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalFixEstimatedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalFixScheduledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalFixTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalFixUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalMovementAreaActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalMovementAreaTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalMovementAreaUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayControlledTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="arrivalRunwayEstimatedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayMeteredTime" type="mc:meteredTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayProposedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayScheduledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayTerminalControlledTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="arrivalRunwayUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandAirlineTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandEstimatedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandInitialTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandProposedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandScheduledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandUndelayedTime" type="xs:dateTime" minOccurs="0"/>   
+              <xs:element name="arrivalLandingClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalTaxiClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalRunwayCrossingClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="arrivalStandControlledTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="cancelled" type="mc:cancelledType" minOccurs="0"/>
+              <xs:element name="cancelledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureAerodrome" type="mc:aerodrome" minOccurs="0"/>
+              <xs:element name="departureFixActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureProcedureActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureFixSourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureProcedureSourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureFixUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureProcedureUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureFixModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureProcedureModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureFixPositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureProcedurePositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureFixDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureProcedureDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureFixSource" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandAirline" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandPositionDerived" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandSource" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureStandSourceData" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwayActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwayAirline" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwayAssigned" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwayModel" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureRunwayPositionDerived" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureRunwayUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwayDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwaySource" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureRunwaySourceData" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureSpotActual" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureSpotAirline" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureSpotUser" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureSpotModel" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureSpotPositionDerived" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureSpotDecisionTree" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureSpotSource" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureSpotSourceData" type="xs:string" minOccurs="0" nillable="true"/>
+              <xs:element name="departureFixActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureFixEstimatedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureFixScheduledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureFixTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureFixTerminalControlledTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureFixUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureMovementAreaActualTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureMovementAreaSurfaceMeteredTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+              <xs:element name="departureMovementAreaSurfaceMeteredTimeFrozen" type="xs:boolean" minOccurs="0" />
+              <xs:element name="departureMovementAreaTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureMovementAreaUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureRunwayActualTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureRunwayControlledTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="departureRunwayEstimatedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureRunwayMeteredTime" type="mc:meteredTime" nillable="true" minOccurs="0"/>
+              <xs:element name="departureRunwayProposedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureRunwayScheduledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureRunwayTargetedTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureRunwayTerminalControlledTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureRunwayUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandActualTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureStandAirlineTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandEarliestTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandEstimatedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandInitialTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandIntendedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandProposedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandReadyTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureStandScheduledTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandSurfaceMeteredTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+              <xs:element name="departureStandSurfaceMeteredTimeFrozen" type="xs:boolean" minOccurs="0" />
+              <xs:element name="departureStandTargetedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandUndelayedTime" type="xs:dateTime" minOccurs="0"/>    
+              <xs:element name="departureStartupApprovalTargetTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStartupRequestActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStartupApprovalActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandReadyActualTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureStandTargetTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departurePushbackClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureTaxiClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureRunwayCrossingClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureQueueDuration" type="xs:duration" minOccurs="0"/>
+              <xs:element name="departureQueueEntryActualTime" type="xs:dateTime" minOccurs="0" nillable="true"/>
+              <xs:element name="departureQueueEntryUndelayedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="departureQueueEntryTargetedTime" type="xs:dateTime" minOccurs="0"/>      
+              <xs:element name="departureTaxiUndelayedDuration" type="xs:duration" minOccurs="0"/>
+              <xs:element name="departureTaxiEstimatedDuration" type="xs:duration" minOccurs="0"/>
+              <xs:element name="departureTaxiActualDuration" type="xs:duration" minOccurs="0"/>
+              <xs:element name="departureTakeoffClearanceIssuedTime" type="xs:dateTime" minOccurs="0"/>
+              <xs:element name="estimatedDepartureClearanceTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="facilityIdList" type="mc:facilityIdListType" minOccurs="0"/>
+              <xs:element name="preDepartureFlightPlanList" type="mc:flightPlanListType" minOccurs="0"/>
+              <xs:element name="multipleFlightPlansIndicator" type="xs:boolean" minOccurs="0"/> 
+              <xs:element name="arrivalGateConflict" type="mc:gateConflict" nillable="true" minOccurs="0"/>    
+              <xs:element name="departureGateConflict" type="mc:gateConflict" nillable="true" minOccurs="0"/>            
+              <xs:element name="fuserFlightState" type="mc:surfaceFlightState" minOccurs="0"/>
+              <xs:element name="arrivalSurfaceFlightState" type="mc:surfaceFlightState" minOccurs="0"/>
+              <xs:element name="departureSurfaceFlightState" type="mc:surfaceFlightState" minOccurs="0"/>
+              <xs:element name="internalDeparture" type="xs:boolean" minOccurs="0" />
+              <xs:element name="releaseAcknowledgeRequired" type="xs:boolean" minOccurs="0" />
+              <xs:element name="releaseForced" type="xs:boolean" minOccurs="0" />
+              <xs:element name="releaseRequestAllowed" type="xs:boolean" minOccurs="0" />
+              <xs:element name="releaseMode" type="mc:releaseMode" minOccurs="0" />
+              <xs:element name="releaseState" type="mc:releaseState" minOccurs="0" />
+              <xs:element name="releaseRequestType" type="mc:releaseRequestType" nillable="true" minOccurs="0" />
+              <xs:element name="releaseRequestedRollTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="releaseScheduledRollEarliestTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="releaseScheduledRollLatestTime" type="xs:dateTime" nillable="true" minOccurs="0"/>
+              <xs:element name="releaseScheduledRollTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+              <xs:element name="releaseScheduledWheelsOffTime" type="xs:dateTime" nillable="true" minOccurs="0" />
+              <xs:element name="releaseSwapGufi" type="xs:string" minOccurs="0" />
+              <xs:element name="releaseUpdateSource" type="xs:string" minOccurs="0" />
+              <xs:element name="releasePrescheduled" type="xs:boolean" minOccurs="0" />
+              <xs:element name="arrivalRunwayOperationalNecessity" type="xs:boolean" minOccurs="0" />
+              <xs:element name="departureRunwayOperationalNecessity" type="xs:boolean" minOccurs="0" />
+              <xs:element name="superStreamClassName" type="xs:string" minOccurs="0" />
+              <xs:element name="superStreamArtcc" type="xs:string" minOccurs="0" />
+              <xs:element name="superStreamPoint" type="xs:string" minOccurs="0" />
+              <xs:element name="superStreamTracon" type="xs:string" minOccurs="0" />
+              <xs:element name="longOnBoardDuration" type="xs:duration" minOccurs="0" nillable="true"/>
+              <xs:element name="controllerClearanceData" type="mc:controllerClearanceData" minOccurs="0" />
+              <xs:element name="flightRestrictions" type="mc:flightRestrictions" nillable="true" minOccurs="0" />
+              <xs:element name="flightDelays" type="mc:flightDelays" minOccurs="0" />
+              <xs:element name="majorCarrier" type="xs:string" minOccurs="0" />
+              <xs:element name="scratchPad" type="mc:scratchPad" minOccurs="0" />
+              <xs:element name="transitTimeSource" type="mc:transitTimeSource" minOccurs="0" />
+              <xs:element name="cpdlcDclAvailable" type="xs:boolean" minOccurs="0" />
+              <xs:element name="arrivalConfigurationName" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureConfigurationName" type="xs:string" minOccurs="0"/>
+              <xs:element name="arrivalScenarioName" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureScenarioName" type="xs:string" minOccurs="0"/>
+              <xs:element name="departureRunwayModelConfidence" type="xs:double" minOccurs="0"/>
+              <xs:element name="departureTaxiEstimatedDurationConfidence" type="xs:double" minOccurs="0"/>
+              <xs:element name="targetType" type="xs:string" minOccurs="0"/>
+              <xs:element name="predepartureArrivalAerodrome" type="mc:aerodrome" minOccurs="0"/>
+              <xs:element name="activeDiversion" type="xs:boolean" minOccurs="0" />
+            </xs:sequence>
+	    </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+</xs:schema>
+

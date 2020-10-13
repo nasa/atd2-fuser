@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="aircraft.updaters.DataAdder" class="com.mosaicatm.fuser.client.api.impl.data.GenericDataAdder">
+        <constructor-arg index="0" ref="aircraft.core.AircraftClientStore" />
+        <property name="processedEventListener" ref="aircraft.events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="aircraft.events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="aircraft.updaters.DataUpdater" class="com.mosaicatm.fuser.client.api.impl.data.GenericDataUpdater">
+        <constructor-arg index="0" ref="aircraft.core.AircraftClientStore" />
+        <property name="processedEventListener" ref="aircraft.events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="aircraft.events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="aircraft.updaters.DataRemover" class="com.mosaicatm.fuser.client.api.impl.data.TimedProxyDataRemover" 
+        init-method="start" destroy-method="stop">
+        <constructor-arg index="0" ref="aircraft.updaters.MatmAircraftDataRemover" />
+        <property name="active" value="${fuser-client-api.remover.timed.active}" />
+       <property name="processedEventListener" ref="aircraft.events.ProcessedEventManager" />
+        <property name="receivedEventListener" ref="aircraft.events.ReceivedEventManager" />
+    </bean>
+    
+    <bean id="aircraft.updaters.MatmAircraftDataRemover" class="com.mosaicatm.fuser.client.api.impl.data.MatmAircraftDataRemover">
+        <constructor-arg index="0" ref="aircraft.core.AircraftClientStore" />
+        <constructor-arg index="1" ref="core.Clock" />
+    </bean>
+
+        
+</beans>

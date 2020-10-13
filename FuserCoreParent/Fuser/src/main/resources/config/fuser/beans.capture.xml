@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="capture.CaptureSettings" class="com.mosaicatm.lib.capture.CaptureSettings" >
+        <property name="active" value="${fuser.capture.active}" />
+        <property name="archiveActive" value="${fuser.capture.archive.active}" />
+        <property name="archiveExtension" value="${fuser.capture.archive.extension}" />
+        <property name="archivePath" value="${fuser.capture.archive.path}" />
+        <property name="captureAllHeaders" value="${fuser.capture.captureallheaders}" />
+        <property name="captureExcludeDefaultHeaders" value="${fuser.capture.excludedefaultheaders}" />
+        <property name="fileDateExtension" value="${fuser.capture.filedateextension}" />
+        <property name="fileName" value="${fuser.capture.filename}" />
+        <property name="fileNameExtension" value="${fuser.capture.filenameextension}" />
+        <property name="filePath" value="${fuser.capture.filepath}" />
+        <property name="maximumRollFiles" value="${fuser.capture.maximumRollFiles}" />
+        <property name="rollPeriod" value="${fuser.capture.rollPeriod}" />
+        <property name="timestampHeaderName" value="${fuser.capture.timestampHeaderName}" />
+        <property name="useMessageTime" value="${fuser.capture.useMessageTime}" />
+    </bean>
+    
+    <bean id="capture.FuserCapture" class="com.mosaicatm.lib.capture.DynamicSwimMessageCapture">
+        <constructor-arg index="0" ref="capture.CaptureSettings" />
+        <property name="clock" ref="fuser.core.Clock" />
+    </bean>
+
+</beans>

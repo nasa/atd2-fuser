@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+    <bean id="process.TrajectoryProcessedEventListener" class="com.mosaicatm.fuser.client.api.impl.event.TrajectoryProcessedEventListener"
+        init-method="initialize">
+        <property name="active" value="${fuser-client-api.process.trajectory.raw}" />
+        <property name="eventManager" ref="events.ProcessedEventManager" />
+        <property name="store" ref="core.FuserClientStore" />
+    </bean>
+        
+</beans>

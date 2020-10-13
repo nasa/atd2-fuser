@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+       http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+    <!--  the start method uses Liquibase to initialize and to update database schema -->
+    <bean id="db.LiquibaseInitializer" class="com.mosaicatm.lib.database.liquibase.LiquibaseInitializer">
+        <property name="active"                value="${fuser-capture.liquibase.enabled}" />
+        <property name="changeLog"             value="${fuser-capture.liquibase.changelog}" />
+        <property name="dataSource"            ref="db.dataSource" />
+    </bean>
+
+</beans>

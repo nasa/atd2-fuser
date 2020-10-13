@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.mosaicatm.fuser.datacapture.db.dao.IdacExtensionMapper">
+    
+    <update id="createTable">
+        CREATE TABLE IF NOT EXISTS ${tableName}
+        (
+            acid varchar,
+            aircraft_ready_time timestamp,
+            aircraft_status varchar,
+            artcc_scheduling_list_values varchar,
+            call_sign varchar,
+            departure_runway varchar,
+            estimated_departure_clearance_time timestamp,
+            estimated_departure_time timestamp,
+            first_artcc varchar,
+            flow_assignment_list_values varchar,
+            fused boolean,
+            global_id varchar,
+            negotiating_release boolean,
+            record_identifier varchar,
+            record_timestamp timestamp,
+            scheduled_status_code varchar,
+            scheduling_point_artcc varchar,
+            scheduling_point_constraint_satisfaction_point varchar,
+            scheduling_point_tracon varchar,
+            timestamp timestamp,
+            upstream_tma_id varchar
+        )
+        WITH 
+        (
+          OIDS=FALSE
+        )    
+    </update>
+    
+    <update id="createIndex">
+        create index concurrently idx_timestamp_${tableName} on ${tableName} (timestamp);
+        create index concurrently idx_record_id_${tableName} on ${tableName} (record_identifier);
+        create index concurrently idx_gufi_${tableName} on ${tableName} (gufi);
+    </update>
+
+</mapper>
