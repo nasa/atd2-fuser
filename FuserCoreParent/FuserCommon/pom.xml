@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.mosaicatm</groupId>
         <artifactId>FuserCoreParent</artifactId>
-        <version>5.0.25-NASA-OPENSOURCE-1.0.0-SNAPSHOT</version>
+        <version>5.0.25-NASA-OPENSOURCE-1.0.0</version>
     </parent>
     
     <artifactId>FuserCommon</artifactId>
