@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mosaicatm</groupId>
     <artifactId>FuserParent</artifactId>
-    <version>5.0.25-NASA-OPENSOURCE-1.0.0</version>
+    <version>5.0.25-NASA-OPENSOURCE-1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>FuserParent</name>
 
