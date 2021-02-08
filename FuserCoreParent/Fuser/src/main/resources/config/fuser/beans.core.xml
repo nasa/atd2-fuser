@@ -45,24 +45,6 @@
                 
     <bean id="fuser.core.Capture" class="com.mosaicatm.fuser.Capture" />
     
-    <bean id="fuser.core.GufiAssigner" class="com.mosaicatm.fuser.match.MatmGufiAssigner">
-        <constructor-arg>
-            <bean factory-bean="fuser.core.GufiClientFactory" factory-method="create" />
-        </constructor-arg>
-        <property name="active" value="${fuser.core.gufi-service.assignGufi.active}"/>
-    </bean>
-
-    <bean id="fuser.core.GufiClientFactory" class="com.mosaicatm.guficlient.GufiClientFactory">
-        <property name="clientMode"            value="${fuser.core.gufi-service.mode}" />
-        <property name="jmsReplyQueueName"     value="${fuser.core.gufi-service.reply-queue-name}" />
-        <property name="jmsRequestQueueUri"    value="${fuser.core.gufi-service.request-queue-name}" />
-        <property name="jmsUpdateQueueUri"     value="${fuser.core.gufi-service.update-queue-name}" />
-        
-        <property name="producerTemplate">
-            <bean factory-bean="routes.fuser.CamelContext" factory-method="createProducerTemplate" />
-        </property>
-    </bean>
-    
     <bean id="fuser.core.TimestampSetter" class="com.mosaicatm.fuser.util.TimestampSetter" >
         <property name="clock" ref="fuser.core.Clock" />    
     </bean> 
@@ -102,7 +84,6 @@
         <property name="destinations">
             <list>
                 <value>${fuser.endpoint.toFuser.process.prefuse}</value>
-                <value>${fuser.endpoint.toFuser.process.gufi}</value>
             </list>
         </property>
     </bean>    

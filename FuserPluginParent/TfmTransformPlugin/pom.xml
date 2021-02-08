@@ -34,13 +34,6 @@
 	</build>
 
 	<dependencies>
-	
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>TfmFlightTransferTransforms</artifactId>
-			<version>${tfm-flight-transfer-transforms.version}</version>
-		</dependency>
-
 	</dependencies>
 
 </project>

@@ -41,25 +41,11 @@
             <artifactId>FuserDataSchema</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-        	<groupId>com.mosaicatm</groupId>
-        	<artifactId>MosaicATMLibTime</artifactId>
-        	<version>${mosaic-atm-lib-time.version}</version>
-        	<scope>test</scope>
-        </dependency>
         
         <dependency>
             <groupId>com.mosaicatm</groupId>
             <artifactId>FuserTransformServices</artifactId>
             <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>fixm3</artifactId>
-            <version>${fixm.version}</version>
             <scope>test</scope>
         </dependency>
 

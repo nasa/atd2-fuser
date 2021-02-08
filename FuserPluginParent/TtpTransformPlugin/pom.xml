@@ -34,19 +34,6 @@
 	</build>
 
 	<dependencies>
-    
-        <dependency>
-            <groupId>com.mosaicatm.common</groupId>
-            <artifactId>AirportCodeTranslator</artifactId>
-            <version>${airport-code-translator.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>TtpSchema</artifactId>
-            <version>${ttp.version}</version>
-        </dependency>
-
 	</dependencies>
 
 </project>

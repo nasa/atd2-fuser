@@ -3,9 +3,8 @@ package com.mosaicatm.fuser.updaters.pre;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.mosaicatm.faa.util.ModeSInputException;
-import com.mosaicatm.faa.util.ModeSUtil;
 import com.mosaicatm.fuser.updaters.AbstractUpdater;
+import com.mosaicatm.fuser.dependency.util.AircraftUpdaterUtil;
 import com.mosaicatm.matmdata.flight.MatmFlight;
 
 /**
@@ -67,13 +66,13 @@ extends AbstractUpdater<MatmFlight, MatmFlight>
         else if (!isValidString(flight.getAircraftRegistration()) && 
                  isValidString(flight.getAircraftAddress()))
         {
-            if (ModeSUtil.isValidModeSCode(flight.getAircraftAddress()))
+            if (AircraftUpdaterUtil.isValidModeSCode(flight.getAircraftAddress()))
             {            
                 try
                 {
-                    tail = ModeSUtil.convertToTail(flight.getAircraftAddress());
+                    tail = AircraftUpdaterUtil.convertToTail(flight.getAircraftAddress());
                 }
-                catch (ModeSInputException e)
+                catch (Exception e)
                 {
                     log.error("Error converting modeS to tail for " + flight.getAcid() + ", " + flight.getAircraftAddress(), e);
                 }
@@ -102,13 +101,13 @@ extends AbstractUpdater<MatmFlight, MatmFlight>
         else if (!isValidString(flight.getAircraftAddress()) &&
                  isValidString(flight.getAircraftRegistration()))
         {
-            if (ModeSUtil.isValidTail(flight.getAircraftRegistration()))
+            if (AircraftUpdaterUtil.isValidTail(flight.getAircraftRegistration()))
             {
                 try
                 {
-                    modeS = ModeSUtil.convertToDecimal(flight.getAircraftRegistration());
+                    modeS = AircraftUpdaterUtil.convertToDecimal(flight.getAircraftRegistration());
                 }
-                catch (ModeSInputException e)
+                catch (Exception e)
                 {
                     log.error("Error converting tail to modeS: " + flight.getAircraftRegistration(), e);
                 }

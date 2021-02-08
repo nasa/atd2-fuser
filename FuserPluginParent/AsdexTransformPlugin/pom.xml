@@ -34,18 +34,6 @@
 	</build>
 
 	<dependencies>
-        <dependency>
-            <groupId>com.mosaicatm.datainterfaces</groupId>
-            <artifactId>asdex-transfer</artifactId>
-            <version>${asdex.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm.common</groupId>
-            <artifactId>AirportCodeTranslator</artifactId>
-            <version>${airport-code-translator.version}</version>
-        </dependency>
-
 	</dependencies>
 
 </project>

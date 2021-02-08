@@ -338,6 +338,13 @@ public class RunwayActualTimeUpdaterTest
         public void clear()
         {
             flightUpdate = null;
+        }
+
+        @Override
+        public <T> T request( String arg0, Object arg1 )
+        {
+            // TODO Auto-generated method stub
+            return null;
         }        
     }
 }

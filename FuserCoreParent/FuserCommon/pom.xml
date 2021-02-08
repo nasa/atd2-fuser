@@ -68,13 +68,7 @@
             <groupId>com.mosaicatm</groupId>
             <artifactId>FuserDataSchema</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibJaxb</artifactId>
-            <version>${MosaicATMLibJaxb.version}</version>
-        </dependency>        
+        </dependency>       
         
     </dependencies>
 

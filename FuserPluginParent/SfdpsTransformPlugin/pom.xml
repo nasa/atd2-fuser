@@ -34,13 +34,6 @@
 	</build>
 
 	<dependencies>
-	
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>sfdps-data</artifactId>
-			<version>${sfdps.version}</version>
-		</dependency>
-
 	</dependencies>
 
 </project>

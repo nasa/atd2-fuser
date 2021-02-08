@@ -33,26 +33,6 @@
 		<maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 
-
-		<adsb.version>1.0.1</adsb.version>
-		<airline-message-schema.version>1.2.1</airline-message-schema.version>
-		<airport-code-translator.version>1.13</airport-code-translator.version>
-		<asdex.version>1.4</asdex.version>
-		<asterix.version>1.0</asterix.version>
-		<fixm.version>1.2</fixm.version>
-		<fixm-utils.version>1.0.0</fixm-utils.version>
-		<fuser-surveillance-schema.version>1.0.2</fuser-surveillance-schema.version>
-		<mosaic-atm-lib-jaxb.version>11.1.1</mosaic-atm-lib-jaxb.version>
-		<mosaic-atm-logging-lib.version>1.3</mosaic-atm-logging-lib.version>
-		<mosaic-atm-lib-time.version>11.0.12</mosaic-atm-lib-time.version>
-		<mosaic-general.version>5.0.2</mosaic-general.version>
-		<sfdps.version>1.4.20</sfdps.version>
-		<smes.version>1.0.11</smes.version>
-		<tfm-flight-transfer-transforms.version>2.1.23</tfm-flight-transfer-transforms.version>
-		<tfm-tfdm-transfer.version>2.0.1</tfm-tfdm-transfer.version>
-		<tma.version>4.3.30</tma.version>
-		<ttp.version>2.0.7</ttp.version>
-
 		<camel.version>3.1.0</camel.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-logging.version>1.2</commons-logging.version>
@@ -144,18 +124,6 @@
 			<groupId>com.mosaicatm</groupId>
 			<artifactId>FuserDataSchema</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>MosaicATMLibJaxb</artifactId>
-			<version>${mosaic-atm-lib-jaxb.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>MosaicATMLoggingLib</artifactId>
-			<version>${mosaic-atm-logging-lib.version}</version>
 		</dependency>
 
 		<dependency>

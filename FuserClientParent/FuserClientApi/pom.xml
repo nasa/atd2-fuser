@@ -103,54 +103,6 @@
 			<version>${cxf.version}</version>
 		</dependency>
 
-        <dependency>
-            <groupId>com.mosaicatm.common</groupId>
-            <artifactId>RollingFile</artifactId>
-            <version>${rolling-file.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLoggingLib</artifactId>
-            <version>${mosaicatm-logging-lib.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMSpringLib</artifactId>
-            <version>${mosaicatm-spring-lib.version}</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>com.mosaicatm</groupId>
-        	<artifactId>MosaicATMCamelLib</artifactId>
-        	<version>${mosaicatm-camel-lib.version}</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>com.mosaicatm</groupId>
-        	<artifactId>MosaicATMLibMessaging</artifactId>
-        	<version>${mosaicatmlib-messaging.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibTime</artifactId>
-            <version>${mosaicatm-lib-time.version}</version>
-        </dependency>
-
-         <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibJaxb</artifactId>
-            <version>${mosaicatm-lib-jaxb.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibFilter</artifactId>
-            <version>${mosaicatm-lib-filter.version}</version>
-        </dependency>
-
 		<dependency>
 			<groupId>com.mosaicatm</groupId>
 			<artifactId>FuserDataSchema</artifactId>

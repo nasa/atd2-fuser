@@ -60,7 +60,7 @@
     </build>
 
 	<dependencies>
-
+        
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -191,73 +191,6 @@
             <version>${pf4j-spring.version}</version>
         </dependency>
 
-
-		<dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>FAALib</artifactId>
-            <version>${FAALib.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLoggingLib</artifactId>
-            <version>${MosaicATMLoggingLib.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMCamelLib</artifactId>
-            <version>${MosaicATMCamelLib.version}</version>
-        </dependency>
-
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>MosaicATMSpringLib</artifactId>
-			<version>${MosaicATMSpringLib.version}</version>
-		</dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibJaxb</artifactId>
-            <version>${MosaicATMLibJaxb.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibConcurrent</artifactId>
-            <version>${MosaicATMLibConcurrent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibMessaging</artifactId>
-            <version>${MosaicATMLibMessaging.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm.lib</groupId>
-            <artifactId>mosaicatm-lib-capture</artifactId>
-            <version>${mosaicatm-lib-capture.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm.lib</groupId>
-            <artifactId>mosaicatm-lib-playback</artifactId>
-            <version>${mosaicatm-lib-playback.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm.common</groupId>
-            <artifactId>AirportCodeTranslator</artifactId>
-            <version>${AirportCodeTranslator.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>aircraft-type-lib</artifactId>
-            <version>${AircraftTypeLib.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.mosaicatm</groupId>
             <artifactId>FuserTransformApi</artifactId>
@@ -287,37 +220,7 @@
 			<artifactId>FuserServices</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>gufi-jms-client</artifactId>
-			<version>${gufi-client.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.mosaicatm</groupId>
-			<artifactId>PerformanceMonitorCommon</artifactId>
-			<version>${PerformanceMonitor.version}</version>
-		</dependency>
         
-        <dependency>
-            <groupId>com.mosaicatm.common</groupId>
-            <artifactId>RollingFile</artifactId>
-            <version>${RollingFile.version}</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>com.mosaicatm</groupId>
-        	<artifactId>sector-geometry-lib</artifactId>
-        	<version>${sector-geometry.version}</version>   
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>      
-        </dependency>          
-
 		<!-- Test Dependencies -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -331,13 +234,6 @@
           <artifactId>camel-test</artifactId>
           <version>${camel.version}</version>
           <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>TfmFlightTransferTransforms</artifactId>
-            <version>2.1.23</version>
-            <scope>test</scope>
         </dependency>
 
 		<!-- End Test Dependencies -->

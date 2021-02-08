@@ -29,13 +29,6 @@ fuser.sector.loadServices=false
 fuser.core.sync.airports=
 fuser.core.sync.duration.seconds=120
 
-# Gufi Service configuration =========================================================
-fuser.core.gufi-service.mode=JMS
-fuser.core.gufi-service.reply-queue-name=gufiservice.reply.fuser
-fuser.core.gufi-service.request-queue-name=jms:queue:gufiservice.request
-fuser.core.gufi-service.update-queue-name=jms:queue:gufiservice.update.flight
-fuser.core.gufi-service.assignGufi.active=false
-
 fuser.core.filterNullGufi=true
 fuser.aircraft.filterNullRegistration=true
 

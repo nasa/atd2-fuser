@@ -40,24 +40,6 @@
 
         <dependency>
             <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibJaxb</artifactId>
-            <version>${MosaicATMLibJaxb.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibMessaging</artifactId>
-            <version>${MosaicATMLibMessaging.version}</version>
-            <exclusions>
-            	<exclusion>
-            		<groupId>*</groupId>
-            		<artifactId>*</artifactId>
-            	</exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
             <artifactId>FuserCommon</artifactId>
             <version>${project.version}</version>
         </dependency>       

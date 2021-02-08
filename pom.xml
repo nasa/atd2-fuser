@@ -16,6 +16,21 @@
         <developerConnection>scm:git:https://github.com/nasa/atd2-fuser.git</developerConnection>
         <tag>FuserParent-5.0.25</tag>
     </scm>
+    
+    <repositories>
+        <repository>
+            <id>fuser-mosaic-dependencies</id>
+            <url>file:///${maven.multiModuleProjectDirectory}/fuser-mosaic-dependencies/</url>
+        </repository>
+    </repositories>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.mosaicatm</groupId>
+            <artifactId>FuserMosaicDependencies</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 
     <distributionManagement>
         <snapshotRepository>
@@ -29,5 +44,4 @@
             <url>${distribution.releases.server.url}</url>
         </repository>
     </distributionManagement>
-
 </project>

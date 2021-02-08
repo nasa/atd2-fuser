@@ -34,13 +34,6 @@
 	</build>
 
 	<dependencies>
-    
-        <dependency>
-          <groupId>gov.nasa.atm.tfm.tfdm</groupId>
-          <artifactId>TfmTfdmTransfer</artifactId>
-          <version>${tfm-tfdm-transfer.version}</version>
-        </dependency>
-
 	</dependencies>
 
 </project>

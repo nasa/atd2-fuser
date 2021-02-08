@@ -9,7 +9,6 @@ fuser.endpoint.toFuser.sync=seda:fuser.toFuser.sync?size=1000000
 
 fuser.endpoint.toFuser.process=direct:fuser.toFuser.process
 fuser.endpoint.toFuser.process.prefuse=direct:fuser.toFuser.process.prefuse
-fuser.endpoint.toFuser.process.gufi=seda:fuser.toFuser.process.gufi?size=1000000
 fuser.endpoint.toFuser.process.fuse.filter=seda-status-logging:fuser.toFuser.process.filter?name=FuserFilter&loggingPeriod=10000&size=1000000
 fuser.endpoint.toFuser.process.fuse.aggregate=seda-status-logging:fuser.toFuser.process.aggregate?name=FuserAggregator&loggingPeriod=10000&size=1000000
 fuser.endpoint.toFuser.remove=jms:topic:fuser.toFuser.remove

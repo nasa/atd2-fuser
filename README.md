@@ -46,9 +46,11 @@ The Fuser depends on Apache Maven 3.5.4 or higher and requires Java 8 to compile
 all sources. As part of the Maven build process a deploy ready zip artifact will 
 be generated.
   
-From the root directory of the Fuser project execute: *mvn clean install*
+From the root directory of the fuser-nasa-atd2-opensource project execute: *mvn clean install*
+
+This step is necessary to install all Mosaic ATM libraries.
   
-The following artifacts should be produced:
+The following artifacts should be produced in the fuser-nasa-atd2-opensource/FuserCoreParent/Fuser/target/ folder:
   
  - Fuser.jar: JAR file containing the compiled binary representation of the Fuser
  - Fuser-bin.zip: Compressed artifact containing all of the dependencies, configurations, and
@@ -95,7 +97,7 @@ This software is released under the [NASA Open Source Agreement Version 1.3](lic
 
 ## Notices
 ---
-Copyright © 2020 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.  All Rights Reserved.
+Copyright ï¿½ 2020 United States Government as represented by the Administrator of the National Aeronautics and Space Administration.  All Rights Reserved.
 
   
 ## Disclaimers

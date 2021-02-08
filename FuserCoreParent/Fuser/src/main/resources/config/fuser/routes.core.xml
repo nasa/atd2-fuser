@@ -24,7 +24,6 @@
         <endpoint id="endpoint.fuser.toFuser.batch" uri="${fuser.endpoint.toFuser.batch}" />
         <endpoint id="endpoint.fuser.toFuser.process" uri="${fuser.endpoint.toFuser.process}" />
         <endpoint id="endpoint.fuser.toFuser.process.prefuse" uri="${fuser.endpoint.toFuser.process.prefuse}" />
-        <endpoint id="endpoint.fuser.toFuser.process.gufi" uri="${fuser.endpoint.toFuser.process.gufi}" />
         <endpoint id="endpoint.fuser.toFuser.process.fuse.filter" uri="${fuser.endpoint.toFuser.process.fuse.filter}" />
         <endpoint id="endpoint.fuser.toFuser.process.fuse.aggregate" uri="${fuser.endpoint.toFuser.process.fuse.aggregate}" />
         
@@ -110,7 +109,6 @@
           <bean ref="monitor.endpoint.fuser.toFuser.receive" method="mark(1)" />
           <multicast>
               <to uri="endpoint.fuser.toFuser.process.prefuse" />
-              <to uri="endpoint.fuser.toFuser.process.gufi" />
           </multicast>
         </route>
 
@@ -125,14 +123,7 @@
           <bean ref="monitor.endpoint.fuser.toFuser.receive" method="mark(1)" />
           <multicast>
               <to uri="endpoint.fuser.toFuser.process.prefuse" />
-              <to uri="endpoint.fuser.toFuser.process.gufi" />
           </multicast>
-        </route>
-        
-        <route id="route.fuser.toFuser.process.gufi">
-            <from uri="endpoint.fuser.toFuser.process.gufi" />
-            <bean ref="fuser.core.GufiAssigner" method="assignGufi" />
-            <to uri="endpoint.fuser.toFuser.process.fuse.filter" />
         </route>
 
         <route id="route.fuser.toFuser.process.fuse.filter">

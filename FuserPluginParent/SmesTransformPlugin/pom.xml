@@ -35,13 +35,6 @@
 
 
     <dependencies>
-    
-        <dependency>
-            <groupId>com.mosaicatm.smes</groupId>
-            <artifactId>smes-transfer</artifactId>
-            <version>${smes.version}</version>
-        </dependency>
-
     </dependencies>
 
 </project>

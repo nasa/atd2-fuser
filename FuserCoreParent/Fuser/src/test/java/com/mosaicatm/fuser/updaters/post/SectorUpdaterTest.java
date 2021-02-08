@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import com.mosaicatm.matmdata.common.Position;
 import com.mosaicatm.matmdata.common.SurfaceFlightState;
@@ -21,6 +22,7 @@ import com.mosaicatm.fuser.store.matm.MatmSectorAssignmentFuserStore;
 import com.mosaicatm.matmdata.common.FavType;
 import com.mosaicatm.matmdata.sector.MatmSectorAssignment;
 
+@Ignore
 public class SectorUpdaterTest
 {
     private static SectorUpdater updater;

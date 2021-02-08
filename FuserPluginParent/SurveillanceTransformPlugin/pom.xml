@@ -34,13 +34,6 @@
 	</build>
 
 	<dependencies>
-	
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>fuser-surveillance-schema</artifactId>
-            <version>${fuser-surveillance-schema.version}</version>
-        </dependency>
-
 	</dependencies>
 
 </project>

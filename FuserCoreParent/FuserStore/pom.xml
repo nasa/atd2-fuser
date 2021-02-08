@@ -13,19 +13,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibTime</artifactId>
-            <version>${MosaicATMLibTime.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibJaxb</artifactId>
-            <version>${MosaicATMLibJaxb.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>com.mosaicatm</groupId>
             <artifactId>FuserDataSchema</artifactId>
@@ -38,24 +25,6 @@
             <version>${jedis.version}</version>
             <type>jar</type>
         </dependency>
-        
-        <dependency>
-            <groupId>com.mosaicatm</groupId>
-            <artifactId>MosaicATMLibMessaging</artifactId>
-            <version>${MosaicATMLibMessaging.version}</version>
-        </dependency>
-        
-        <dependency>
-        	<groupId>com.mosaicatm</groupId>
-        	<artifactId>sector-geometry-lib</artifactId>
-        	<version>${sector-geometry.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-slf4j-impl</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency> 
                 
         <dependency>
             <groupId>com.mosaicatm</groupId>
